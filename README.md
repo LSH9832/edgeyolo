@@ -8,10 +8,8 @@
 <div align="center"><img src="assets/visdrone_result.jpg"></div>
 
 ## Coming Soon
-- MNN deployment
-- smaller models
-- c++ inference code
-- mask-edgeyolo for object segmentation task
+- **train code.** After our paper is released on arXiv, we will publish train code.
+- **evaluate code.** After our paper is released on arXiv, we will publish evaluate code.
 
 ## Quick Start
 ### setup
@@ -43,42 +41,6 @@ python detect.py --weights edgeyolo_coco.pth
                  --fp16 
                  --no-fuse                # do not fuse layers
                  --no-label               # do not draw label with class name and confidence
-```
-
-### train
-- first preparing your dataset and create relative file(./params/dataset/yourdataset.yaml) and change the num of classes in your dataset in file ./params/model/edgeyolo_coco.yaml and add classes.txt to root path of your dataset which contains all the class names(each line writes one class name), make sure your dataset structure as follows:
-```
-├── dataset_dir
-│   ├── annotations
-│   │   ├── train.json
-│   │   └── val.json
-│   ├── train
-│   │   ├── xxx.jpg
-│   │   └── ...
-│   ├── val
-│   │   ├── xxx.jpg
-│   │   └── ...
-│   └── classes.txt
-```
-- then edit file ./params/train/train_settings.yaml
-- finally
-```bash
-python train.py -f ./params/train/train_settings.yaml
-```
-
-### evaluate
-```bash
-python evaluate.py --weights edgeyolo_coco.pth --dataset /path/to/coco2017 --batch-size 8 --device 0 1 2 3
-
-# full commands
-python evaluate.py --weights edgeyolo_coco.pth 
-                   --dataset /path/to/coco2017 
-                   --val-dir val2017 
-                   --anno-file annotations/instances_val2017.json 
-                   --batch-size 8 
-                   --device 0 1 2 3
-                   --class-name classes.txt 
-                   --input-size 640 640 
 ```
 
 ### export onnx & tensorrt
