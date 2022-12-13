@@ -17,7 +17,7 @@ if __name__ == '__main__':
     parser.add_argument("--fp16", action="store_true", help="fp16")
     parser.add_argument("--no-fuse", action="store_true", help="do not fuse model")
     parser.add_argument("--input-size", type=int, nargs="+", default=[640, 640], help="input size: [height, width]")
-    parser.add_argument("-s", "--source", type=str, default="E:/videos/test.avi", help="video source or image dir")
+    parser.add_argument("-s", "--source", type=str, default="./test.avi", help="video source or image dir")
     parser.add_argument("--trt", action="store_true", help="is trt model")
     parser.add_argument("--legacy", action="store_true", help="if img /= 255 while training, add this command.")
     parser.add_argument("--use-decoder", action="store_true", help="support original yolox model v0.2.0")
