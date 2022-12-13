@@ -27,6 +27,9 @@ python setup.py install
 ```
 
 ### inference
+
+**First [download weights here](https://github.com/LSH9832/edgeyolo/releases/tag/v0.0.0)**
+
 ```
 python detect.py --weights edgeyolo_coco.pth --source XXX.mp4 --fp16
 
