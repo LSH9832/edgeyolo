@@ -1,4 +1,4 @@
-# Edge-YOLO: anchor-free, embed-friendly, high-performance
+# Edge-YOLO: anchor-free, edge-computing-device-friendly
 
 ## Intro
 - In embeded device such as Nvidia Jetson AGX Xavier, Edge-YOLO reaches 34fps with 50.2%AP in COCO2017 dataset and 25.8%AP in VisDrone2019 **(image input size is 640x640, batch=16, including post-process)**
