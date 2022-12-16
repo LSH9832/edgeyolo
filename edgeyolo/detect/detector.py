@@ -39,18 +39,13 @@ class Detector(EdgeYOLO):
         rs = []
         for img in imgs:
             pad_im, r = preproc(img, self.input_size)
-            pad_ims.append(torch.from_numpy(pad_im))
+            pad_ims.append(torch.from_numpy(pad_im).unsqueeze(0))
             rs.append(r)
         self.t0 = time()
-        ret_ims = torch.cat(pad_ims)
-
-        if len(pad_ims) == 1:
-            ret_ims = ret_ims.unsqueeze(0)
+        ret_ims = pad_ims[0] if len(pad_ims) == 1 else torch.cat(pad_ims)
         return ret_ims, rs
 
     def __postprocess(self, results, rs):
-        # print(results, results.shape)
-
         outs = postprocess(results, len(self.class_names), self.conf_thres, self.nms_thres, True)
         for i, r in enumerate(rs):
             if outs[i] is not None:
