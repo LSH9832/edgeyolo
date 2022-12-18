@@ -160,6 +160,8 @@ def show(msg, all_imgs, args, pid):
                 cv2.imwrite(os.path.join(args.save_dir, file_name), img)
                 logger.info(f"image saved to {file_name}.")
 
+    print()
+    print()
     torch.cuda.empty_cache()
     msg["end_count"] += 1
 
@@ -182,7 +184,6 @@ def main():
 
     results = Manager().Queue()
     all_imgs = Manager().Queue()
-
 
     processes = [Process(target=inference, args=(shared_data, results, args)),
                  Process(target=draw_imgs, args=(shared_data, results, all_imgs, args)),
