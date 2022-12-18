@@ -48,7 +48,11 @@ python detect.py --weights edgeyolo_coco.pth
                  --no-fuse                # do not fuse layers
                  --no-label               # do not draw label with class name and confidence
 ```
-
+It is recomended to use **batch_detect.py** with the same commands if batch size > 1
+```
+python batch_detect.py --weights edgeyolo_coco.pth --source XXX.mp4 --batch-size 16 --fp16
+                       --fps 30    # max fps limitation(new function)
+```
 ### export onnx & tensorrt
 ```
 python pth2onnx.py --weights edgeyolo_coco.pth --simplify
@@ -85,7 +89,11 @@ python detect.py --trt
                  --legacy         # if "img = img / 255" when you train your train model
                  --use-decoder    # if use original yolox tensorrt model before version 0.3.0
 ```
-
+It is also recomended to use **batch_detect.py** with the same commands if batch size > 1
+```
+python batch_detect.py --trt --weights edgeyolo_coco.pth --source XXX.mp4 --fp16
+                       --fps 30    # max fps limitation(new function)
+```
 #### for c++ inference
 it will comming soon
 
