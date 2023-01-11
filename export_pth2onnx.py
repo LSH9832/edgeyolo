@@ -49,7 +49,7 @@ if __name__ == '__main__':
 
     opt = parser.parse_args()
 
-    os.makedirs("export_output/onnx", exist_ok=True)
+    os.makedirs("yolo_export/onnx", exist_ok=True)
     print(opt)
     # set_logging()
     t = time.time()
@@ -76,8 +76,8 @@ if __name__ == '__main__':
         import onnx
 
         logger.info('\nStarting ONNX export with onnx %s...' % onnx.__version__)
-        file_name = "export_output/onnx/" + os.path.basename(opt.weights[:-len(opt.weights.split(".")[-1])-1])
-        f = file_name + f'_{opt.img_size[0]}x{opt.img_size[1]}.onnx'  # filename
+        file_name = "yolo_export/onnx/" + os.path.basename(opt.weights[:-len(opt.weights.split(".")[-1])-1])
+        f = file_name + f'_{opt.img_size[0]}x{opt.img_size[1]}_batch{opt.batch_size}.onnx'  # filename
         model.eval()
         model.model[-1].concat = True
         input_names = ["input_0"]
@@ -110,15 +110,17 @@ if __name__ == '__main__':
         onnx.save(onnx_model, f)
         logger.info('ONNX export success, saved as %s' % f)
 
-        with open(file_name + f"_{opt.img_size[0]}x{opt.img_size[1]}.yaml", "w") as fp:
+        with open(file_name + f"_{opt.img_size[0]}x{opt.img_size[1]}_batch{opt.batch_size}.yaml", "w") as fp:
             yaml.dump({
                 "input_name": input_names,
                 "output_name": output_names,
                 "names": labels,
                 "img_size": opt.img_size,
-                "batch_size": opt.batch_size
+                "batch_size": opt.batch_size,
+                "pixel_range": 255,         # input image pixel value range: 0-1 or 0-255
+                "obj_conf_enabled": True,   # Edge-YOLO use cls conf and obj conf
             }, fp, yaml.Dumper)
-            logger.info(f"params saved to {file_name}_{opt.img_size[0]}x{opt.img_size[1]}.yaml")
+            logger.info(f"params saved to {file_name}_{opt.img_size[0]}x{opt.img_size[1]}_batch{opt.batch_size}.yaml")
 
         print("")
         logger.info("############# - msg - ##############")
