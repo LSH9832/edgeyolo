@@ -73,10 +73,13 @@ python onnx2trt.py --onnx export_output/onnx/edgeyolo_coco_640x640.onnx
                    --workspace 10 
                    --fp16
 ```
+
 it will generate
-- **export_output/tensorrt/edgeyolo_coco_640x640.pt**  for python inference
-- **export_output/tensorrt/edgeyolo_coco_640x640.engine**  for c++ inference
-- **export_output/tensorrt/edgeyolo_coco_640x640.txt**  for c++ inference
+```
+yolo_export/tensorrt/edgeyolo_coco_640x640.pt         # for python inference
+yolo_export/tensorrt/edgeyolo_coco_640x640.engine     # for c++ inference
+yolo_export/tensorrt/edgeyolo_coco_640x640.txt        # for c++ inference
+```
 
 #### for python inference
 ```
@@ -95,7 +98,7 @@ python batch_detect.py --trt --weights edgeyolo_coco.pth --source XXX.mp4 --fp16
                        --fps 30    # max fps limitation(new function)
 ```
 #### for c++ inference
-it will comming soon
+it will be comming soon
 
 
 
