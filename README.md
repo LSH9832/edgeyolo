@@ -3,7 +3,7 @@
 This is a **trial version** without training code and evaluate code. we will publish complete source code after we publish our paper online.
 
 ## Intro
-- In embeded device such as Nvidia Jetson AGX Xavier, Edge-YOLO reaches 34fps with 50.6%AP in COCO2017 dataset and 25.8%AP in VisDrone2019 **(image input size is 640x640, batch=16, post-process included)**
+- In embeded device such as Nvidia Jetson AGX Xavier, Edge-YOLO reaches 34fps with 50.6%AP in COCO2017 dataset and 25.9%AP in VisDrone2019 **(image input size is 640x640, batch=16, post-process included)**
 - we provide a more effective data augmentation during training.
 - small object and medium object detect performace is imporved by using RH loss during the last few training epochs.
 
