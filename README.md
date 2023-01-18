@@ -7,8 +7,34 @@ This is a **trial version** without training code and evaluate code. we will pub
 - we provide a more effective data augmentation during training.
 - small object and medium object detect performace is imporved by using RH loss during the last few training epochs.
 
-<div align="center"><img src="assets/coco_result.jpg"></div>
-<div align="center"><img src="assets/visdrone_result.jpg"></div>
+## models
+
+- models trained on COCO2017-train
+
+| Model | Size | mAP<sup>val<br/>0.5:0.95 | mAP<sup>val<br/>0.5 | Speed<sup>AGX Xavier<br/>trt fp16 batch=16 <br/>include post-process</br>(fps) | Params<br/><sup> (M) |Download|
+| :---- | ---- | :----------------------- | ------------------- | ------------------------------------------------ | -------------------- |--------|
+|**EdgeYOLO-Tiny (coming soon)**|<center>640</br>416|<center>-</br>-|<center>-</br>-|<center>-</br>-|<center>7.6|<center>**-**|
+|**EdgeYOLO-S**|<center>640|<center>44.1|<center>**63.3** (**SOTA** in small models)|<center>50|<center>9.9|<center>[**github**](https://github.com/LSH9832/edgeyolo/releases/download/v0.0.0/edgeyolo_s_coco.pth)|
+|**EdgeYOLO**|<center>640|<center>50.6|<center>69.7|<center>34|<center>41.2|<center>[**github**](https://github.com/LSH9832/edgeyolo/releases/download/v0.0.0/edgeyolo_coco.pth)|
+
+- models trained on VisDrone2019
+
+| Model | Size | mAP<sup>val<br/>0.5:0.95 | mAP<sup>val<br/>0.5 |Download|
+| :---- | ---- | :----------------------- | ------------------- |--------|
+|**EdgeYOLO-Tiny (coming soon)**|<center>640</br>416|<center>-</br>-|<center>-</br>-|<center>**-**|
+|**EdgeYOLO-S (coming soon)**|<center>640|<center>-|<center>-|<center>**-**|
+|**EdgeYOLO**|<center>640|<center>25.9|<center>43.9|<center>[**github**](https://github.com/LSH9832/edgeyolo/releases/download/v0.0.0/edgeyolo_visdrone.pth)|
+
+<details>
+<summary>Some of our detect results in COCO2017 and VisDrone2019-DET</summary>
+
+COCO2017
+![](assets/coco_result.jpg)
+
+VisDrone2019-DET
+![](assets/visdrone_result.jpg)
+
+</details>
 
 ## Coming Soon
 - **train code.** After our paper is released on arXiv, we will publish train code.
