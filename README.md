@@ -14,7 +14,7 @@ This is a **trial version** without training code and evaluate code. we will pub
 | Model | Size | mAP<sup>val<br/>0.5:0.95 | mAP<sup>val<br/>0.5 | FPS<sup>AGX Xavier<br/>trt fp16 batch=16 <br/>include post-process | Params<br/><sup> (M) |Download|
 | :---- | ---- | :----------------------- | ------------------- | ------------------------------------------------ | -------------------- |--------|
 |**EdgeYOLO-Tiny (coming soon)**|<center>640</br>416|<center>-</br>-|<center>-</br>-|<center>-</br>-|<center>7.6|<center>**-**|
-|**EdgeYOLO-S**|<center>640|<center>44.1|<center>**63.3** (**SOTA** in small models)|<center>50|<center>9.9|<center>[**github**](https://github.com/LSH9832/edgeyolo/releases/download/v0.0.0/edgeyolo_s_coco.pth)|
+|**EdgeYOLO-S**|<center>640|<center>44.1|<center>**63.3** (**SOTA** in small models)|<center>50|<center>9.9|<center>[**github**](https://github.com/LSH9832/edgeyolo/releases/download/v0.0.0/edgeyolo_s_coco.pth)</center>|
 |**EdgeYOLO**|<center>640|<center>50.6|<center>69.7|<center>34|<center>41.2|<center>[**github**](https://github.com/LSH9832/edgeyolo/releases/download/v0.0.0/edgeyolo_coco.pth)|
 
 - models trained on VisDrone2019
