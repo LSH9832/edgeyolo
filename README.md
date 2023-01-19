@@ -10,7 +10,7 @@ This is a **trial version** without training code and evaluate code. we will pub
 - we provide a more effective data augmentation during training.
 - small object and medium object detect performace is imporved by using RH loss during the last few training epochs.
 
-## models
+## Models
 
 - models trained on COCO2017-train
 
