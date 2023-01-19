@@ -6,7 +6,7 @@
 This is a **trial version** without training code and evaluate code. we will publish complete source code after we publish our first edgeyolo paper online.
 
 ## Intro
-- In embeded device such as Nvidia Jetson AGX Xavier, EdgeYOLO reaches 34fps with **50.6**% AP in COCO2017 dataset and **25.9**% AP in VisDrone2019 **(image input size is 640x640, batch=16, post-process included)**. And for smaller model EdgeYOLO-S, it reaches 50FPS with **44.1**% AP and **63.3**% AP<sup>0.5</sup>(**SOTA** in current small models) in COCO2017.
+- In embeded device such as Nvidia Jetson AGX Xavier, EdgeYOLO reaches 34fps with **50.6**% AP in COCO2017 dataset and **25.9**% AP in VisDrone2019 **(image input size is 640x640, batch=16, post-process included)**. And for smaller model EdgeYOLO-S, it reaches 50FPS with **44.1**% AP and **63.3**% AP<sup>0.5</sup>(**SOTA** in small P5 models) in COCO2017.
 - we provide a more effective data augmentation during training.
 - small object and medium object detect performace is imporved by using RH loss during the last few training epochs.
 
@@ -16,7 +16,8 @@ This is a **trial version** without training code and evaluate code. we will pub
 
 | Model           | Size      | mAP<sup>val<br/>0.5:0.95 | mAP<sup>val<br/>0.5 | FPS<sup>AGX Xavier<br/>trt fp16 batch=16 <br/>include NMS | Params<br/>train / infer</br>(M) |Download|
 | :-------------- | --------- | :----------------------- | ------------------- | ------------------------------------------------------------------ | -------------- |--------|
-|**EdgeYOLO-Tiny**|416</br>640|33.1</br>37.8             |50.5</br>56.7        |**206**</br>96                                                          |7.6 / 7.0       |[**github**](https://github.com/LSH9832/edgeyolo/releases/download/v0.0.0/edgeyolo_tiny_coco.pth)|
+|**EdgeYOLO-Tiny (Coming soon)**|416</br>640|-</br>-             |-</br>-        |-</br>-                                                          |5.8 / 5.5       |-|
+|**EdgeYOLO-Tiny-LeakyRELU**|416</br>640|33.1</br>37.8             |50.5</br>56.7        |**206**</br>96                                                          |7.6 / 7.0       |[**github**](https://github.com/LSH9832/edgeyolo/releases/download/v0.0.0/edgeyolo_tiny_coco.pth)|
 |**EdgeYOLO-S**   |640        |44.1                      |**63.3**             |50                                                                  |9.9 / 9.3       |[**github**](https://github.com/LSH9832/edgeyolo/releases/download/v0.0.0/edgeyolo_s_coco.pth)|
 |**EdgeYOLO**     |640        |50.6                      |69.7                 |34                                                                  |41.2 / 40.5     |[**github**](https://github.com/LSH9832/edgeyolo/releases/download/v0.0.0/edgeyolo_coco.pth)|
 
