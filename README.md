@@ -1,8 +1,9 @@
 # EdgeYOLO: anchor-free, edge-computing-device-friendly
 
-This is a **trial version** without training code and evaluate code. we will publish complete source code after we publish our first edgeyolo paper online.
-
 ![](assets/visdrone_result.jpg)
+
+## Note
+This is a **trial version** without training code and evaluate code. we will publish complete source code after we publish our first edgeyolo paper online.
 
 ## Intro
 - In embeded device such as Nvidia Jetson AGX Xavier, EdgeYOLO reaches 34fps with **50.6**% AP in COCO2017 dataset and **25.9**% AP in VisDrone2019 **(image input size is 640x640, batch=16, post-process included)**. And for smaller model EdgeYOLO-S, it reaches 50FPS with **44.1**% AP and **63.3**% AP<sup>0.5</sup>(**SOTA** in current small models) in COCO2017.
