@@ -2,6 +2,8 @@
 
 This is a **trial version** without training code and evaluate code. we will publish complete source code after we publish our first edgeyolo paper online.
 
+![](assets/visdrone_result.jpg)
+
 ## Intro
 - In embeded device such as Nvidia Jetson AGX Xavier, EdgeYOLO reaches 34fps with **50.6**% AP in COCO2017 dataset and **25.9**% AP in VisDrone2019 **(image input size is 640x640, batch=16, post-process included)**. And for smaller model EdgeYOLO-S, it reaches 50FPS with **44.1**% AP and **63.3**% AP<sup>0.5</sup>(**SOTA** in current small models) in COCO2017.
 - we provide a more effective data augmentation during training.
@@ -26,13 +28,10 @@ This is a **trial version** without training code and evaluate code. we will pub
 |**EdgeYOLO**|<center>640|<center>25.9|<center>43.9|<center>[**github**](https://github.com/LSH9832/edgeyolo/releases/download/v0.0.0/edgeyolo_visdrone.pth)|
 
 <details>
-<summary>Some of our detect results in COCO2017 and VisDrone2019-DET</summary>
+<summary>Some of our detect results in COCO2017
 
 COCO2017
 ![](assets/coco_result.jpg)
-
-VisDrone2019-DET
-![](assets/visdrone_result.jpg)
 
 </details>
 
