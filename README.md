@@ -89,21 +89,21 @@ python pth2onnx.py --weights edgeyolo_coco.pth
                    --opset 11
                    --simplify
 ```
-it generates file **export_output/onnx/edgeyolo_coco_640x640.onnx** and **export_output/onnx/edgeyolo_coco_640x640.yaml**
+it generates file **export_output/onnx/edgeyolo_coco_640x640_batch1.onnx** and **export_output/onnx/edgeyolo_coco_640x640_batch1.yaml**
 
 ```
 # (workspace: GB)
-python onnx2trt.py --onnx export_output/onnx/edgeyolo_coco_640x640.onnx 
-                   --yaml export_output/onnx/edgeyolo_coco_640x640.yaml 
+python onnx2trt.py --onnx export_output/onnx/edgeyolo_coco_640x640_batch1.onnx 
+                   --yaml export_output/onnx/edgeyolo_coco_640x640_batch1.yaml 
                    --workspace 10 
                    --fp16
 ```
 
 it will generate
 ```
-yolo_export/tensorrt/edgeyolo_coco_640x640.pt         # for python inference
-yolo_export/tensorrt/edgeyolo_coco_640x640.engine     # for c++ inference
-yolo_export/tensorrt/edgeyolo_coco_640x640.txt        # for c++ inference
+yolo_export/tensorrt/edgeyolo_coco_640x640_batch1.pt         # for python inference
+yolo_export/tensorrt/edgeyolo_coco_640x640_batch1.engine     # for c++ inference
+yolo_export/tensorrt/edgeyolo_coco_640x640_batch1.txt        # for c++ inference
 ```
 
 #### for python inference
@@ -112,14 +112,14 @@ python detect.py --trt --weights export_output/tensorrt/edgeyolo_coco_640x640.pt
 
 # full commands
 python detect.py --trt 
-                 --weights export_output/tensorrt/edgeyolo_coco_640x640.pt 
+                 --weights export_output/tensorrt/edgeyolo_coco_640x640_batch1.pt 
                  --source XXX.mp4
                  --legacy         # if "img = img / 255" when you train your train model
                  --use-decoder    # if use original yolox tensorrt model before version 0.3.0
 ```
 It is also recomended to use **batch_detect.py** with the same commands if batch size > 1
 ```
-python batch_detect.py --trt --weights edgeyolo_coco.pth --source XXX.mp4 --fp16
+python batch_detect.py --trt --weights yolo_export/tensorrt/edgeyolo_coco_640x640_batch1.pt --source XXX.mp4 --fp16
                        --fps 30    # max fps limitation(new function)
 ```
 #### for c++ inference
