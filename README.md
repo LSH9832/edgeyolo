@@ -13,11 +13,11 @@ This is a **trial version** without training code and evaluate code. we will pub
 
 - models trained on COCO2017-train
 
-| Model | Size | mAP<sup>val<br/>0.5:0.95 | mAP<sup>val<br/>0.5 | FPS<sup>AGX Xavier<br/>trt fp16 batch=16 <br/>include post-process | Params<br/><sup> (M) |Download|
-| :---- | ---- | :----------------------- | ------------------- | ------------------------------------------------ | -------------------- |--------|
-|**EdgeYOLO-Tiny**|<center>416</br>640|<center>33.1</br>37.8|<center>50.5</br>56.7|<center>-</br>-|<center>7.6|<center>**[**github**](https://github.com/LSH9832/edgeyolo/releases/download/v0.0.0/edgeyolo_tiny_coco.pth)**|
-|**EdgeYOLO-S**|<center>640|<center>44.1|<center>**63.3**|<center>50|<center>9.9|<center>[**github**](https://github.com/LSH9832/edgeyolo/releases/download/v0.0.0/edgeyolo_s_coco.pth)</center>|
-|**EdgeYOLO**|<center>640|<center>50.6|<center>69.7|<center>34|<center>41.2|<center>[**github**](https://github.com/LSH9832/edgeyolo/releases/download/v0.0.0/edgeyolo_coco.pth)|
+| Model           | Size      | mAP<sup>val<br/>0.5:0.95 | mAP<sup>val<br/>0.5 | FPS<sup>AGX Xavier<br/>trt fp16 batch=16 <br/>include post-process | Params<br/>train / infer</br>(M) |Download|
+| :-------------- | --------- | :----------------------- | ------------------- | ------------------------------------------------------------------ | -------------- |--------|
+|**EdgeYOLO-Tiny**|416</br>640|33.1</br>37.8             |50.5</br>56.7        |-</br>-                                                             |7.6 / 7.0       |[**github**](https://github.com/LSH9832/edgeyolo/releases/download/v0.0.0/edgeyolo_tiny_coco.pth)|
+|**EdgeYOLO-S**   |640        |44.1                      |**63.3**             |50                                                                  |9.9 / 9.3       |[**github**](https://github.com/LSH9832/edgeyolo/releases/download/v0.0.0/edgeyolo_s_coco.pth)|
+|**EdgeYOLO**     |640        |50.6                      |69.7                 |34                                                                  |41.2 / 40.5     |[**github**](https://github.com/LSH9832/edgeyolo/releases/download/v0.0.0/edgeyolo_coco.pth)|
 
 - models trained on VisDrone2019 (pretrained on COCO2017-train)
 
