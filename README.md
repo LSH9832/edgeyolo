@@ -28,9 +28,8 @@ This is a **trial version** without training code and evaluate code. we will pub
 |**EdgeYOLO**|<center>640|<center>25.9|<center>43.9|<center>[**github**](https://github.com/LSH9832/edgeyolo/releases/download/v0.0.0/edgeyolo_visdrone.pth)|
 
 <details>
-<summary>Some of our detect results in COCO2017
+<summary>Some of our detect results in COCO2017</summary>
 
-COCO2017
 ![](assets/coco_result.jpg)
 
 </details>
