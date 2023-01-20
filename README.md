@@ -26,6 +26,7 @@ This is a **trial version** without training code and evaluate code. we will pub
 | Model | Size | mAP<sup>val<br/>0.5:0.95 | mAP<sup>val<br/>0.5 |Download|
 | :---- | ---- | :----------------------- | ------------------- |--------|
 |**EdgeYOLO-Tiny (coming soon)**|<center>416</br>640|<center>-</br>-|<center>-</br>-|<center>**-**|
+|**EdgeYOLO-Tiny-LeakyRELU (coming soon)**|416</br>640|-</br>-|-</br>-|**-**|
 |**EdgeYOLO-S (coming soon)**|<center>640|<center>-|<center>-|<center>**-**|
 |**EdgeYOLO**|<center>640|<center>25.9|<center>43.9|<center>[**github**](https://github.com/LSH9832/edgeyolo/releases/download/v0.0.0/edgeyolo_visdrone.pth)|
 
