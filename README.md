@@ -6,7 +6,7 @@
 This is a **trial version** without training code and evaluate code. we will publish complete source code after we publish our first edgeyolo paper.
 
 ## Intro
-- In embeded device such as Nvidia Jetson AGX Xavier, EdgeYOLO reaches 34fps with **50.6**% AP in COCO2017 dataset and **25.9**% AP in VisDrone2019 **(image input size is 640x640, batch=16, post-process included)**. And for smaller model EdgeYOLO-S, it reaches 50FPS with **44.1**% AP and **63.3**% AP<sup>0.5</sup>(**SOTA** in small P5 models) in COCO2017.
+- In embeded device such as Nvidia Jetson AGX Xavier, EdgeYOLO reaches 34fps with **50.6**% AP in COCO2017 dataset and **25.9**% AP in VisDrone2019 **(image input size is 640x640, batch=16, post-process included)**. And for smaller model EdgeYOLO-S, it reaches 50FPS with **44.1**% AP and **63.3**% AP<sup>0.5</sup>(**SOTA** in P5 small models) in COCO2017.
 - we provide a more effective data augmentation during training.
 - small object and medium object detect performace is imporved by using RH loss during the last few training epochs.
 
@@ -25,10 +25,10 @@ This is a **trial version** without training code and evaluate code. we will pub
 
 | Model | Size | mAP<sup>val<br/>0.5:0.95 | mAP<sup>val<br/>0.5 |Download|
 | :---- | ---- | :----------------------- | ------------------- |--------|
-|**EdgeYOLO-Tiny (coming soon)**|<center>416</br>640|<center>-</br>-|<center>-</br>-|<center>**-**|
+|**EdgeYOLO-Tiny (coming soon)**|416</br>640|-</br>-|-</br>-|**-**|
 |**EdgeYOLO-Tiny-LeakyRELU (coming soon)**|416</br>640|-</br>-|-</br>-|**-**|
-|**EdgeYOLO-S (coming soon)**|<center>640|<center>-|<center>-|<center>**-**|
-|**EdgeYOLO**|<center>640|<center>25.9|<center>43.9|<center>[**github**](https://github.com/LSH9832/edgeyolo/releases/download/v0.0.0/edgeyolo_visdrone.pth)|
+|**EdgeYOLO-S**|640|23.6|40.8|[**github**](https://github.com/LSH9832/edgeyolo/releases/download/v0.0.0/edgeyolo_s_visdrone.pth)|
+|**EdgeYOLO**|640|25.9|43.9|[**github**](https://github.com/LSH9832/edgeyolo/releases/download/v0.0.0/edgeyolo_visdrone.pth)|
 
 <details>
 <summary>Some of our detect results in COCO2017</summary>
