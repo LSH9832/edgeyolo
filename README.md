@@ -84,7 +84,7 @@ python batch_detect.py --weights edgeyolo_coco.pth --source XXX.mp4 --batch-size
 ```
 ### export onnx & tensorrt
 ```
-python pth2onnx.py --weights edgeyolo_coco.pth --simplify
+python export_pth2onnx.py --weights edgeyolo_coco.pth --simplify
 
 # full commands
 python export_pth2onnx.py --weights edgeyolo_coco.pth 
@@ -93,12 +93,12 @@ python export_pth2onnx.py --weights edgeyolo_coco.pth
                           --opset 11
                           --simplify
 ```
-it generates file **export_output/onnx/edgeyolo_coco_640x640_batch1.onnx** and **export_output/onnx/edgeyolo_coco_640x640_batch1.yaml**
+it generates file **yolo_export/onnx/edgeyolo_coco_640x640_batch1.onnx** and **yolo_export/onnx/edgeyolo_coco_640x640_batch1.yaml**
 
 ```
 # (workspace: GB)
-python export_onnx2trt.py --onnx export_output/onnx/edgeyolo_coco_640x640_batch1.onnx 
-                          --yaml export_output/onnx/edgeyolo_coco_640x640_batch1.yaml 
+python export_onnx2trt.py --onnx yolo_export/onnx/edgeyolo_coco_640x640_batch1.onnx 
+                          --yaml yolo_export/onnx/edgeyolo_coco_640x640_batch1.yaml 
                           --workspace 10 
                           --fp16
 ```
@@ -112,11 +112,11 @@ yolo_export/tensorrt/edgeyolo_coco_640x640_batch1.txt        # for c++ inference
 
 #### for python inference
 ```
-python detect.py --trt --weights export_output/tensorrt/edgeyolo_coco_640x640.pt --source XXX.mp4
+python detect.py --trt --weights yolo_export/tensorrt/edgeyolo_coco_640x640.pt --source XXX.mp4
 
 # full commands
 python detect.py --trt 
-                 --weights export_output/tensorrt/edgeyolo_coco_640x640_batch1.pt 
+                 --weights yolo_export/tensorrt/edgeyolo_coco_640x640_batch1.pt 
                  --source XXX.mp4
                  --legacy         # if "img = img / 255" when you train your train model
                  --use-decoder    # if use original yolox tensorrt model before version 0.3.0
