@@ -16,7 +16,7 @@ This is a **trial version** without training code and evaluate code. we will pub
 
 Now we are traning the model **EdgeYOLO-Tiny** and it will be comming in no more than 3 days.
 
-| Model           | Size      | mAP<sup>val<br/>0.5:0.95 | mAP<sup>val<br/>0.5 | FPS<sup>AGX Xavier<br/>trt fp16 batch=16 <br/>include NMS | Params<br/>train / infer</br>(M) |Download|
+| Model           | Size      | mAP<sup>val<br/>0.5:0.95 | mAP<sup>val<br/>0.5 | FPS<sup>AGX Xavier<br/>trt fp16 batch=16 <br/>include NMS | Params<br/>train / infer</br><sup>(M) |Download|
 | :-------------- | --------- | :----------------------- | ------------------- | ------------------------------------------------------------------ | -------------- |--------|
 |**EdgeYOLO-Tiny (Epoch 231/300)**|416</br>640|-</br>38.0             |-</br>56.8        |-</br>-                                                          |5.8 / 5.5       |-|
 |**EdgeYOLO-Tiny-LRELU**|416</br>640|33.1</br>37.8             |50.5</br>56.7        |**206**</br>96                                                          |7.6 / 7.0       |[**github**](https://github.com/LSH9832/edgeyolo/releases/download/v0.0.0/edgeyolo_tiny_lrelu_coco.pth)|
