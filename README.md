@@ -87,20 +87,20 @@ python batch_detect.py --weights edgeyolo_coco.pth --source XXX.mp4 --batch-size
 python pth2onnx.py --weights edgeyolo_coco.pth --simplify
 
 # full commands
-python pth2onnx.py --weights edgeyolo_coco.pth 
-                   --img-size 640 640 
-                   --batch-size 1
-                   --opset 11
-                   --simplify
+python export_pth2onnx.py --weights edgeyolo_coco.pth 
+                          --img-size 640 640 
+                          --batch 1
+                          --opset 11
+                          --simplify
 ```
 it generates file **export_output/onnx/edgeyolo_coco_640x640_batch1.onnx** and **export_output/onnx/edgeyolo_coco_640x640_batch1.yaml**
 
 ```
 # (workspace: GB)
-python onnx2trt.py --onnx export_output/onnx/edgeyolo_coco_640x640_batch1.onnx 
-                   --yaml export_output/onnx/edgeyolo_coco_640x640_batch1.yaml 
-                   --workspace 10 
-                   --fp16
+python export_onnx2trt.py --onnx export_output/onnx/edgeyolo_coco_640x640_batch1.onnx 
+                          --yaml export_output/onnx/edgeyolo_coco_640x640_batch1.yaml 
+                          --workspace 10 
+                          --fp16
 ```
 
 it will generate
