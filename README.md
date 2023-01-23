@@ -14,7 +14,7 @@ This is a **trial version** without training code and evaluate code. we will pub
 
 - models trained on COCO2017-train
 
-Now we are traning the model **EdgeYOLO-Tiny** and it will be comming in 3 days.
+Now we are traning the model **EdgeYOLO-Tiny** and it will be comming in no more than 3 days.
 
 | Model           | Size      | mAP<sup>val<br/>0.5:0.95 | mAP<sup>val<br/>0.5 | FPS<sup>AGX Xavier<br/>trt fp16 batch=16 <br/>include NMS | Params<br/>train / infer</br>(M) |Download|
 | :-------------- | --------- | :----------------------- | ------------------- | ------------------------------------------------------------------ | -------------- |--------|
