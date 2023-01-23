@@ -14,11 +14,11 @@ This is a **trial version** without training code and evaluate code. we will pub
 
 - models trained on COCO2017-train
 
-Now we are traning the model **EdgeYOLO-Tiny** and it will be comming in no more than 3 days.
+Now we are traning the model **EdgeYOLO-Tiny** and it will be comming in no more than 2 days.
 
 | Model           | Size      | mAP<sup>val<br/>0.5:0.95 | mAP<sup>val<br/>0.5 | FPS<sup>AGX Xavier<br/>trt fp16 batch=16 <br/>include NMS | Params<br/>train / infer</br><sup>(M) |Download|
 | :-------------- | --------- | :----------------------- | ------------------- | ------------------------------------------------------------------ | -------------- |--------|
-|**EdgeYOLO-Tiny (Epoch 231/300)**|416</br>640|-</br>38.0             |-</br>56.8        |-</br>-                                                          |5.8 / 5.5       |-|
+|**EdgeYOLO-Tiny (Epoch 250/300)**|416</br>640|-</br>38.3             |-</br>57.1        |-</br>-                                                          |5.8 / 5.5       |-|
 |**EdgeYOLO-Tiny-LRELU**|416</br>640|33.1</br>37.8             |50.5</br>56.7        |**206**</br>96                                                          |7.6 / 7.0       |[**github**](https://github.com/LSH9832/edgeyolo/releases/download/v0.0.0/edgeyolo_tiny_lrelu_coco.pth)|
 |**EdgeYOLO-S**   |640        |44.1                      |**63.3**             |50                                                                  |9.9 / 9.3       |[**github**](https://github.com/LSH9832/edgeyolo/releases/download/v0.0.0/edgeyolo_s_coco.pth)|
 |**EdgeYOLO**     |640        |50.6                      |69.7                 |34                                                                  |41.2 / 40.5     |[**github**](https://github.com/LSH9832/edgeyolo/releases/download/v0.0.0/edgeyolo_coco.pth)|
