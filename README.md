@@ -1,4 +1,4 @@
-# <img src="assets/bit.png" align="left" height="100" width="100" >EdgeYOLO: anchor-free, edge-friendly
+# <a href="https://www.bit.edu.cn" target="_blank"><img src="assets/bit.png" align="left" height="80" width="80" ></a> EdgeYOLO: anchor-free, edge-friendly
 
 ![](assets/visdrone_result.jpg)
 
