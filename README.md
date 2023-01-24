@@ -1,6 +1,6 @@
-# <a href="https://www.bit.edu.cn"><img src="assets/bit.png" align="left" height="80" width="80" ></a> EdgeYOLO: anchor-free, edge-friendly
+![](assets/visdrone.jpg)
+# <a href="https://www.bit.edu.cn"><img src="assets/bit.png" align="left" height="60" width="60" ></a> EdgeYOLO: anchor-free, edge-friendly
 
-![](assets/visdrone_result.jpg)
 
 ## Note
 This is a **trial version** without training code and evaluate code. we will publish complete source code after we publish our first edgeyolo paper.
@@ -33,7 +33,7 @@ This is a **trial version** without training code and evaluate code. we will pub
 <details>
 <summary>Some of our detect results in COCO2017</summary>
 
-![](assets/coco_result.jpg)
+![](assets/coco.jpg)
 
 </details>
 
