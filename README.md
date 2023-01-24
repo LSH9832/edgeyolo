@@ -1,4 +1,4 @@
-# <img src="assets/bit.png" align="left" height="100" width="100" >EdgeYOLO: anchor-free, edge-computing-device-friendly
+# <img src="assets/bit.png" align="left" height="100" width="100" >EdgeYOLO: anchor-free, edge-friendly
 
 ![](assets/visdrone_result.jpg)
 
