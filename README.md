@@ -14,12 +14,10 @@ This is a **trial version** without training code and evaluate code. we will pub
 
 - models trained on COCO2017-train
 
-Now we are traning the model **EdgeYOLO-Tiny** and it will be comming in no more than 2 days.
-
 | Model           | Size      | mAP<sup>val<br/>0.5:0.95 | mAP<sup>val<br/>0.5 | FPS<sup>AGX Xavier<br/>trt fp16 batch=16 <br/>include NMS | Params<br/>train / infer</br><sup>(M) |Download|
 | :-------------- | --------- | :----------------------- | ------------------- | ------------------------------------------------------------------ | -------------- |--------|
-|**EdgeYOLO-Tiny (Epoch 287/300)**|416</br>640|-</br>40.7             |-</br>59.9        |-</br>-                                                          |5.8 / 5.5       |-|
-|**EdgeYOLO-Tiny-LRELU**|416</br>640|33.1</br>37.8             |50.5</br>56.7        |**206**</br>96                                                          |7.6 / 7.0       |[**github**](https://github.com/LSH9832/edgeyolo/releases/download/v0.0.0/edgeyolo_tiny_lrelu_coco.pth)|
+|**EdgeYOLO-Tiny-LRELU**|416</br>640|33.1</br>37.8       |50.5</br>56.7        |**206**</br>96                                                      |7.6 / 7.0       |[**github**](https://github.com/LSH9832/edgeyolo/releases/download/v0.0.0/edgeyolo_tiny_lrelu_coco.pth)|
+|**EdgeYOLO-Tiny**|416</br>640|37.2</br>41.4                   |55.4</br>60.4              |136</br>61                                                             |5.8 / 5.5       |[**github**](https://github.com/LSH9832/edgeyolo/releases/download/v0.0.0/edgeyolo_tiny_coco.pth)|
 |**EdgeYOLO-S**   |640        |44.1                      |**63.3**             |50                                                                  |9.9 / 9.3       |[**github**](https://github.com/LSH9832/edgeyolo/releases/download/v0.0.0/edgeyolo_s_coco.pth)|
 |**EdgeYOLO**     |640        |50.6                      |69.7                 |34                                                                  |41.2 / 40.5     |[**github**](https://github.com/LSH9832/edgeyolo/releases/download/v0.0.0/edgeyolo_coco.pth)|
 
@@ -27,8 +25,8 @@ Now we are traning the model **EdgeYOLO-Tiny** and it will be comming in no more
 
 | Model | Size | mAP<sup>val<br/>0.5:0.95 | mAP<sup>val<br/>0.5 |Download|
 | :---- | ---- | :----------------------- | ------------------- |--------|
-|**EdgeYOLO-Tiny (coming soon)**|416</br>640|-</br>-|-</br>-|**-**|
 |**EdgeYOLO-Tiny-LRELU**|416</br>640|12.1</br>18.5|22.8</br>33.6|[**github**](https://github.com/LSH9832/edgeyolo/releases/download/v0.0.0/edgeyolo_tiny_lrelu_visdrone.pth)|
+|**EdgeYOLO-Tiny (coming soon)**|416</br>640|-</br>-|-</br>-|**-**|
 |**EdgeYOLO-S**|640|23.6|40.8|[**github**](https://github.com/LSH9832/edgeyolo/releases/download/v0.0.0/edgeyolo_s_visdrone.pth)|
 |**EdgeYOLO**|640|25.9|43.9|[**github**](https://github.com/LSH9832/edgeyolo/releases/download/v0.0.0/edgeyolo_visdrone.pth)|
 
