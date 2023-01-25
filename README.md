@@ -39,7 +39,7 @@ This is a **trial version** without training code and evaluate code. we will pub
 
 </details>
 
-## Comming Soon
+## Coming Soon
 - **train code.** After our paper is released, we will publish train code.
 - **evaluate code.** After our paper is released, we will publish evaluate code.
 
