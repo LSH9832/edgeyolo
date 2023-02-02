@@ -22,7 +22,7 @@ This is a **trial version** without training code and evaluate code. we will pub
 |**EdgeYOLO-Tiny**|416</br>640|37.2</br>41.4                   |55.4</br>60.4              |136</br>67                                                             |5.8 / 5.5       |[**github**](https://github.com/LSH9832/edgeyolo/releases/download/v0.0.0/edgeyolo_tiny_coco.pth)|
 |**EdgeYOLO-S**   |640        |44.1                      |**63.3**             |53                                                                  |9.9 / 9.3       |[**github**](https://github.com/LSH9832/edgeyolo/releases/download/v0.0.0/edgeyolo_s_coco.pth)|
 |**EdgeYOLO-M (ETA: ? days)**   |640        |-                      |-             |-                                                              |19.0 / 17.8       |**-**|
-|**EdgeYOLO**     |640        |50.6                      |69.7                 |34                                                                  |41.2 / 40.5     |[**github**](https://github.com/LSH9832/edgeyolo/releases/download/v0.0.0/edgeyolo_coco.pth)|
+|**EdgeYOLO**     |640        |50.6                      |69.8                 |34                                                                  |41.2 / 40.5     |[**github**](https://github.com/LSH9832/edgeyolo/releases/download/v0.0.0/edgeyolo_coco.pth)|
 
 - models trained on VisDrone2019 (pretrained on COCO2017-train)
 
