@@ -14,8 +14,6 @@ This is a **trial version** without training code and evaluate code. we will pub
 
 - models trained on COCO2017-train
 
-**<h3>some errors occured in our GPU server, we are trying to fix it and we have to delay the release of EdgeYOLO-M model.</h3>**
-
 | Model           | Size      | mAP<sup>val<br/>0.5:0.95 | mAP<sup>val<br/>0.5 | FPS<sup>AGX Xavier<br/>trt fp16 batch=16 <br/>include NMS | Params<br/>train / infer</br><sup>(M) |Download|
 | :-------------- | --------- | :----------------------- | ------------------- | ------------------------------------------------------------------ | -------------- |--------|
 |**EdgeYOLO-Tiny-LRELU**|416</br>640|33.1</br>37.8       |50.5</br>56.7        |**206**</br>109                                                      |7.6 / 7.0       |[**github**](https://github.com/LSH9832/edgeyolo/releases/download/v0.0.0/edgeyolo_tiny_lrelu_coco.pth)|
