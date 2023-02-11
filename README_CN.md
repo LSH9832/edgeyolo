@@ -197,7 +197,7 @@ python batch_detect.py --trt --weights output/export/tensorrt/edgeyolo_coco_640x
 即将发布，敬请期待
 
 ## 目前发现的bugs
-- 在训练时有时可能会触发以下错误，继续训练即可。
+- 在训练时有时可能会触发以下错误，降低pytorch版本至1.8.0应该可以解决这个问题。
 ```
 File "XXX/edgeyolo/edgeyolo/train/loss.py", line 667, in dynamic_k_matching
 _, pos_idx = torch.topk(cost[gt_idx], k=dynamic_ks[gt_idx].item(), largest=False)
