@@ -200,7 +200,7 @@ it will be coming soon
 
 
 ## Bugs found currently
-- Sometimes it raises error as follows during training. Just continue your training.
+- Sometimes it raises error as follows during training. Reduce pytorch version to 1.8.0 might solve this problem.
 ```
 File "XXX/edgeyolo/edgeyolo/train/loss.py", line 667, in dynamic_k_matching
 _, pos_idx = torch.topk(cost[gt_idx], k=dynamic_ks[gt_idx].item(), largest=False)
