@@ -37,7 +37,7 @@ input_size: [640, 640]            # image input size for model
 multiscale_range: 5               # real_input_size = input_size + randint(-multiscale_range, multiscale_range) * 32
 weight_decay: 0.0005              # optimizer weight decay
 momentum: 0.9                     # optimizer momentum
-enhance_mosaic: false             # use enhanced mosaic method
+enhance_mosaic: true              # use enhanced mosaic method
 use_ema: true                     # use EMA method
 enable_mixup: true                # use mixup
 mixup_scale: [0.5, 1.5]           # mixup image scale
