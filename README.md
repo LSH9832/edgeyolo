@@ -37,7 +37,7 @@
 we use [ VisDrone2019-DET dataset with COCO format ](https://github.com/LSH9832/edgeyolo/releases/download/v0.1.0/visdrone_coco.zip) in our training.
 
 | Model | Size | mAP<sup>val<br/>0.5:0.95 | mAP<sup>val<br/>0.5 |Download|
-|:-----:|:----:|:------------------------:|:-------------------:|:------:|
+|:------|:----:|:------------------------:|:-------------------:|:------:|
 |**EdgeYOLO-Tiny-LRELU**|416</br>640|12.1</br>18.5|22.8</br>33.6|[**github**](https://github.com/LSH9832/edgeyolo/releases/download/v0.0.0/edgeyolo_tiny_lrelu_visdrone.pth)|
 |**EdgeYOLO-Tiny**      |416</br>640|14.9</br>21.8|27.3</br>38.5|[**github**](https://github.com/LSH9832/edgeyolo/releases/download/v0.0.0/edgeyolo_tiny_visdrone.pth)|
 |**EdgeYOLO-S**         |640        |23.6         |40.8         |[**github**](https://github.com/LSH9832/edgeyolo/releases/download/v0.0.0/edgeyolo_s_visdrone.pth)|
