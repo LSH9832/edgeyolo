@@ -1,0 +1,23 @@
+type: "dota"
+
+dataset_path: "/dataset/DOTA"
+
+kwargs:
+  suffix: "png"
+
+train:
+  image_dir: "train/images"
+  label: "train/v2.0/hbb"
+
+val:
+  image_dir: "val/images"
+  label: "val/v2.0/hbb"
+
+test:
+  test_dir: "test/images"
+
+segmentaion_enabled: false
+
+names: ['plane', 'ship', 'storage tank', 'baseball diamond', 'tennis court', 'basketball court', 'ground track field',
+        'harbor', 'bridge', 'large vehicle', 'small vehicle', 'helicopter', 'roundabout', 'soccer ball field',
+        'swimming pool', 'container crane', 'airport' , 'helipad']

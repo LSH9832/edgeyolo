@@ -1,0 +1,66 @@
+# models & weights------------------------------------------------------------------------------------------------------
+model_cfg: "params/model/edgeyolo_tiny.yaml"         # model structure config file
+weights: "output/train/edgeyolo_tiny_coco/best.pth"  # contains model_cfg, set null or a no-exist filename if not use it
+use_cfg: false                                       # force using model_cfg instead of cfg in weights to build model
+
+# output----------------------------------------------------------------------------------------------------------------
+output_dir: "output/train/edgeyolo_tiny_dota"        # all train output file will save in this dir
+save_checkpoint_for_each_epoch: true                 # save models for each epoch (epoch_xxx.pth)
+log_file: "log.txt"                                  # log file (in output_dir)
+
+# dataset & dataloader--------------------------------------------------------------------------------------------------
+dataset_cfg: "params/dataset/dota.yaml"              # dataset config
+batch_size_per_gpu: 1                                # batch size for each GPU
+loader_num_workers: 2                                # number data loader workers for each GPU
+num_threads: 1                                       # pytorch threads number for each GPU
+
+# device & data type----------------------------------------------------------------------------------------------------
+device: [0]                       # training device list  (please use single GPU to train model in DOTA dataset)
+fp16: false                       # train with fp16 precision
+cudnn_benchmark: false            # it's useful when multiscale_range is set zero
+
+# train hyper-params----------------------------------------------------------------------------------------------------
+optimizer: "SGD"                  # or Adam
+max_epoch: 300                    # or 400
+close_mosaic_epochs: 50           # close data augmentation at last $close_mosaic_epochs epochs
+
+# learning rate---------------------------------------------------------------------------------------------------------
+lr_per_img: 0.00015625            # lr for each image, total_lr = lr_per_img * batch_size_per_gpu * len(devices)
+warmup_epochs: 5                  # warm-up epochs at the beginning of training
+warmup_lr_ratio: 0.0              # warm-up learning rate start from this value
+final_lr_ratio: 0.04              # final_lr_per_img = final_lr_ratio * lr_per_img    (set 0.01 if epoch is 400)
+
+# training & dataset augmentation---------------------------------------------------------------------------------------
+#      [cls_loss, conf_loss, iou_loss]
+loss_use: ["bce", "bce", "giou"]  # bce: BCE loss. bcf: Balanced Focal loss. hyb: HR loss, iou, c/g/s iou is available
+input_size: [960, 960]            # image input size for model
+multiscale_range: 5               # actual input size = input_size + randint(-multiscale_range, multiscale_range) * 32
+weight_decay: 0.0005              # optimizer weight decay
+momentum: 0.9                     # optimizer momentum
+enhance_mosaic: false             # use enhanced mosaic method
+use_ema: true                     # use EMA method
+enable_mixup: true                # use mixup
+mixup_scale: [0.9, 1.5]           # mixup image scale
+mosaic_scale: [0.9, 1.5]          # mosaic image scale
+flip_prob: 0.5                    # flip image probability
+mosaic_prob: 0.8                  # mosaic probability
+mixup_prob: 0.445                 # mixup probability
+degrees: 10                       # maximum rotate degrees
+hsv_gain: [0.0138, 0.664, 0.464]  # hsv gain ratio
+
+# evaluate--------------------------------------------------------------------------------------------------------------
+eval_at_start: false              # evaluate loaded model before training
+val_conf_thres: 0.01              # confidence threshold when doing evaluation
+val_nms_thres: 0.65               # NMS IOU threshold when doing evaluation
+eval_only: false                  # do not train, run evaluation program only for all weights in output_dir
+obj_conf_enabled: true            # use object confidence when doing inference
+eval_interval: 10                 # evaluate interval epochs
+
+# show------------------------------------------------------------------------------------------------------------------
+print_interval: 100               # print result after every $print_interval iterations
+
+# others----------------------------------------------------------------------------------------------------------------
+load_optimizer_params: true       # load optimizer params when resume train, set false if there is an error.
+train_backbone: true              # set false if you only want to train yolo head
+train_start_layers: 51            # if not train_backbone, train from this layer, see params/models/edgeyolo.yaml
+force_start_epoch: -1             # set -1 to disable this option (0-299 / 300, 0-399 / 400)

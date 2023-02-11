@@ -1,0 +1,22 @@
+type: "coco"
+
+dataset_path: "/dataset/visdrone_coco"
+
+kwargs:
+  suffix: "jpg"
+  use_cache: true
+
+train:
+  image_dir: "train"
+  label: "annotations/VisDrone2019-DET_train_coco.json"
+
+val:
+  image_dir: "val"
+  label: "annotations/VisDrone2019-DET_val_coco.json"
+
+test:
+  test_dir: "test"
+
+segmentaion_enabled: false
+
+names: ['pedestrian', 'people', 'bicycle', 'car', 'van', 'truck', 'tricycle', 'awning-tricycle', 'bus', 'motor']

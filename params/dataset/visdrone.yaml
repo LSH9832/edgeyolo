@@ -1,0 +1,22 @@
+type: "visdrone"
+
+dataset_path: "/dataset/VisDrone2019-DET"
+
+kwargs:
+  suffix: "jpg"
+  use_cache: true
+
+train:
+  image_dir: "VisDrone2019-DET-train/images"
+  label: "VisDrone2019-DET-train/annotations"
+
+val:
+  image_dir: "VisDrone2019-DET-val/images"
+  label: "VisDrone2019-DET-val/annotations"
+
+test:
+  test_dir: "VisDrone2019-DET-test"
+
+segmentaion_enabled: false
+
+names: ['pedestrian', 'people', 'bicycle', 'car', 'van', 'truck', 'tricycle', 'awning-tricycle', 'bus', 'motor']

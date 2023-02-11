@@ -1,0 +1,25 @@
+type: "voc"
+
+dataset_path: "/dataset/VOC/VOC2012"
+
+kwargs:
+  suffix: "jpg"
+  use_cache: true
+
+train:
+  image_dir: "JPEGImages"
+  anno_dir: "Annotations"
+  label: "ImageSets/Main/train.txt"
+
+val:
+  image_dir: "JPEGImages"
+  anno_dir: "Annotations"
+  label: "ImageSets/Main/val.txt"
+
+test:
+  test_dir: "test"
+
+segmentaion_enabled: false
+
+names: ['aeroplane', 'bicycle', 'bird', 'boat', 'bottle', 'bus', 'car', 'cat', 'chair', 'cow', 'diningtable', 'dog',
+        'horse', 'motorbike', 'person', 'pottedplant', 'sheep', 'sofa', 'train',  'tvmonitor']
