@@ -1,13 +1,14 @@
+torch
+torchvision
 opencv-python
 numpy
 loguru
 pycocotools
-torch
+requests
 tqdm
 tabulate
-pyyaml
-torchvision
 thop
+pyyaml
 pandas
 pathlib
 pillow

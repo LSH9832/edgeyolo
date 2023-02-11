@@ -8,14 +8,14 @@ import torch
 
 def get_args():
     parser = argparse.ArgumentParser("EdgeYOLO onnx2tensorrt parser")
-    parser.add_argument("-o", "--onnx", type=str, default="yolo_export/onnx/edgeyolo_coco.onnx", help="ONNX file")
-    parser.add_argument("-y", "--yaml", type=str, default="yolo_export/onnx/edgeyolo_coco.yaml", help="export params file")
+    parser.add_argument("-o", "--onnx", type=str, default="output/export/onnx/edgeyolo_coco_640x640_batch1.onnx", help="ONNX file")
+    parser.add_argument("-y", "--yaml", type=str, default="", help="export params file")
     parser.add_argument("-w", "--workspace", type=int, default=8, help="export memory workspace(GB)")
     parser.add_argument("--fp16", action="store_true", help="fp16")
     parser.add_argument("--int8", action="store_true", help="int8")
     parser.add_argument("--best", action="store_true", help="best")
-    parser.add_argument("-d", "--dist-path", type=str, default="yolo_export/tensorrt")
-    parser.add_argument("--batch-size", type=int, default=0, help="batch-size")
+    parser.add_argument("-d", "--dist-path", type=str, default="output/export/tensorrt")
+    parser.add_argument("--batch", type=int, default=0, help="batch-size")
     return parser.parse_args()
 
 
@@ -23,6 +23,10 @@ def main():
     args = get_args()
     
     assert osp.isfile(args.onnx), f"No such file named {args.onnx}."
+
+    if not len(args.yaml):
+        args.yaml = args.onnx[:-4] + "yaml"
+
     assert osp.isfile(args.yaml), f"No such file named {args.yaml}."
 
     os.makedirs(args.dist_path, exist_ok=True)
@@ -41,7 +45,7 @@ def main():
             command = f"trtexec --onnx={args.onnx}" \
                       f"{' --fp16' if args.fp16 else ' --int8' if args.int8 else ' --best' if args.best else ''} " \
                       f"--saveEngine={engine_file} --workspace={args.workspace*1024} " \
-                      f"--batch={args.batch_size if not args.batch_size > 0 else params['batch_size'] if 'batch_size' in params else 1}"
+                      f"--batch={args.batch if not args.batch > 0 else params['batch_size'] if 'batch_size' in params else 1}"
         else:
             # Tensorrt 8.x.x
             command = f"trtexec --onnx={args.onnx}" \
@@ -52,7 +56,7 @@ def main():
         command = f"trtexec --onnx={args.onnx}" \
                   f"{' --fp16' if args.fp16 else ' --int8' if args.int8 else ' --best' if args.best else ''} " \
                   f"--saveEngine={engine_file} --workspace={args.workspace * 1024} " \
-                  f"--batch={args.batch_size if not args.batch_size > 0 else params['batch_size'] if 'batch_size' in params else 1}"
+                  f"--batch={args.batch if not args.batch > 0 else params['batch_size'] if 'batch_size' in params else 1}"
 
 
     logger.info("start converting onnx to tensorRT engine file.")

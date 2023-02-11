@@ -1,3 +1,4 @@
+import time
 from datetime import datetime as date
 from glob import glob
 import os
@@ -17,15 +18,16 @@ if __name__ == '__main__':
     parser.add_argument("--fp16", action="store_true", help="fp16")
     parser.add_argument("--no-fuse", action="store_true", help="do not fuse model")
     parser.add_argument("--input-size", type=int, nargs="+", default=[640, 640], help="input size: [height, width]")
-    parser.add_argument("-s", "--source", type=str, default="./test.avi", help="video source or image dir")
+    parser.add_argument("-s", "--source", type=str, default="E:/videos/test.avi", help="video source or image dir")
     parser.add_argument("--trt", action="store_true", help="is trt model")
     parser.add_argument("--legacy", action="store_true", help="if img /= 255 while training, add this command.")
     parser.add_argument("--use-decoder", action="store_true", help="support original yolox model v0.2.0")
-    parser.add_argument("--batch-size", type=int, default=1, help="batch size")
+    parser.add_argument("--batch", type=int, default=1, help="batch size")
     parser.add_argument("--no-label", action="store_true", help="do not draw label")
-    parser.add_argument("--save-dir", type=str, default="./imgs/coco", help="image result save dir")
+    parser.add_argument("--save-dir", type=str, default="./output/detect/imgs/", help="image result save dir")
 
     args = parser.parse_args()
+
     exist_save_dir = os.path.isdir(args.save_dir)
 
     # detector setup
@@ -40,7 +42,7 @@ if __name__ == '__main__':
         use_decoder=args.use_decoder
     )
     if args.trt:
-        args.batch_size = detect.batch_size
+        args.batch = detect.batch_size
 
     # source loader setup
     if os.path.isdir(args.source):
@@ -68,21 +70,23 @@ if __name__ == '__main__':
         delay = 1
     
     all_dt = []
-    dts_len = 300 // args.batch_size
+    dts_len = 300 // args.batch
     success = True
 
     # start inference
+    count = 0
+    t_start = time.time()
     while source.isOpened() and success:
 
         frames = []
-        for _ in range(args.batch_size):
+        for _ in range(args.batch):
             success, frame = source.read()
             if not success:
                 if not len(frames):
                     cv2.destroyAllWindows()
                     break
                 else:
-                    while len(frames) < args.batch_size:
+                    while len(frames) < args.batch:
                         frames.append(frames[-1])
             else:
                 frames.append(frame)
@@ -95,15 +99,20 @@ if __name__ == '__main__':
         all_dt.append(dt)
         if len(all_dt) > dts_len:
             all_dt = all_dt[-dts_len:]
-        print(f"\r{dt * 1000 / args.batch_size:.1f}ms  "
-              f"average:{sum(all_dt) / len(all_dt) / args.batch_size * 1000:.1f}ms", end="      ")
+        print(f"\r{dt * 1000 / args.batch:.1f}ms  "
+              f"average:{sum(all_dt) / len(all_dt) / args.batch * 1000:.1f}ms", end="      ")
 
         key = -1
+
+        # [print(result.shape) for result in results]
+
         imgs = draw(frames, results, detect.class_names, 2, draw_label=not args.no_label)
         # print([im.shape for im in frames])
         for img in imgs:
             # print(img.shape)
             cv2.imshow("EdgeYOLO result", img)
+            count += 1
+
             key = cv2.waitKey(delay)
             if key in [ord("q"), 27]:
                 break
@@ -112,9 +121,13 @@ if __name__ == '__main__':
             elif key == ord("s"):
                 if not exist_save_dir:
                     os.makedirs(args.save_dir, exist_ok=True)
+                    exist_save_dir = True
                 file_name = f"{str(date.now()).split('.')[0].replace(':', '').replace('-', '').replace(' ', '')}.jpg"
                 cv2.imwrite(os.path.join(args.save_dir, file_name), img)
                 logger.info(f"image saved to {file_name}.")
         if key in [ord("q"), 27]:
             cv2.destroyAllWindows()
             break
+
+    logger.info(f"\ntotal frame: {count}, total average latency: {(time.time() - t_start) * 1000 / count - 1}ms")
+

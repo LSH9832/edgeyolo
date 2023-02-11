@@ -9,6 +9,7 @@ import argparse
 import cv2
 import os
 
+os.environ['CUDA_LAUNCH_BLOCKING'] = "1"
 
 def get_args():
     parser = argparse.ArgumentParser("EdgeYOLO Detect parser")
@@ -22,7 +23,7 @@ def get_args():
     parser.add_argument("--trt", action="store_true", help="is trt model")
     parser.add_argument("--legacy", action="store_true", help="if img /= 255 while training, add this command.")
     parser.add_argument("--use-decoder", action="store_true", help="support original yolox model v0.2.0")
-    parser.add_argument("--batch-size", type=int, default=1, help="batch size")
+    parser.add_argument("--batch", type=int, default=1, help="batch size")
     parser.add_argument("--no-label", action="store_true", help="do not draw label")
     parser.add_argument("--save-dir", type=str, default="./imgs/coco", help="image result save dir")
     parser.add_argument("--fps", type=int, default=99999, help="max fps")
@@ -43,7 +44,7 @@ def inference(msg, results, args):
         use_decoder=args.use_decoder
     )
     if args.trt:
-        args.batch_size = detect.batch_size
+        args.batch = detect.batch_size
 
     # source loader setup
     if os.path.isdir(args.source):
@@ -77,7 +78,7 @@ def inference(msg, results, args):
     while source.isOpened() and success and not msg["end"]:
 
         frames = []
-        for _ in range(args.batch_size):
+        for _ in range(args.batch):
             if msg["end"]:
                 frames = []
                 break
@@ -87,7 +88,7 @@ def inference(msg, results, args):
                     cv2.destroyAllWindows()
                     break
                 else:
-                    while len(frames) < args.batch_size:
+                    while len(frames) < args.batch:
                         frames.append(frames[-1])
             else:
                 frames.append(frame)
@@ -184,6 +185,7 @@ def main():
 
     results = Manager().Queue()
     all_imgs = Manager().Queue()
+
 
     processes = [Process(target=inference, args=(shared_data, results, args)),
                  Process(target=draw_imgs, args=(shared_data, results, all_imgs, args)),
