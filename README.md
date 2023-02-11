@@ -34,7 +34,7 @@
 
 - models trained on VisDrone2019 (pretrained backbone on COCO2017-train)
 
-we use [ VisDrone2019-DET dataset with COCO format ](https://github.com/LSH9832/edgeyolo/releases/download/v0.1.0/visdrone_coco.zip) in our training.
+we use [ VisDrone2019-DET dataset with COCO format ](https://github.com/LSH9832/edgeyolo/releases/download/v1.0.0/visdrone_coco.zip) in our training.
 
 | Model | Size | mAP<sup>val<br/>0.5:0.95 | mAP<sup>val<br/>0.5 |Download|
 |:------|:----:|:------------------------:|:-------------------:|:------:|
