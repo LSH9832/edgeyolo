@@ -34,7 +34,7 @@
 
 - 在VisDrone2019上训练的模型 (这些模型骨干网络初始参数来自于上面的模型)
 
-训练时使用的是 [已转化为COCO格式的 VisDrone2019 数据集](https://github.com/LSH9832/edgeyolo/releases/download/v0.1.0/visdrone_coco.zip) 。
+训练时使用的是 [已转化为COCO格式的 VisDrone2019 数据集](https://github.com/LSH9832/edgeyolo/releases/download/v1.0.0/visdrone_coco.zip) 。
 
 | 模型 |输入大小|mAP<sup>val<br/>0.5:0.95|mAP<sup>val<br/>0.5|下载|
 |:----|:----:|:-----------------------:|:----------:|:--------:|
