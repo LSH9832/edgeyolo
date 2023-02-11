@@ -102,7 +102,7 @@ dataset_path: "/dataset/coco2017"   # 数据集根目录
 
 kwargs:
   suffix: "jpg"       # 数据集图片后缀名
-  use_cache: true     # 使用缓存文件，在i5-12490f上测试完整加载时间：有分割标签1GB：52s -> 10s, 无分割标签228MB：39s -> 4s
+  use_cache: true     # 使用缓存文件，在i5-12490f上测试完整加载时间：有分割标签979MB：52s -> 10s, 无分割标签228MB：39s -> 4s
 
 train:
   image_dir: "images/train2017"                   # 训练集图片文件夹
