@@ -29,7 +29,7 @@ This is a **trial version** without training code and evaluate code. we will pub
 |**EdgeYOLO-Tiny-LRELU**|416</br>640|12.1</br>18.5|22.8</br>33.6|[**github**](https://github.com/LSH9832/edgeyolo/releases/download/v0.0.0/edgeyolo_tiny_lrelu_visdrone.pth)|
 |**EdgeYOLO-Tiny**|416</br>640|14.9</br>21.8|27.3</br>38.5|[**github**](https://github.com/LSH9832/edgeyolo/releases/download/v0.0.0/edgeyolo_tiny_visdrone.pth)|
 |**EdgeYOLO-S**|640|23.6|40.8|[**github**](https://github.com/LSH9832/edgeyolo/releases/download/v0.0.0/edgeyolo_s_visdrone.pth)|
-|**EdgeYOLO-M (coming soon)**|640|-|-|**-**|
+|**EdgeYOLO-M**|640|25.0|43.0|[**github**](https://github.com/LSH9832/edgeyolo/releases/download/v0.0.0/edgeyolo_m_visdrone.pth)|
 |**EdgeYOLO**|640|25.9|43.9|[**github**](https://github.com/LSH9832/edgeyolo/releases/download/v0.0.0/edgeyolo_visdrone.pth)|
 
 <details>
