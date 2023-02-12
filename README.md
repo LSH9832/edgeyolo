@@ -209,3 +209,4 @@ CUDA kernel errors might be asynchronously reported at some other API call,so th
 For debugging consider passing CUDA_LAUNCH_BLOCKING=1.
 ```
 - For DOTA dataset, we only support single GPU training mode now, please do not train DOTA dataset with distributed mode or model can not be trained correctly.
+- Sometimes converting to TensorRT fp16 model with version 8.X.X might loss a lot of precision, please use TensorRT Verson 7.X.X
