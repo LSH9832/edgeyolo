@@ -206,4 +206,4 @@ CUDA kernel errors might be asynchronously reported at some other API call,so th
 For debugging consider passing CUDA_LAUNCH_BLOCKING=1.
 ```
 - 对于DOTA数据集，目前我们仅支持单GPU进行训练，请不要使用分布式训练方式对DOTA数据集进行训练，否则无法进行正确的训练，也无法得到正确的结果
-- 如果使用TensorRT 8.4.X.X的版本进行半精度模型的转换可能存在丢失大量精度甚至完全没有检出目标的情况，为保证使用请使用TensorRT 7.X.X.X 或 8.2.X.X 的版本
+- 如果使用TensorRT 8.4.X.X及以上的版本进行半精度模型的转换可能存在丢失大量精度甚至完全没有检出目标的情况，为保证使用请使用TensorRT 7.X.X.X 或 8.2.X.X 的版本
