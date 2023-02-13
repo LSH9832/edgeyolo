@@ -7,6 +7,18 @@
 
 </div>
 
+
+**[1 Intro](#intro)**</br>
+**[2 Coming Soon](#coming-soon)**</br>
+**[3 Models](#models)**</br>
+**[4 Quick Start](#quick-start)**</br>
+$\quad$[4.1 setup](#setup)</br>
+$\quad$[4.2 inference](#inference)</br>
+$\quad$[4.3 train](#train)</br>
+$\quad$[4.4 evaluate](#evaluate)</br>
+$\quad$[4.5 export onnx & tensorrt](#export-onnx--tensorrt)</br>
+**[5 Bugs found currently](bugs-found-currently)**
+
 ## Intro
 - In embeded device such as Nvidia Jetson AGX Xavier, EdgeYOLO reaches 34FPS with **50.6**% AP in COCO2017 dataset and **25.9**% AP in VisDrone2019 **(image input size is 640x640, batch=16, post-process included)**. And for smaller model EdgeYOLO-S, it reaches 50FPS with **44.1**% AP and **63.3**% AP<sup>0.5</sup>(**SOTA** in P5 small models) in COCO2017.
 - we provide a more effective data augmentation during training.
