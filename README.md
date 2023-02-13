@@ -87,7 +87,7 @@ python detect.py --weights edgeyolo_coco.pth
                  --batch 1 
                  --save-dir ./output/detect/imgs    # if you press "s", the current frame will be saved in this dir
                  --fp16 
-                 --no-fuse                # do not reparameterizing model
+                 --no-fuse                # do not reparameterize model
                  --no-label               # do not draw label with class name and confidence
 ```
 
