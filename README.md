@@ -25,7 +25,7 @@ $\quad$[4.5 export onnx & tensorrt](#export-onnx--tensorrt)</br>
 - small object and medium object detect performace is imporved by using RH loss during the last few training epochs.
 
 ## Coming Soon
-- Our EdgeYOLO paper
+- Our EdgeYOLO paper on [**arxiv**](https://arxiv.org)
 - MNN deployment code
 - More different models
 - C++ code for TensorRT inference
