@@ -18,7 +18,7 @@ from loguru import logger
 def get_args():
     parser = argparse.ArgumentParser("EdgeYOLO onnx-export parser")
     parser.add_argument('--weights', type=str, default='./edgeyolo.pth', help='weights path')
-    parser.add_argument('--img-size', nargs='+', type=int, default=[640, 640], help='image size')  # height, width
+    parser.add_argument('--input-size', nargs='+', type=int, default=[640, 640], help='image size')  # height, width
     parser.add_argument('--batch', type=int, default=1, help='batch size')
     parser.add_argument('--simplify', action='store_true', help='simplify onnx model')
     parser.add_argument('--opset', type=int, default=11, help='opset version')
@@ -59,7 +59,7 @@ if __name__ == '__main__':
     t = time.time()
 
     opt.grid = True
-    opt.img_size *= 2 if len(opt.img_size) == 1 else 1
+    opt.input_size *= 2 if len(opt.input_size) == 1 else 1
 
     device = torch.device('cpu')
     exp = EdgeYOLO(None, opt.weights)
@@ -71,7 +71,7 @@ if __name__ == '__main__':
 
     replace_module(model, nn.SiLU, SiLU)
 
-    img = torch.zeros(opt.batch, 3, *opt.img_size).to(device)
+    img = torch.zeros(opt.batch, 3, *opt.input_size).to(device)
     model.model[-1].export = not opt.grid
     model(img)  # dry run
 
@@ -84,7 +84,7 @@ if __name__ == '__main__':
 
 
 
-        f = file_name + f'_{opt.img_size[0]}x{opt.img_size[1]}_batch{opt.batch}.onnx'  # filename
+        f = file_name + f'_{opt.input_size[0]}x{opt.input_size[1]}_batch{opt.batch}.onnx'  # filename
         model.eval()
         model.model[-1].concat = True
         input_names = ["input_0"]
@@ -117,17 +117,17 @@ if __name__ == '__main__':
         onnx.save(onnx_model, f)
         logger.info('ONNX export success, saved as %s' % f)
 
-        with open(file_name + f"_{opt.img_size[0]}x{opt.img_size[1]}_batch{opt.batch}.yaml", "w") as fp:
+        with open(file_name + f"_{opt.input_size[0]}x{opt.input_size[1]}_batch{opt.batch}.yaml", "w") as fp:
             yaml.dump({
                 "input_name": input_names,
                 "output_name": output_names,
                 "names": labels,
-                "img_size": opt.img_size,
+                "img_size": opt.input_size,
                 "batch_size": opt.batch,
                 "pixel_range": 255,         # input image pixel value range: 0-1 or 0-255
                 "obj_conf_enabled": True,   # Edge-YOLO use cls conf and obj conf
             }, fp, yaml.Dumper)
-            logger.info(f"params saved to {file_name}_{opt.img_size[0]}x{opt.img_size[1]}_batch{opt.batch}.yaml")
+            logger.info(f"params saved to {file_name}_{opt.input_size[0]}x{opt.input_size[1]}_batch{opt.batch}.yaml")
 
         print("")
         logger.info("############# - msg - ##############")
@@ -140,7 +140,7 @@ if __name__ == '__main__':
         except Exception as e:
             logger.error(e)
 
-        logger.info(f"img size      : {opt.img_size}")
+        logger.info(f"img size      : {opt.input_size}")
         logger.info(f"batch size    : {opt.batch}")
         logger.info(f"names         : {labels}")
 
