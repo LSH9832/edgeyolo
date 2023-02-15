@@ -24,7 +24,7 @@ $\quad$[4.5 导出 onnx & tensorrt](#导出-onnx--tensorrt)</br>
 - 在训练末尾阶段使用RH损失函数，中小模型的检测效果有所提升。
 
 ## 即将到来
-- 论文
+- [**Arxiv**](https://arxiv.org)论文
 - MNN 部署代码
 - 更多不同的模型
 - 用于TensorRT推理的C++代码
