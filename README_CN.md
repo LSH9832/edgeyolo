@@ -19,7 +19,7 @@ $\quad$[4.5 导出 onnx & tensorrt](#导出-onnx--tensorrt)</br>
 **[5 目前发现的bugs](#目前发现的bugs)**
 
 ## 简介
-- EdgeYOLO 在嵌入式设备 Nvidia Jetson AGX Xavier 上达到了34FPS，在COCO2017数据集上有**50.6**% AP的准确度，在VisDrone2019-DET数据集上有**25.9**% AP的准确度 **(图像输入大小为640x640, 批大小为16, 包含后处理时间)**。更小的模型EdgeYOLO-S在COCO2017数据集上以**44.1**% AP、**63.3**% AP<sup>0.5</sup>（目前单阶段P5小模型中最好的）准度达到了50FPS的速度。
+- EdgeYOLO 在嵌入式设备 Nvidia Jetson AGX Xavier 上达到了34FPS，在COCO2017数据集上有**50.6**% AP的准确度，在VisDrone2019-DET数据集上有**25.9**% AP的准确度 **(图像输入大小为640x640, 批大小为16, 包含后处理时间)**。更小的模型EdgeYOLO-S在COCO2017数据集上以**44.1**% AP、**63.3**% AP<sup>0.5</sup>（目前单阶段P5小模型中最好的）准度达到了53FPS的速度。
 - 我们提供了更加强大的数据增强方法，可以在数据集标签稀疏时起到更好的效果。
 - 在训练末尾阶段使用RH损失函数，中小模型的检测效果有所提升。
 
