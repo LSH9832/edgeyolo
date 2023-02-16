@@ -87,13 +87,14 @@ class EdgeYOLO:
                 self.class_names = self.ckpt["class_names"]
                 # print(self.ckpt["class_names"])
         elif isinstance(cfg_file, dict) or (cfg_file is not None and os.path.isfile(cfg_file)):
-            if not rank:
-                if not isinstance(cfg_file, dict):
+            if not isinstance(cfg_file, dict):
+                if not rank:
                     logger.info(f"no weight file found, setup models from cfg file {os.path.abspath(cfg_file)}")
-                    self.cfg_data = open(cfg_file).read()
-                else:
+                self.cfg_data = open(cfg_file).read()
+            else:
+                if not rank:
                     logger.info("no weight file found, setup models from cfg dict")
-                    self.cfg_data = cfg_file
+                self.cfg_data = cfg_file
 
             self.model = load_model(cfg_file, nc=nc)
 
