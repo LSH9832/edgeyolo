@@ -16,7 +16,8 @@ $\quad$[4.2 推理](#推理)</br>
 $\quad$[4.3 训练](#训练)</br>
 $\quad$[4.4 验证](#验证)</br>
 $\quad$[4.5 导出 onnx & tensorrt](#导出-onnx--tensorrt)</br>
-**[5 目前发现的bugs](#目前发现的bugs)**
+**[5 引用EdgeYOLO](#引用edgeyolo)**</br>
+**[6 目前发现的bugs](#目前发现的bugs)**
 
 ## 简介
 - EdgeYOLO 在嵌入式设备 Nvidia Jetson AGX Xavier 上达到了34FPS，在COCO2017数据集上有**50.6**% AP的准确度，在VisDrone2019-DET数据集上有**25.9**% AP的准确度 **(图像输入大小为640x640, 批大小为16, 包含后处理时间)**。更小的模型EdgeYOLO-S在COCO2017数据集上以**44.1**% AP、**63.3**% AP<sup>0.5</sup>（目前单阶段P5小模型中最好的）准度达到了53FPS的速度。
@@ -206,6 +207,17 @@ python batch_detect.py --trt --weights output/export/tensorrt/edgeyolo_coco_640x
 
 #### c++ 推理
 即将发布，敬请期待
+
+## 引用EdgeYOLO
+```
+ @article{edgeyolo2023,
+  title={EdgeYOLO: An Edge-Real-Time Object Detector},
+  author={Shihan Liu, Junlin Zha, Jian Sun, Zhuo Li, and Gang Wang},
+  journal={arXiv preprint arXiv:2302.07483},
+  year={2023}
+}
+```
+
 
 ## 目前发现的bugs
 - 在训练时有时可能会触发以下错误，降低pytorch版本至1.8.0应该可以解决这个问题。
