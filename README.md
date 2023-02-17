@@ -84,6 +84,7 @@ git clone https://github.com/NVIDIA-AI-IOT/torch2trt.git
 cd torch2trt
 python setup.py install
 ```
+or to make sure you use the same version of torch2trt as ours, [download here](https://github.com/LSH9832/edgeyolo/releases/download/v1.0.0/torch2trt.zip)
 
 ### inference
 
