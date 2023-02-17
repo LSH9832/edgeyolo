@@ -27,6 +27,7 @@ $\quad$[4.5 export onnx & tensorrt](#export-onnx--tensorrt)</br>
 - Our pre-print paper is released on [**arxiv**](https://arxiv.org/abs/2302.07483).
 
 ## Coming Soon
+- TensorRT int8 export code with **Calibration** (**torch2trt** is required)
 - MNN deployment code
 - More different models
 - C++ code for TensorRT inference
