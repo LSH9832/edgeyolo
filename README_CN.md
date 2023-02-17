@@ -26,6 +26,7 @@ $\quad$[4.5 导出 onnx & tensorrt](#导出-onnx--tensorrt)</br>
 - 我们的论文（预印版）已在[**arxiv**](https://arxiv.org/abs/2302.07483)公布
 
 ## 即将到来
+- 带有校准训练过程的TensorRT int8模型导出代码
 - MNN 部署代码
 - 更多不同的模型
 - 用于TensorRT推理的C++代码
