@@ -80,6 +80,7 @@ git clone https://github.com/NVIDIA-AI-IOT/torch2trt.git
 cd torch2trt
 python setup.py install
 ```
+或者为了保证和我们用的是同一个版本的torch2trt, [请在这里下载](https://github.com/LSH9832/edgeyolo/releases/download/v1.0.0/torch2trt.zip)
 
 ### 推理
 
