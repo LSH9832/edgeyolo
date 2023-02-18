@@ -77,7 +77,7 @@ cd edgeyolo
 pip install -r requirements.txt
 ```
 
-if you use tensorrt, please make sure torch2trt and TensorRT Development Toolkit(version>7.1.3.0) is installed.
+if you use tensorrt, please make sure torch2trt and TensorRT Development Toolkit(version>7.1.3.0) are installed.
 
 ```shell
 git clone https://github.com/NVIDIA-AI-IOT/torch2trt.git
