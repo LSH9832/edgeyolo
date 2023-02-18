@@ -188,6 +188,21 @@ python export_onnx2trt.py --onnx yolo_export/onnx/edgeyolo_coco_640x640_batch1.o
 - **output/export/tensorrt/edgeyolo_coco_640x640_batch1.txt**  用于 c++ 部署（相关代码即将发布）
 - **output/export/tensorrt/edgeyolo_coco_640x640_batch1.json**  用于 c++ QT部署（相关代码即将发布）
 
+#### TensorRT Int8 量化模型基准测试
+- 测试环境: TensorRT版本8.2.5.1, Windows, i5-12490F, RTX 3060 12GB
+- 我们将在近期发布edgeyolo的tensorrt int8模型的量化代码（包含校准过程）
+- 增加用于校准训练的图片数量也许还能涨点
+
+COCO2017-TensorRT-int8
+
+| Int8 模型  | 尺寸 |校准图片数量|工作内存空间</br><sup>(GB)| mAP<sup>val<br/>0.5:0.95 | mAP<sup>val<br/>0.5 |FPS<sup>RTX 3060<br/>trt int8 batch=16 <br/>include NMS|
+|:-------|:----:|:---:|:---:|:---:|:---:|:---:|
+|**Tiny-LRELU**|640|512|8   |36.4 |55.5 | 360 |
+|**Tiny**|640   |512  |8    |39.8 |59.5 | 288 |
+|**S**   |640   |512  |8    |42.4 |61.8 | 233 |
+|**M**   |640   |512  |8    |45.2 |64.2 | 211 |
+|**L**   |640   |512  |8    |49.1 |68.0 | 176 |
+
 #### python推理
 ```shell
 python detect.py --trt --weights output/export/tensorrt/edgeyolo_coco_640x640_batch1.pt --source XXX.mp4
