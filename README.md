@@ -196,7 +196,7 @@ it will generate
 #### Benchmark of TensorRT Int8 Model 
 - enviroment: TensorRT Version 8.2.5.1, Windows, i5-12490F, RTX 3060 12GB
 - we will publish export code for tensorrt int8 model in the near future
-- increase the number of images for calibration may improve the performance
+- increase workspace and the number of images for calibration may improve the performance
 
 COCO2017-TensorRT-int8
 
