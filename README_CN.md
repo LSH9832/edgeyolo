@@ -191,7 +191,7 @@ python export_onnx2trt.py --onnx yolo_export/onnx/edgeyolo_coco_640x640_batch1.o
 #### TensorRT Int8 量化模型基准测试
 - 测试环境: TensorRT版本8.2.5.1, Windows, i5-12490F, RTX 3060 12GB
 - 我们将在近期发布edgeyolo的tensorrt int8模型的量化代码（包含校准过程）
-- 增加用于校准训练的图片数量也许还能涨点
+- 增加工作空间和用于校准训练的图片数量也许还能涨点
 
 COCO2017-TensorRT-int8
 
