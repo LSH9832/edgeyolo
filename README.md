@@ -193,6 +193,21 @@ it will generate
 - **output/export/tensorrt/edgeyolo_coco_640x640_batch1.txt**  for c++ inference
 - **output/export/tensorrt/edgeyolo_coco_640x640_batch1.json**  for c++ QT inference
 
+#### Benchmark of TensorRT Int8 Model 
+- enviroment: TensorRT Version 8.2.5.1, Windows, i5-12490F, RTX 3060 12GB
+- we will publish export code for tensorrt int8 model in the near future
+- increase the number of images for calibration may improve the performance
+
+COCO2017-TensorRT-int8
+
+| Int8 Model  | Size |Calibration </br>Image number|Workspace</br><sup>(GB)| mAP<sup>val<br/>0.5:0.95 | mAP<sup>val<br/>0.5 |FPS<sup>RTX 3060<br/>trt int8 batch=16 <br/>include NMS|
+|:-------|:----:|:---:|:---:|:---:|:---:|:---:|
+|**Tiny-LRELU**|640|512|8   |36.4 |55.5 | 360 |
+|**Tiny**|640   |512  |8    |39.8 |59.5 | 288 |
+|**S**   |640   |512  |8    |42.4 |61.8 | 233 |
+|**M**   |640   |512  |8    |45.2 |64.2 | 211 |
+|**L**   |640   |512  |8    |49.1 |68.0 | 176 |
+
 #### for python inference
 ```shell
 python detect.py --trt --weights output/export/tensorrt/edgeyolo_coco_640x640_batch1.pt --source XXX.mp4
