@@ -4,6 +4,12 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
+# GELU https://arxiv.org/abs/1606.08415 --------------------------------------------------------------------------------
+class GELU(nn.Module):
+    @staticmethod
+    def forward(x):
+        # return 0.5 * x * (1 + torch.tanh(np.sqrt(2 / 3.1415926535) * (x + 0.044715 * torch.pow(x, 3))))
+        return x * 0.5 * (1.0 + torch.erf(x / np.sqrt(2.0)))
 
 # SiLU https://arxiv.org/pdf/1606.08415.pdf ----------------------------------------------------------------------------
 class SiLU(nn.Module):  # export-friendly version of nn.SiLU()
