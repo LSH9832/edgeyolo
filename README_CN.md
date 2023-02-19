@@ -204,9 +204,9 @@ python export.py --trt                       # 你可以添加上述--onnx和其
 将产生
 ```
 (可选)  output/export/edgeyolo_coco/640x640_batch1.onnx
-output/export/edgeyolo_coco/640x640_batch1_fp16/int8.pt       # for python inference
-output/export/edgeyolo_coco/640x640_batch1_fp16/int8.engine   # for c++ inference
-output/export/edgeyolo_coco/640x640_batch1_fp16/int8.json     # for c++ inference
+output/export/edgeyolo_coco/640x640_batch1_fp16/int8.pt       # 用于 python 推理
+output/export/edgeyolo_coco/640x640_batch1_fp16/int8.engine   # 用于 c++ 推理
+output/export/edgeyolo_coco/640x640_batch1_fp16/int8.json     # 用于 c++ 推理
 ```
 
 #### TensorRT Int8 量化模型基准测试
