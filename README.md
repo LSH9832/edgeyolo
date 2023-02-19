@@ -93,7 +93,7 @@ or to make sure you use the same version of torch2trt as ours, [download here](h
 ```shell
 python detect.py --weights edgeyolo_coco.pth --source XXX.mp4 --fp16
 
-# full commands
+# all options
 python detect.py --weights edgeyolo_coco.pth 
                  --source /XX/XXX.mp4     # or dir with images, such as /dataset/coco2017/val2017    (jpg/jpeg, png, bmp, webp is available)
                  --conf-thres 0.25 
@@ -157,7 +157,7 @@ python train.py --cfg ./params/train/train_XXX.yaml
 ```shell
 python evaluate.py --weights edgeyolo_coco.pth --dataset params/dataset/XXX.yaml --batch 16 --device 0
 
-# full commands
+# all options
 python evaluate.py --weights edgeyolo_coco.pth 
                    --dataset params/dataset/XXX.yaml 
                    --batch 16   # batch size for each gpu
@@ -166,36 +166,52 @@ python evaluate.py --weights edgeyolo_coco.pth
 ```
 
 ### export onnx & tensorrt
+- ONNX
 ```shell
-python export_pth2onnx.py --weights edgeyolo_coco.pth --simplify
+python export.py --onnx --weights edgeyolo_coco.pth --batch 1
 
-# full commands
-python export_pth2onnx.py --weights edgeyolo_coco.pth 
-                          --input-size 640 640   # height, width
-                          --batch 1
-                          --opset 11
-                          --simplify
+# all options
+python export.py --onnx   # or --onnx-only if tensorrt and torch2trt are not installed
+                 --weights edgeyolo_coco.pth 
+                 --input-size 640 640   # height, width
+                 --batch 1
+                 --opset 11
+                 --no-simplify    # do not simplify this model
 ```
-it generates 2 files 
-- **output/export/onnx/edgeyolo_coco_640x640_batch1.onnx**
-- **output/export/onnx/edgeyolo_coco_640x640_batch1.yaml** for TensorRT conversion.
-
+it generates
+```
+output/export/edgeyolo_coco/640x640_batch1.onnx
+```
+- TensorRT
 ```shell
-# (workspace: GB)
-python export_onnx2trt.py --onnx output/export/onnx/edgeyolo_coco_640x640_batch1.onnx 
-                          --yaml output/export/onnx/edgeyolo_coco_640x640_batch1.yaml # if name is the same as onnx file, you can skip writing this line
-                          --workspace 10 
-                          --fp16   # --int8 and --best: calibration training needed
+# fp16
+python export.py --trt --weights edgeyolo_coco.pth --batch 1 --workspace 8
+
+# int8
+python export.py --trt --weights edgeyolo_coco.pth --batch 1 --workspace 8 --int8 --dataset params/dataset/coco.yaml --num-imgs 1024
+
+# all options
+python export.py --trt                       # you can add --onnx and relative options to export both models
+                 --weights edgeyolo_coco.pth
+                 --input-size 640 640        # height, width
+                 --batch 1
+                 --workspace 10              # (GB)
+                 --no-fp16        # fp16 mode in default, use this option to disable it(fp32)
+                 --int8           # int8 mode, the following options are needed for calibration
+                 --datset params/dataset/coco.yaml   # generates calibration images from its val images(upper limit：5120)
+                 --train          # use train images instead of val images(upper limit：5120)
+                 --all            # use all images(upper limit：5120)
+                 --num-imgs 512   # (upper limit：5120)
 ```
-it will generate
-- **output/export/tensorrt/edgeyolo_coco_640x640_batch1.pt**  for python inference
-- **output/export/tensorrt/edgeyolo_coco_640x640_batch1.engine**  for c++ inference
-- **output/export/tensorrt/edgeyolo_coco_640x640_batch1.txt**  for c++ inference
-- **output/export/tensorrt/edgeyolo_coco_640x640_batch1.json**  for c++ QT inference
+it generates
+```
+output/export/edgeyolo_coco/640x640_batch1_fp16/int8.pt       # for python inference
+output/export/edgeyolo_coco/640x640_batch1_fp16/int8.engine   # for c++ inference
+output/export/edgeyolo_coco/640x640_batch1_fp16/int8.json     # for c++ inference
+```
 
 #### Benchmark of TensorRT Int8 Model 
 - enviroment: TensorRT Version 8.2.5.1, Windows, i5-12490F, RTX 3060 12GB
-- we will publish export code for tensorrt int8 model in the near future
 - increase workspace and the number of images for calibration may improve the performance
 
 COCO2017-TensorRT-int8
@@ -210,11 +226,11 @@ COCO2017-TensorRT-int8
 
 #### for python inference
 ```shell
-python detect.py --trt --weights output/export/tensorrt/edgeyolo_coco_640x640_batch1.pt --source XXX.mp4
+python detect.py --trt --weights output/export/edgeyolo_coco/640x640_batch1_int8.pt --source XXX.mp4
 
-# full commands
+# all options
 python detect.py --trt 
-                 --weights output/export/tensorrt/edgeyolo_coco_640x640_batch1.pt 
+                 --weights output/export/edgeyolo_coco/640x640_batch1_int8.pt 
                  --source XXX.mp4
                  --legacy         # if "img = img / 255" when you train your train model
                  --use-decoder    # if use original yolox tensorrt model before version 0.3.0
@@ -223,7 +239,7 @@ python detect.py --trt
 It is also recomended to use **batch_detect.py** with the same commands if batch size > 1
 
 ```shell
-python batch_detect.py --trt --weights output/export/tensorrt/edgeyolo_coco_640x640_batch1.pt --source XXX.mp4 --fp16
+python batch_detect.py --trt --weights output/export/edgeyolo_coco/640x640_batch16_int8.pt --source XXX.mp4
                        --fps 30    # max fps limitation(new function)
 ```
 
