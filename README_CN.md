@@ -8,16 +8,17 @@
 </div>
 
 **[1 简介](#简介)**</br>
-**[2 即将到来](#即将到来)**</br>
-**[3 模型](#模型)**</br>
-**[4 快速使用](#快速使用)**</br>
-$\quad$[4.1 setup](#安装)</br>
-$\quad$[4.2 推理](#推理)</br>
-$\quad$[4.3 训练](#训练)</br>
-$\quad$[4.4 验证](#验证)</br>
-$\quad$[4.5 导出 onnx & tensorrt](#导出-onnx--tensorrt)</br>
-**[5 引用EdgeYOLO](#引用edgeyolo)**</br>
-**[6 目前发现的bugs](#目前发现的bugs)**
+**[2 更新](#更新)**</br>
+**[3 即将到来](#即将到来)**</br>
+**[4 模型](#模型)**</br>
+**[5 快速使用](#快速使用)**</br>
+$\quad$[5.1 setup](#安装)</br>
+$\quad$[5.2 推理](#推理)</br>
+$\quad$[5.3 训练](#训练)</br>
+$\quad$[5.4 验证](#验证)</br>
+$\quad$[5.5 导出 onnx & tensorrt](#导出-onnx--tensorrt)</br>
+**[6 引用EdgeYOLO](#引用edgeyolo)**</br>
+**[7 目前发现的bugs](#目前发现的bugs)**
 
 ## 简介
 - EdgeYOLO 在嵌入式设备 Nvidia Jetson AGX Xavier 上达到了34FPS，在COCO2017数据集上有**50.6**% AP的准确度，在VisDrone2019-DET数据集上有**25.9**% AP的准确度 **(图像输入大小为640x640, 批大小为16, 包含后处理时间)**。更小的模型EdgeYOLO-S在COCO2017数据集上以**44.1**% AP、**63.3**% AP<sup>0.5</sup>（目前单阶段P5小模型中最好的）准度达到了53FPS的速度。
@@ -25,8 +26,10 @@ $\quad$[4.5 导出 onnx & tensorrt](#导出-onnx--tensorrt)</br>
 - 在训练末尾阶段使用RH损失函数，中小模型的检测效果有所提升。
 - 我们的论文（预印版）已在[**arxiv**](https://arxiv.org/abs/2302.07483)公布
 
+## 更新
+**[2023/2/19]** 带有校准训练过程的TensorRT int8模型导出代码
+
 ## 即将到来
-- 带有校准训练过程的TensorRT int8模型导出代码
 - MNN 部署代码
 - 更多不同的模型
 - 用于TensorRT推理的C++代码
@@ -161,32 +164,50 @@ python evaluate.py --weights edgeyolo_coco.pth        # 权重文件
 ```
 
 ### 导出 onnx & tensorrt
+- ONNX
 ```shell
-python export_pth2onnx.py --weights edgeyolo_coco.pth --simplify
+python export.py --onnx --weights edgeyolo_coco.pth --batch 1
 
-# 完整命令参数
-python export_pth2onnx.py --weights edgeyolo_coco.pth 
-                          --input-size 640 640   # 高、宽（注意别反了）
-                          --batch 1
-                          --opset 11
-                          --simplify
+# all options
+python export.py --onnx                 # 如果没有安装tensorrt和torch2trt，用--onnx-only代替
+                 --weights edgeyolo_coco.pth 
+                 --input-size 640 640   # 宽、高（注意别反了）
+                 --batch 1
+                 --opset 11
+                 --no-simplify          # 不简化模型结构
 ```
-上述命令将生成以下两个文件
-- **output/export/onnx/edgeyolo_coco_640x640_batch1.onnx**
-- **output/export/onnx/edgeyolo_coco_640x640_batch1.yaml**， 用于进一步转换为TensorRT模型
-
+将生成
+```
+output/export/edgeyolo_coco/640x640_batch1.onnx
+```
+- TensorRT
 ```shell
-# (workspace: GB)
-python export_onnx2trt.py --onnx yolo_export/onnx/edgeyolo_coco_640x640_batch1.onnx 
-                          --yaml yolo_export/onnx/edgeyolo_coco_640x640_batch1.yaml # 如与onnx文件除了后缀名都相同此项可不填
-                          --workspace 10 
-                          --fp16      # 或--int8 --best, 需要自己配置校准数据集
+# fp16
+python export.py --trt --weights edgeyolo_coco.pth --batch 1 --workspace 8
+
+# int8
+python export.py --trt --weights edgeyolo_coco.pth --batch 1 --workspace 8 --int8 --dataset params/dataset/coco.yaml --num-imgs 1024
+
+# 完整选项
+python export.py --trt                       # 你可以添加上述--onnx和其相关选项，同时导出两种模型
+                 --weights edgeyolo_coco.pth
+                 --input-size 640 640        # 宽、高（注意别反了）
+                 --batch 1
+                 --workspace 10              # (GB)
+                 --no-fp16        # 默认输出fp16精度模型，使用此选项关闭，转为fp32精度
+                 --int8           # 输出int8精度，需要用到以下选项用于校准训练
+                 --datset params/dataset/coco.yaml   # 校准训练图片来源于该数据集的验证集图片（上限5120张）
+                 --train          # 使用训练集图片而不是验证集图片（上限5120张）
+                 --all            # 使用训练集和验证集所有图片（上限5120张）
+                 --num-imgs 512   # （上限5120张）
 ```
-将生成如下四个文件
-- **output/export/tensorrt/edgeyolo_coco_640x640_batch1.pt**  用于python部署
-- **output/export/tensorrt/edgeyolo_coco_640x640_batch1.engine**  用于 c++ 部署（相关代码即将发布）
-- **output/export/tensorrt/edgeyolo_coco_640x640_batch1.txt**  用于 c++ 部署（相关代码即将发布）
-- **output/export/tensorrt/edgeyolo_coco_640x640_batch1.json**  用于 c++ QT部署（相关代码即将发布）
+将产生
+```
+(可选)  output/export/edgeyolo_coco/640x640_batch1.onnx
+output/export/edgeyolo_coco/640x640_batch1_fp16/int8.pt       # for python inference
+output/export/edgeyolo_coco/640x640_batch1_fp16/int8.engine   # for c++ inference
+output/export/edgeyolo_coco/640x640_batch1_fp16/int8.json     # for c++ inference
+```
 
 #### TensorRT Int8 量化模型基准测试
 - 测试环境: TensorRT版本8.2.5.1, Windows, i5-12490F, RTX 3060 12GB
@@ -205,11 +226,11 @@ COCO2017-TensorRT-int8
 
 #### python推理
 ```shell
-python detect.py --trt --weights output/export/tensorrt/edgeyolo_coco_640x640_batch1.pt --source XXX.mp4
+python detect.py --trt --weights output/export/edgeyolo_coco/640x640_batch1_int8.pt --source XXX.mp4
 
 # full commands
 python detect.py --trt 
-                 --weights output/export/tensorrt/edgeyolo_coco_640x640_batch1.pt 
+                 --weights output/export/edgeyolo_coco/640x640_batch1_int8.pt 
                  --source XXX.mp4
                  --legacy         # 如果训练时"img = img / 255"（图像输入归一化）
                  --use-decoder    # 如果使用早期的YOLOX（v0.2.0及以前）的tensorrt模型
@@ -218,7 +239,7 @@ python detect.py --trt
 当批大小大于1时，同样建议使用 **batch_detect.py**
 
 ```shell
-python batch_detect.py --trt --weights output/export/tensorrt/edgeyolo_coco_640x640_batch1.pt --source XXX.mp4 --fp16
+python batch_detect.py --trt --weights output/export/edgeyolo_coco/640x640_batch16_int8.pt --source XXX.mp4 --fp16
                        --fps 30    # 最大fps限制(新功能)
 ```
 
