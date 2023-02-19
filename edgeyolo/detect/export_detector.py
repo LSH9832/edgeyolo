@@ -26,7 +26,7 @@ class TRTDetector:
         self.nms_thres = nms_thres
         ckpt = torch.load(weight_file, map_location="cpu")
         
-        self.use_decoder = kwargs["use_decoder"]
+        self.use_decoder = kwargs.get("use_decoder") or False
         
         # for k in ckpt:
         #     print(k)
