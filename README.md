@@ -106,12 +106,8 @@ python detect.py --weights edgeyolo_coco.pth
                  --fp16 
                  --no-fuse                # do not reparameterize model
                  --no-label               # do not draw label with class name and confidence
-```
-
-It is recomended to use **batch_detect.py** with the same commands if batch size > 1
-```shell
-python batch_detect.py --weights edgeyolo_coco.pth --source XXX.mp4 --batch 16 --fp16
-                       --fps 30    # max fps limitation(new function)
+                 --mp                     # use multi-process to show images more smoothly when batch > 1
+                 --fps 30                 # max fps limitation, valid only when option --mp is used
 ```
 
 ### train
@@ -237,18 +233,12 @@ python detect.py --trt
                  --source XXX.mp4
                  --legacy         # if "img = img / 255" when you train your train model
                  --use-decoder    # if use original yolox tensorrt model before version 0.3.0
-```
-
-It is also recomended to use **batch_detect.py** with the same commands if batch size > 1
-
-```shell
-python batch_detect.py --trt --weights output/export/edgeyolo_coco/640x640_batch16_int8.pt --source XXX.mp4
-                       --fps 30    # max fps limitation(new function)
+                 --mp             # use multi-process to show images more smoothly when batch > 1
+                 --fps 30         # max fps limitation, valid only when option --mp is used
 ```
 
 #### for c++ inference
 it will be coming soon
-
 
 ## Cite EdgeYOLO
 ```
