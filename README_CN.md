@@ -30,6 +30,7 @@ $\quad$[5.5 导出 onnx & tensorrt](#导出-onnx--tensorrt)</br>
 **[2023/2/19]** 带有校准训练过程的TensorRT int8模型导出代码
 
 ## 即将到来
+- 目前evaluate.py不支持tensorrt模型，我们将在近期更新
 - MNN 部署代码
 - 更多不同的模型
 - 用于TensorRT推理的C++代码
