@@ -16,4 +16,8 @@ matplotlib
 seaborn
 scipy
 onnx
-onnx-simplifier
+onnxsim
+###### tensorrt export #####
+# pycuda
+# tensorrt
+# torch2trt
