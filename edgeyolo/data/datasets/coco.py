@@ -87,6 +87,7 @@ class COCODataset(Dataset):
         self.preproc = preproc
         self.is_train = is_train
         self.test = test
+        self.names = cfg.get("names")
 
         self.load()
 
@@ -95,9 +96,10 @@ class COCODataset(Dataset):
 
     def load(self):
 
-        cache_file = os.path.join(self.data_dir,
-                                  f"{'train' if self.is_train else 'val' if not self.test else 'test'}_"
-                                  f"cache{'_with_seg' if self.load_segm else ''}.edgeyolo").replace("\\", "/")
+        self.cache_file = \
+            cache_file = os.path.join(self.data_dir,
+                                      f"{'train' if self.is_train else 'val' if not self.test else 'test'}_"
+                                      f"cache{'_with_seg' if self.load_segm else ''}.edgeyolo").replace("\\", "/")
 
         if os.path.isfile(cache_file) and self.use_cache:
             print("loading COCO dataset...")
@@ -130,15 +132,22 @@ class COCODataset(Dataset):
 
             self.annotations = self._load_coco_annotations()
 
-            with open(cache_file, "wb") as cachef:
-                pickle.dump((self.coco, self.annotations, self.segm_len, self.max_num_labels), cachef)
+            try:
+                with open(cache_file, "wb") as cachef:
+                    pickle.dump((self.coco, self.annotations, self.segm_len, self.max_num_labels), cachef)
+            except:
+                pass
 
         if self.load_segm:
             print("max len segmentation:", self.segm_len)
 
         if self.preproc is not None:
             print(f"max label number in one image: {self.max_num_labels}")
-            self.preproc.set_max_labels(max(self.max_num_labels * 2, 50))
+            self.preproc.set_max_labels(max(self.max_num_labels * 5, 50))
+
+    def save_cache(self):
+        with open(self.cache_file, "wb") as cachef:
+            pickle.dump((self.coco, self.annotations, self.segm_len, self.max_num_labels), cachef)
 
     def __len__(self):
         return len(self.ids)
