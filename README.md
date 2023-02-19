@@ -9,16 +9,17 @@
 
 
 **[1 Intro](#intro)**</br>
-**[2 Coming Soon](#coming-soon)**</br>
-**[3 Models](#models)**</br>
-**[4 Quick Start](#quick-start)**</br>
-$\quad$[4.1 setup](#setup)</br>
-$\quad$[4.2 inference](#inference)</br>
-$\quad$[4.3 train](#train)</br>
-$\quad$[4.4 evaluate](#evaluate)</br>
-$\quad$[4.5 export onnx & tensorrt](#export-onnx--tensorrt)</br>
-**[5 Cite EdgeYOLO](#cite-edgeyolo)**</br>
-**[6 Bugs found currently](#bugs-found-currently)**
+**[2 Updates](#updates)**</br>
+**[3 Coming Soon](#coming-soon)**</br>
+**[4 Models](#models)**</br>
+**[5 Quick Start](#quick-start)**</br>
+$\quad$[5.1 setup](#setup)</br>
+$\quad$[5.2 inference](#inference)</br>
+$\quad$[5.3 train](#train)</br>
+$\quad$[5.4 evaluate](#evaluate)</br>
+$\quad$[5.5 export onnx & tensorrt](#export-onnx--tensorrt)</br>
+**[6 Cite EdgeYOLO](#cite-edgeyolo)**</br>
+**[7 Bugs found currently](#bugs-found-currently)**
 
 ## Intro
 - In embeded device such as Nvidia Jetson AGX Xavier, EdgeYOLO reaches 34FPS with **50.6**% AP in COCO2017 dataset and **25.9**% AP in VisDrone2019 **(image input size is 640x640, batch=16, post-process included)**. And for smaller model EdgeYOLO-S, it reaches 53FPS with **44.1**% AP and **63.3**% AP<sup>0.5</sup>(**SOTA** in P5 small models) in COCO2017.
@@ -26,8 +27,11 @@ $\quad$[4.5 export onnx & tensorrt](#export-onnx--tensorrt)</br>
 - small object and medium object detect performace is imporved by using RH loss during the last few training epochs.
 - Our pre-print paper is released on [**arxiv**](https://arxiv.org/abs/2302.07483).
 
+## Updates
+**[2023/2/19]** TensorRT int8 export code with **Calibration** (**torch2trt** is required)
+
 ## Coming Soon
-- TensorRT int8 export code with **Calibration** (**torch2trt** is required)
+
 - MNN deployment code
 - More different models
 - C++ code for TensorRT inference
