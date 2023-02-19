@@ -31,7 +31,7 @@ $\quad$[5.5 export onnx & tensorrt](#export-onnx--tensorrt)</br>
 **[2023/2/19]** TensorRT int8 export code with **Calibration** (**torch2trt** is required)
 
 ## Coming Soon
-
+- Now evaluate.py doesn't support tensorrt model, we will update it in the near future
 - MNN deployment code
 - More different models
 - C++ code for TensorRT inference
