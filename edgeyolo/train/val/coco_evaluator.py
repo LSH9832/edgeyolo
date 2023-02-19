@@ -95,11 +95,21 @@ class COCOEvaluator:
             model(x)
             model = model_trt
 
+
+        batch = 0
+        chw = (3, 640, 640)
+
         for cur_iter, (imgs, _, info_imgs, ids, *_) in enumerate(
             tqdm(self.dataloader, ncols=100) if self.is_main_process else iter(self.dataloader)
         ):
             with torch.no_grad():
                 imgs = imgs.type(tensor_type)
+
+                this_batch = imgs.shape[0]
+                if cur_iter == 0:
+                    batch, *chw = imgs.shape
+                elif not this_batch == batch:
+                    imgs = torch.cat([imgs, torch.ones([batch - this_batch, *chw]).to(device=imgs.device).type(imgs.dtype)])
 
                 # skip the the last iters since batchsize might be not enough for batch inference
                 is_time_record = cur_iter < len(self.dataloader) - 1
@@ -107,6 +117,8 @@ class COCOEvaluator:
                     start = time.time()
 
                 outputs = model(imgs)
+
+                outputs = outputs[:this_batch]
                 # logger.info(outputs.shape)
                 # outputs = outputs["result"]
                 if decoder is not None:
