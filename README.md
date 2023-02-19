@@ -207,7 +207,7 @@ python export.py --trt                       # you can add --onnx and relative o
 ```
 it generates
 ```
-(optional) output/export/edgeyolo_coco/640x640_batch1.onnx    # for python inference
+(optional) output/export/edgeyolo_coco/640x640_batch1.onnx
 output/export/edgeyolo_coco/640x640_batch1_fp16/int8.pt       # for python inference
 output/export/edgeyolo_coco/640x640_batch1_fp16/int8.engine   # for c++ inference
 output/export/edgeyolo_coco/640x640_batch1_fp16/int8.json     # for c++ inference
