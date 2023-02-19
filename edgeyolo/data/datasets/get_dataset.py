@@ -14,8 +14,7 @@ datasets = {
 }
 
 
-def get_dataset(cfg, img_size=(640, 640), preproc=None, mode="train"):
-
+def get_dataset(cfg, img_size=(640, 640), preproc=None, mode="train", get_type=False):
 
     modes = {
         "train": {"is_train": True, "test": False},
@@ -33,10 +32,14 @@ def get_dataset(cfg, img_size=(640, 640), preproc=None, mode="train"):
     assert isinstance(cfg, dict)
 
     dataset = datasets.get(cfg.get("type").lower() or "coco") or COCODataset
-    return dataset(
+    dataset = dataset(
         cfg=cfg,
         img_size=img_size,
         preproc=preproc,
         **modes.get(mode),
         **cfg["kwargs"]
     )
+    if get_type:
+        return dataset, cfg.get("type").lower()
+    else:
+        return dataset
