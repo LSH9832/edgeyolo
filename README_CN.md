@@ -103,12 +103,8 @@ python detect.py --weights edgeyolo_coco.pth      # 权重文件
                  --fp16                           # 半精度推理
                  --no-fuse                        # 不进行重参数化
                  --no-label                       # 不显示带有类别和置信度的标签，仅画框
-```
-
-当批大小大于1时，建议使用与上述命令参数相同的的 **batch_detect.py** 
-```shell
-python batch_detect.py --weights edgeyolo_coco.pth --source XXX.mp4 --batch 16 --fp16
-                       --fps 30    # 最大fps限制(新功能)
+                 --mp                             # 使用多进程，当 batch>1 时可以使图像显示更流畅
+                 --fps 30                         # 最大FPS限制, 仅在使用 --mp 选项时有效
 ```
 
 ### 训练
@@ -233,13 +229,8 @@ python detect.py --trt
                  --source XXX.mp4
                  --legacy         # 如果训练时"img = img / 255"（图像输入归一化）
                  --use-decoder    # 如果使用早期的YOLOX（v0.2.0及以前）的tensorrt模型
-```
-
-当批大小大于1时，同样建议使用 **batch_detect.py**
-
-```shell
-python batch_detect.py --trt --weights output/export/edgeyolo_coco/640x640_batch16_int8.pt --source XXX.mp4 --fp16
-                       --fps 30    # 最大fps限制(新功能)
+                 --mp             # 使用多进程，当 batch>1 时可以使图像显示更流畅
+                 --fps 30         # 最大FPS限制, 仅在使用 --mp 选项时有效
 ```
 
 #### c++ 推理
