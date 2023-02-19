@@ -217,7 +217,7 @@ COCO2017-TensorRT-int8
 
 | Int8 Model  | Size |Calibration </br>Image number|Workspace</br><sup>(GB)| mAP<sup>val<br/>0.5:0.95 | mAP<sup>val<br/>0.5 |FPS<sup>RTX 3060<br/>trt int8 batch=16 <br/>include NMS|
 |:-------|:----:|:---:|:---:|:---:|:---:|:---:|
-|**Tiny-LRELU**|416<br>640|512|8   |31.5<br>36.4 |48.7<br>55.5 | 800<br>360 |
+|**Tiny-LRELU**|416<br>640|512|8   |31.5<br>36.4 |48.7<br>55.5 |730<br>360 |
 |**Tiny**|416<br>640|512  |8    |34.9<br>39.8|53.1<br>59.5|549<br>288|
 |**S**   |640   |512  |8    |42.4 |61.8 | 233 |
 |**M**   |640   |512  |8    |45.2 |64.2 | 211 |
