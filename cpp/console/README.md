@@ -20,12 +20,12 @@ make -j4
 Linux
 ```shell
 # name of json and engine file should be the same.
-# yolo [json] [source] [--options]
-yolo XXX.json /path/to/your/videos --conf 0.25 --nms 0.5
+# ./yolo [json] [source] [--options]
+./yolo XXX.json /path/to/your/videos --conf 0.25 --nms 0.5
 ```
 Windows
 ```shell
 # name of json and engine file should be the same.
-# yolo.exe [json] [source] [--options]
-yolo.exe XXX.json /path/to/your/videos --conf 0.25 --nms 0.5
+# ./yolo.exe [json] [source] [--options]
+./yolo.exe XXX.json /path/to/your/videos --conf 0.25 --nms 0.5
 ```
