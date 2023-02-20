@@ -239,7 +239,17 @@ python detect.py --trt
 ```
 
 #### for c++ inference
-it will be coming soon
+```shell
+# build
+cd cpp/console/linux
+mkdir build && cd build
+cmake ..
+make -j4
+
+# run
+# ./yolo [json file] [source] [--conf] [--nms]
+./yolo ../../../../output/export/edgeyolo_coco/640x640_batch1_int8.json ~/Videos/test/avi --conf 0.25 --nms 0.5
+```
 
 ## Cite EdgeYOLO
 ```
