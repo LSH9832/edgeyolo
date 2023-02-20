@@ -27,13 +27,14 @@ $\quad$[5.5 导出 onnx & tensorrt](#导出-onnx--tensorrt)</br>
 - 我们的论文（预印版）已在[**arxiv**](https://arxiv.org/abs/2302.07483)公布
 
 ## 更新
+**[2023/2/20]** TensorRT C++ 命令行演示代码 (需要用到**opencv** 和 **qt5**的库)
 **[2023/2/19]** 带有校准训练过程的TensorRT int8模型导出代码
 
 ## 即将到来
 - 目前evaluate.py不支持tensorrt模型，我们将在近期更新
 - MNN 部署代码
 - 更多不同的模型
-- 用于TensorRT推理的C++代码
+- 用于TensorRT推理的、带有界面的C++代码
 - 用于实例分割任务EdgeYOLO-mask模型
 - 简单有效的预训练方法
 
