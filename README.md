@@ -28,8 +28,12 @@ $\quad$[5.5 export onnx & tensorrt](#export-onnx--tensorrt)</br>
 - Our pre-print paper is released on [**arxiv**](https://arxiv.org/abs/2302.07483).
 
 ## Updates
-**[2023/2/20]** [TensorRT cpp inference console demo](https://github.com/LSH9832/edgeyolo/tree/main/cpp/console) (lib **opencv** and **qt5** required) <br>
-**[2023/2/19]** TensorRT int8 export code with **Calibration** (**torch2trt** is required)
+**[2023/2/20]** <br>
+1. [TensorRT cpp inference console demo](https://github.com/LSH9832/edgeyolo/tree/main/cpp/console) (lib **opencv** and **qt5** required) <br>
+2. Fix bugs when bugs when exporting models using Version 7.X TensorRT<br>
+
+**[2023/2/19]** 
+1. Publish TensorRT int8 export code with **Calibration** (**torch2trt** is required)
 
 ## Coming Soon
 - Now evaluate.py doesn't support tensorrt model, we will update it in the near future
