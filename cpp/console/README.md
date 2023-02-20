@@ -21,11 +21,11 @@ Linux
 ```shell
 # name of json and engine file should be the same.
 # ./yolo [json] [source] [--options]
-./yolo XXX.json /path/to/your/videos --conf 0.25 --nms 0.5
+./yolo XXX.json /path/to/your/videos --conf 0.25 --nms 0.5 --loop --no-label
 ```
 Windows
 ```shell
 # name of json and engine file should be the same.
 # ./yolo.exe [json] [source] [--options]
-./yolo.exe XXX.json /path/to/your/videos --conf 0.25 --nms 0.5
+./yolo.exe XXX.json /path/to/your/videos --conf 0.25 --nms 0.5 --loop --no-label
 ```
