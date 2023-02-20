@@ -31,12 +31,11 @@ int main(int argc, char *argv[])
         .add_argument<string>("source", "video source")
         .add_option<double>("-c", "--conf", "confidence threshold, default is 0.25", 0.25)
         .add_option<double>("-n", "--nms", "NMS threshold, default is 0.5", 0.5)
+        .add_option<bool>("-s", "--no-label", "do not draw labels. default is false", false)
+        .add_option<bool>("-l", "--loop", "loop playback. default is false", false)
         .add_help_option()
         .parse(argc, argv);
 
-
-//    QString json_path = QString("E:/code/python/project/edgeyolo/output/export/pth2trt/edgeyolo_tiny_coco/640x640_batch16_int8.json");
-//    QString source = QString("E:/videos/test.avi");
 
     QString json_path = QString::fromStdString(args.get_argument_string("json"));
     QString source = QString::fromStdString(args.get_argument_string("source"));
@@ -58,10 +57,19 @@ int main(int argc, char *argv[])
     detector.set_conf_threshold(args.get_option_double("--conf"));
     detector.set_nms_threshold(args.get_option_double("--nms"));
 
-    auto d = Detector(cap, detector);
-    d.start();
-    while (d.isRunning());
+    Detector *d = new Detector(cap, detector);
 
+    d->draw_label = !args.get_option_bool("--no-label");
+    d->loop = args.get_option_bool("--loop");
+
+    d->start();
+    while (true){
+        while (d->isRunning());
+        if (!d->loop)
+            break;
+        else
+            d->cap.open(source.toStdString());
+    }
     cout<<"end"<<endl;
 
 //    return app.exec();

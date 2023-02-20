@@ -90,6 +90,8 @@ public:
     QTimer *t = new QTimer();
 
     int flag = -1;
+    bool draw_label = true;
+    bool loop=false;
 
     Detector(cv::VideoCapture cap, TensorRTEngine detector);
     ~Detector();

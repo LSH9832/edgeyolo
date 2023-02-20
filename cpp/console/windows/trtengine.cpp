@@ -703,8 +703,8 @@ bool Detector::isRunning(){
 void Detector::infer_and_show() {
     if (!cap.isOpened()) {
         opened = false;
-        t->stop();
-
+        if (!this->loop)
+            t->stop();
         return;
     }
 
@@ -712,13 +712,18 @@ void Detector::infer_and_show() {
 
     if (img.empty()) {
         opened = false;
-        t->stop();
+        if (!this->loop)
+            t->stop();
+        else
+            cap.release();
         return;
     }
-    cv::imshow("test", draw(img, detector.inference(img), 20, false));
+
+    cv::imshow("test", draw(img, detector.inference(img), 20, this->draw_label));
 
     if (cv::waitKey(1)==27) {
         cv::destroyAllWindows();
+        this->loop = false;
         this->cap.release();
     }
 }
