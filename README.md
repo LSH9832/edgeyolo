@@ -28,7 +28,7 @@ $\quad$[5.5 export onnx & tensorrt](#export-onnx--tensorrt)</br>
 - Our pre-print paper is released on [**arxiv**](https://arxiv.org/abs/2302.07483).
 
 ## Updates
-**[2023/2/20]** TensorRT cpp inference console demo (lib **opencv** and **qt5** is required)
+**[2023/2/20]** TensorRT cpp inference console demo (lib **opencv** and **qt5** is required) <br>
 **[2023/2/19]** TensorRT int8 export code with **Calibration** (**torch2trt** is required)
 
 ## Coming Soon
