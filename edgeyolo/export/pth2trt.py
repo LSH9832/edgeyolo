@@ -105,7 +105,7 @@ def torch2onnx2trt(module,
         inputs_flat = input_flattener.flatten(inputs)
 
         f = io.BytesIO()
-        if trt.__version__ >= "8.0":
+        try:
             torch.onnx.export(
                 module_flat,
                 inputs_flat,
@@ -118,7 +118,7 @@ def torch2onnx2trt(module,
                 },
                 opset_version=onnx_opset
             )
-        else:
+        except:
             torch.onnx.export(
                 module,
                 tuple(inputs),
@@ -147,12 +147,12 @@ def torch2onnx2trt(module,
 
         if not save_trt:
             return None
-
+        
+        f = io.BytesIO()
         try:
             import onnx_graphsurgeon as gs
             onnx_graph = gs.import_onnx(onnx_model)
             onnx_graph.fold_constants().cleanup()
-            f = io.BytesIO()
             onnx.save(gs.export_onnx(onnx_graph), f)
         except:
             onnx.save(onnx_model, f)
