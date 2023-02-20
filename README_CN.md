@@ -236,7 +236,17 @@ python detect.py --trt
 ```
 
 #### c++ 推理
-即将发布，敬请期待
+```shell
+# 编译
+cd cpp/console/linux
+mkdir build && cd build
+cmake ..
+make -j4
+
+# 运行
+# ./yolo [json文件（需要与engine文件同名）] [图像源] [--conf 置信度阈值] [--nms IOU阈值]
+./yolo ../../../../output/export/edgeyolo_coco/640x640_batch1_int8.json ~/Videos/test/avi --conf 0.25 --nms 0.5
+```
 
 ## 引用EdgeYOLO
 ```
