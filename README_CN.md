@@ -253,7 +253,7 @@ make -j4
   
 # 运行
 # ./yolo [json文件（需要与engine文件同名）] [图像源] [--conf 置信度阈值] [--nms IOU阈值] [--loop 循环播放] [--no-label 不画标签]
-./yolo ../../../../output/export/edgeyolo_coco/640x640_batch1_int8.json ~/Videos/test/avi --conf 0.25 --nms 0.5 --loop --no-label
+./yolo ../../../../output/export/edgeyolo_coco/640x640_batch1_int8.json ~/Videos/test.avi --conf 0.25 --nms 0.5 --loop --no-label
 ```
 
 ## 引用EdgeYOLO
