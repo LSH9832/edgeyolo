@@ -9,10 +9,6 @@
 #include <vector>
 
 
-
-//#include <dirent.h>
-
-
 #define CHECK(status) \
     do\
     {\
@@ -710,8 +706,8 @@ void Detector::infer_and_show() {
     
     if (!cap.isOpened()) {
         opened = false;
-        t->stop();
-
+        if (!this->loop)
+            t->stop();
         return;
     }
     
@@ -719,20 +715,16 @@ void Detector::infer_and_show() {
 
     if (img.empty()) {
         opened = false;
-        t->stop();
+        if (!this->loop)
+            t->stop();
+        else
+            cap.release();
         return;
     }
 
-    img_show = draw(img, detector.inference(img), 20, false);
+    img_show = draw(img, detector.inference(img), 20, this->draw_label);
     updated = true;
-    //cv::imshow("test", img);
-    //cv::imwrite("test.jpg", img);
 
-    //cv::waitKey(1);
-    //if (cv::waitKey(1)==27) {
-    //    cv::destroyAllWindows();
-    //    this->cap.release();
-    //}
 }
 
 void Detector::release() {
