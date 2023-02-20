@@ -256,7 +256,7 @@ make -j4
 
 # run
 # ./yolo [json file] [source] [--conf] [--nms] [--loop] [--no-label]
-./yolo ../../../../output/export/edgeyolo_coco/640x640_batch1_int8.json ~/Videos/test/avi --conf 0.25 --nms 0.5 --loop --no-label
+./yolo ../../../../output/export/edgeyolo_coco/640x640_batch1_int8.json ~/Videos/test.avi --conf 0.25 --nms 0.5 --loop --no-label
 ```
 
 ## Cite EdgeYOLO
