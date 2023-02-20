@@ -2,7 +2,8 @@
 
 ## note
 
-Currently, this demo only supports models with batch = 1.
+- There are some problems building in linux, we are trying to fix them.
+- Currently, this demo only supports models with batch = 1.
 
 ## requirements
 
