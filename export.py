@@ -32,7 +32,7 @@ def get_args():
     parser.add_argument("-w", '--workspace', type=float, default=8, help='max workspace size(GB)')
     ## fp16 quantization
     parser.add_argument("--no-fp16", action="store_true", help="default is fp16, use this option to disable it(fp32)")
-    ## in8 quantization
+    ## int8 quantization
     parser.add_argument("--int8", action="store_true", help="enable int8 quantization")
     parser.add_argument("--dataset", type=str, default="params/dataset/coco.yaml", help="calibration dataset(int8)")
     parser.add_argument("--train", action="store_true", help="use train dataset for calibration(default: val)")
