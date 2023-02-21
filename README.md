@@ -30,7 +30,7 @@ $\quad$[5.5 export onnx & tensorrt](#export-onnx--tensorrt)</br>
 ## Updates
 **[2023/2/20]** <br>
 1. [TensorRT cpp inference console demo](https://github.com/LSH9832/edgeyolo/tree/main/cpp/console) (lib **opencv** and **qt5** required) <br>
-2. Fix bugs when bugs when exporting models using Version 7.X TensorRT<br>
+2. Fix bugs when exporting models using Version 7.X TensorRT<br>
 
 **[2023/2/19]** 
 1. Publish TensorRT int8 export code with **Calibration** (**torch2trt** is required)
