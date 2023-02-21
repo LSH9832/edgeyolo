@@ -1,4 +1,4 @@
-from edgeyolo import launch
+from edgeyolo import launch as train
 import argparse
 
 
@@ -9,10 +9,6 @@ def make_parser():
     # Not commend
     parser.add_argument("--default", action="store_true", help="use default train settings in edgeyolo/train/default.yaml")
     return parser.parse_args()
-
-
-def train(file_name):
-    launch(file_name)
 
 
 if __name__ == '__main__':
