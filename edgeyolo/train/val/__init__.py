@@ -6,5 +6,6 @@ evaluators = {
     "voc": Evaluator,
     "coco": Evaluator,
     "visdrone": Evaluator,
+    "yolo": Evaluator,
     "dota": DOTAEvaluator
 }
