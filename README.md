@@ -28,6 +28,9 @@ $\quad$[5.5 export onnx & tensorrt](#export-onnx--tensorrt)</br>
 - Our pre-print paper is released on [**arxiv**](https://arxiv.org/abs/2302.07483).
 
 ## Updates
+**[2023/2/24]** 
+1. EdgeYOLO supports [dataset with yolo format](https://github.com/LSH9832/edgeyolo/blob/main/params/dataset/yolo.yaml) now.
+
 **[2023/2/20]** <br>
 1. [TensorRT cpp inference console demo](https://github.com/LSH9832/edgeyolo/tree/main/cpp/console) (lib **opencv** and **qt5** required) <br>
 2. Fix bugs when exporting models using Version 7.X TensorRT<br>
@@ -120,7 +123,7 @@ python detect.py --weights edgeyolo_coco.pth
 
 (COCO, VOC, VisDrone and DOTA formats are supported)
 ```yaml
-type: "coco"                        # dataset format(lowercase)，COCO, VOC, VisDrone and DOTA formats are supported currently
+type: "coco"                        # dataset format(lowercase)，COCO, YOLO, VOC, VisDrone and DOTA formats are supported currently
 dataset_path: "/dataset/coco2017"   # root dir of your dataset
 
 kwargs:
