@@ -3,6 +3,7 @@ from .voc import VOCDataset
 from .coco import COCODataset
 from .dota import DotaDataset
 from .visdrone import VisDroneDataset
+from .yolo import YOLODataset
 import os.path as osp
 
 
@@ -10,7 +11,8 @@ datasets = {
     "voc": VOCDataset,
     "coco": COCODataset,
     "dota": DotaDataset,
-    "visdrone": VisDroneDataset
+    "visdrone": VisDroneDataset,
+    "yolo": YOLODataset
 }
 
 
