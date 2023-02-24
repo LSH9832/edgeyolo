@@ -88,7 +88,7 @@ int main(int argc, char *argv[])
         if (!d->loop)
             break;
         else
-            d->cap.read(source.toStdString());
+            d->cap.open(source.toStdString());
     }
     cout<<"end"<<endl;
 
