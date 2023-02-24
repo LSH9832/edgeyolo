@@ -29,7 +29,8 @@ $\quad$[5.5 export onnx & tensorrt](#export-onnx--tensorrt)</br>
 
 ## Updates
 **[2023/2/24]** 
-1. EdgeYOLO supports [dataset with yolo format](https://github.com/LSH9832/edgeyolo/blob/main/params/dataset/yolo.yaml) now.
+1. EdgeYOLO supports [dataset with yolo format](https://github.com/LSH9832/edgeyolo/blob/main/params/dataset/yolo.yaml) now. <br>
+2. Fix some errors and bugs(which happened when using "--loop" in linux cpp, and caching labels in distributed training).
 
 **[2023/2/20]** <br>
 1. [TensorRT cpp inference console demo](https://github.com/LSH9832/edgeyolo/tree/main/cpp/console) (lib **opencv** and **qt5** required) <br>
