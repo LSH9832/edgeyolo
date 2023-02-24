@@ -115,22 +115,7 @@ class Trainer(EdgeYOLO):
                 if self.rank == 0:
                     logger.info("loading dataset...")
 
-                dataset = COCODataset(
-                    data_dir=self.params["dataset_dir"],
-                    json_file=self.params["train_anno_file"] if osp.isfile(self.params["train_anno_file"])
-                    else os.path.join(self.params["dataset_dir"], self.params["train_anno_file"]),
-                    train_dir=self.params["train_dir"] if os.path.isdir(self.params["train_dir"])
-                    else os.path.join(self.params["dataset_dir"], self.params["train_dir"]),
-                    img_size=self.input_size,
-                    preproc=TrainTransform(
-                        max_labels=200,
-                        flip_prob=self.params["flip_prob"],
-                        hsv_prob=1,
-                        hsv_gain=self.params["hsv_gain"]
-                    ),
-                    cache=False,
-                    load_segment=self.params["use_segmentation"]  # True
-                ) if self.dataset_cfg is None else get_dataset(
+                dataset = get_dataset(
                     cfg=self.dataset_cfg,
                     img_size=self.input_size,
                     preproc=TrainTransform(
@@ -139,7 +124,8 @@ class Trainer(EdgeYOLO):
                         hsv_prob=1,
                         hsv_gain=self.params["hsv_gain"]
                     ),
-                    mode="train"
+                    mode="train",
+                    save_cache=self.rank == 0
                 )
 
             if not self.params["enhance_mosaic"]:
