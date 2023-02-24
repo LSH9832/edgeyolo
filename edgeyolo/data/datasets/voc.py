@@ -242,15 +242,20 @@ class VOCDataset(Dataset):
 
     def _load_voc_annotations(self):
 
-        cache_file = os.path.join(self.data_dir,
-                                  f"{'train' if self.is_train else 'val' if not self.test else 'test'}_"
-                                  f"cache.edgeyolo").replace("\\", "/")
+        cache_file = self.cache_file = os.path.join(
+            self.data_dir,
+            f"{'train' if self.is_train else 'val' if not self.test else 'test'}_"
+            f"cache.edgeyolo"
+        ).replace("\\", "/")
+
+        self.cached = True
         if os.path.isfile(cache_file) and self.use_cache:
             print(f"loading cache from {cache_file}.")
 
             with open(cache_file, "rb") as f:
                 annotation_list, self.coco_data, self.max_num_labels = pickle.load(f)
         else:
+            self.cached = False
             annotation_list = []
             with open(self.anno_file, "r") as f:
                 lines = f.read().split("\n")
@@ -271,13 +276,19 @@ class VOCDataset(Dataset):
                     else:
                         annotation_list.append(anno)
 
-            with open(cache_file, "wb") as cachef:
-                pickle.dump((annotation_list, self.coco_data, self.max_num_labels), cachef)
+            # with open(cache_file, "wb") as cachef:
+            #     pickle.dump((annotation_list, self.coco_data, self.max_num_labels), cachef)
 
         if not self.is_train:
             self.coco.dataset = self.coco_data.to_json()
             self.coco.createIndex()
         return annotation_list
+
+    def save_cache(self):
+        if self.cached:
+            return
+        with open(self.cache_file, "wb") as cachef:
+            pickle.dump((self.annotation_list, self.coco_data, self.max_num_labels), cachef)
 
     def load_anno(self, index):
         return self.annotation_list[index]["annotations"]   # [num_obj, 5(xywh + cls)]

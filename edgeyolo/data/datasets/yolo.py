@@ -162,16 +162,19 @@ class YOLODataset(Dataset):
 
     def _load_yolo_annotations(self):
 
-        cache_file = os.path.join(self.data_dir,
-                                  f"{'train' if self.is_train else 'val' if not self.test else 'test'}_"
-                                  f"cache_yolo.edgeyolo").replace("\\", "/")
+        cache_file = self.cache_file = os.path.join(
+            self.data_dir,
+            f"{'train' if self.is_train else 'val' if not self.test else 'test'}_"
+            f"cache_yolo.edgeyolo"
+        ).replace("\\", "/")
+        self.cached = True
         if os.path.isfile(cache_file) and self.use_cache:
             print(f"loading cache from {cache_file}.")
 
             with open(cache_file, "rb") as f:
                 annotation_list, self.coco_data, self.max_num_labels = pickle.load(f)
         else:
-
+            self.cached = False
             annotation_list = []
             file_list = glob(os.path.join(self.anno_dir, "*.txt"))
             num_file = len(file_list)
@@ -187,14 +190,20 @@ class YOLODataset(Dataset):
                     else:
                         annotation_list.append(anno)
             print()
-            with open(cache_file, "wb") as cachef:
-                pickle.dump((annotation_list, self.coco_data, self.max_num_labels), cachef)
+            # with open(cache_file, "wb") as cachef:
+            #     pickle.dump((annotation_list, self.coco_data, self.max_num_labels), cachef)
 
 
         if not self.is_train:
             self.coco.dataset = self.coco_data.to_json()
             self.coco.createIndex()
         return annotation_list
+
+    def save_cache(self):
+        if self.cached:
+            return
+        with open(self.cache_file, "wb") as cachef:
+            pickle.dump((self.annotation_list, self.coco_data, self.max_num_labels), cachef)
 
     def load_anno(self, index):
         return self.annotation_list[index]["annotations"]   # [num_obj, 5(xywh + cls)]
@@ -205,7 +214,7 @@ class YOLODataset(Dataset):
 
         img_h, img_w = img.shape[:2]
 
-        print(res)
+        # print(res)
 
         res[..., 0] *= img_w
         res[..., 2] *= img_w

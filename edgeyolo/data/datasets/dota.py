@@ -162,6 +162,9 @@ class DotaDataset(Dataset):
             self.coco.createIndex()
         return annotation_list
 
+    def save_cache(self):
+        pass
+
     def load_anno(self, index):
         return self.annotation_list[index]["annotations"]   # [num_obj, 5(xywh + cls)]
 

@@ -16,7 +16,7 @@ datasets = {
 }
 
 
-def get_dataset(cfg, img_size=(640, 640), preproc=None, mode="train", get_type=False):
+def get_dataset(cfg, img_size=(640, 640), preproc=None, mode="train", get_type=False, save_cache=True):
 
     modes = {
         "train": {"is_train": True, "test": False},
@@ -41,6 +41,8 @@ def get_dataset(cfg, img_size=(640, 640), preproc=None, mode="train", get_type=F
         **modes.get(mode),
         **cfg["kwargs"]
     )
+    if save_cache:
+        dataset.save_cache()
     if get_type:
         return dataset, cfg.get("type").lower()
     else:

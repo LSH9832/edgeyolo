@@ -100,7 +100,7 @@ class COCODataset(Dataset):
             cache_file = os.path.join(self.data_dir,
                                       f"{'train' if self.is_train else 'val' if not self.test else 'test'}_"
                                       f"cache{'_with_seg' if self.load_segm else ''}.edgeyolo").replace("\\", "/")
-
+        self.cached = True
         if os.path.isfile(cache_file) and self.use_cache:
             print("loading COCO dataset...")
             print(f"loading cache from {cache_file}.")
@@ -119,7 +119,7 @@ class COCODataset(Dataset):
         else:
             print("loading COCO dataset...")
             self.coco = COCO(self.json_file)
-
+            self.cached = False
             try:
                 remove_useless_info(self.coco, self.load_segm)
             except:
@@ -132,11 +132,11 @@ class COCODataset(Dataset):
 
             self.annotations = self._load_coco_annotations()
 
-            try:
-                with open(cache_file, "wb") as cachef:
-                    pickle.dump((self.coco, self.annotations, self.segm_len, self.max_num_labels), cachef)
-            except:
-                pass
+            # try:
+            #     with open(cache_file, "wb") as cachef:
+            #         pickle.dump((self.coco, self.annotations, self.segm_len, self.max_num_labels), cachef)
+            # except:
+            #     pass
 
         if self.load_segm:
             print("max len segmentation:", self.segm_len)
@@ -146,6 +146,8 @@ class COCODataset(Dataset):
             self.preproc.set_max_labels(max(self.max_num_labels * 5, 50))
 
     def save_cache(self):
+        if self.cached:
+            return
         with open(self.cache_file, "wb") as cachef:
             pickle.dump((self.coco, self.annotations, self.segm_len, self.max_num_labels), cachef)
 
