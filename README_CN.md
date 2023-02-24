@@ -28,7 +28,8 @@ $\quad$[5.5 导出 onnx & tensorrt](#导出-onnx--tensorrt)</br>
 
 ## 更新
 **[2023/2/24]** <br>
-1. 现在edgeyolo支持[YOLO格式的数据集](https://github.com/LSH9832/edgeyolo/blob/main/params/dataset/yolo.yaml)了
+1. 现在edgeyolo支持[YOLO格式的数据集](https://github.com/LSH9832/edgeyolo/blob/main/params/dataset/yolo.yaml)了 <br>
+2. 修复了一些已知错误（在Linux下的cpp代码使用--loop选项时的错误以及分布式训练对标签进行缓存时发生的错误）
 
 **[2023/2/20]** <br>
 1. [TensorRT C++ 命令行演示代码](https://github.com/LSH9832/edgeyolo/tree/main/cpp/console) (需要用到**opencv** 和 **qt5**的库) <br>
