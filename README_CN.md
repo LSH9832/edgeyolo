@@ -27,6 +27,9 @@ $\quad$[5.5 导出 onnx & tensorrt](#导出-onnx--tensorrt)</br>
 - 我们的论文（预印版）已在[**arxiv**](https://arxiv.org/abs/2302.07483)公布
 
 ## 更新
+**[2023/2/24]** <br>
+1. 现在edgeyolo支持[YOLO格式的数据集](https://github.com/LSH9832/edgeyolo/blob/main/params/dataset/yolo.yaml)了
+
 **[2023/2/20]** <br>
 1. [TensorRT C++ 命令行演示代码](https://github.com/LSH9832/edgeyolo/tree/main/cpp/console) (需要用到**opencv** 和 **qt5**的库) <br>
 2. 修复了使用7.X版本的TensorRT导出模型时产生的bugs<br>
@@ -116,7 +119,7 @@ python detect.py --weights edgeyolo_coco.pth      # 权重文件
 ### 训练
 - 首先准备好你的数据集并创建好相应的数据集配置文件(./params/dataset/XXX.yaml)，配置文件中应包含如下信息:
 ```yaml
-type: "coco"                        # 数据集格式（小写），目前支持COCO格式、VOC格式、VisDrone格式、DOTA格式
+type: "coco"                        # 数据集格式（小写），目前支持COCO格式、YOLO格式、VOC格式、VisDrone格式、DOTA格式
 dataset_path: "/dataset/coco2017"   # 数据集根目录
 
 kwargs:
