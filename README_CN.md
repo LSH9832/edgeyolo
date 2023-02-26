@@ -120,6 +120,8 @@ python detect.py --weights edgeyolo_coco.pth      # 权重文件
 
 ### 训练
 - 首先准备好你的数据集并创建好相应的数据集配置文件(./params/dataset/XXX.yaml)，配置文件中应包含如下信息:
+
+（目前支持COCO、YOLO、VOC、VisDrone、DOTA五种格式的数据集）
 ```yaml
 type: "coco"                        # 数据集格式（小写），目前支持COCO格式、YOLO格式、VOC格式、VisDrone格式、DOTA格式
 dataset_path: "/dataset/coco2017"   # 数据集根目录
