@@ -60,7 +60,8 @@ $\quad$[5.5 导出 onnx & tensorrt](#导出-onnx--tensorrt)</br>
 
 - 在VisDrone2019上训练的模型 (这些模型骨干网络初始参数来自于上面的模型)
 
-训练时使用的是 [已转化为COCO格式的 VisDrone2019 数据集](https://github.com/LSH9832/edgeyolo/releases/download/v1.0.0/visdrone_coco.zip) 。
+1. 训练时使用的是 [已转化为COCO格式的 VisDrone2019 数据集](https://github.com/LSH9832/edgeyolo/releases/download/v1.0.0/visdrone_coco.zip) 。
+2. 以下是没有去掉在**ignored region**中检测框的情况下测得的结果
 
 | 模型 |输入大小|mAP<sup>val<br/>0.5:0.95|mAP<sup>val<br/>0.5|下载|
 |:----|:----:|:-----------------------:|:----------:|:--------:|
