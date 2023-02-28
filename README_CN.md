@@ -265,7 +265,7 @@ make -j4
 
 ## 引用EdgeYOLO
 ```
- @article{edgeyolo2023,
+@article{edgeyolo2023,
   title={EdgeYOLO: An Edge-Real-Time Object Detector},
   author={Shihan Liu, Junlin Zha, Jian Sun, Zhuo Li, and Gang Wang},
   journal={arXiv preprint arXiv:2302.07483},
