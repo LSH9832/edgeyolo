@@ -1,3 +1,4 @@
+import os
 import os.path
 
 import torch
@@ -22,9 +23,10 @@ def get_args():
     parser.add_argument("--dataset", type=str, default="params/dataset/coco.yaml", help="dataset config")
     parser.add_argument("--device", type=int, nargs="+", default=[0], help="eval device")
 
-    parser.add_argument("--no-obj-conf", action="store_true")
+    parser.add_argument("--no-obj-conf", action="store_true", help="for debug only, do not use it")
     parser.add_argument("--save", action="store_true", help="save deploy model without optimizer params")
-
+    parser.add_argument('--fp16', action='store_true', help='half precision')
+    parser.add_argument('--trt', action='store_true', help='is tensorrt model')
     return parser.parse_args()
 
 
@@ -44,15 +46,64 @@ def generate_params(**kwargs):
         "fp16": False,
         "multiscale_range": 0,
         "output_dir": "eval_output",
-        "use_ema": True,
+        "use_ema": False,
         "use_cfg": False,
         "obj_conf_enabled": True,
-        "save": False
+        "save": False,
+        "trt": False,
+        "pixel_range": 255
     }
     for k, v in kwargs.items():
         PARAMS[k] = v
     return PARAMS
 
+
+def load_evaluator(rank, params, is_distributed):
+    # import torch.utils.data
+    from edgeyolo import NoPrint
+    from edgeyolo.data import get_dataset, ValTransform
+    from edgeyolo.train.val import evaluators
+
+    if rank == 0:
+        logger.info("loading evaluator...")
+
+    dataset_cfg = params.get("dataset_cfg")
+    with NoPrint():
+        valdataset, dataset_type = get_dataset(
+            cfg=dataset_cfg,
+            img_size=params.get("input_size"),
+            preproc=ValTransform(legacy=params["pixel_range"] == 1),
+            mode="val",
+            get_type=True
+        )
+
+    if is_distributed:
+        sampler = torch.utils.data.distributed.DistributedSampler(valdataset, shuffle=False)
+    else:
+        sampler = torch.utils.data.SequentialSampler(valdataset)
+
+    dataloader_kwargs = {
+        "num_workers": params["loader_num_workers"],
+        "pin_memory": True,
+        "sampler": sampler,
+        "batch_size": params["batch_size_per_gpu"]
+    }
+    val_loader = torch.utils.data.DataLoader(valdataset, **dataloader_kwargs)
+
+    evaluator = evaluators.get(dataset_type)(
+        dataloader=val_loader,
+        img_size=params["input_size"],
+        confthre=params["val_conf_thres"],
+        nmsthre=params["val_nms_thres"],
+        num_classes=len(valdataset.names),
+        testdev=False,
+        rank=rank,
+        obj_conf_enabled=params["obj_conf_enabled"],
+        save="save" in params and params["save"]
+    )
+    if rank == 0:
+        logger.info("evaluator loaded.")
+    return evaluator
 
 def eval_single(
     rank=0,
@@ -83,19 +134,42 @@ def eval_single(
         dist.barrier()
         cudnn.benchmark = params["cudnn_benchmark"]
 
-    evaluator = Evaluator(params, rank)
-    ap50, ap50_95 = evaluator.evaluate_only(params["weights"], False)
 
-    if params.get("save"):
-        evaluator.ckpt.pop("optimizer") if "optimizer" in evaluator.ckpt.keys() else None
-        evaluator.ckpt["ap50"] = ap50
-        evaluator.ckpt["ap50_95"] = ap50_95
-        evaluator.ckpt["epoch"] = -1
+    ey = None
+    if params.get("trt"):
+        # os.environ["CUDA_MODULE_LOADING"] = "LAZY"
+        from edgeyolo.detect import TRTDetector
+        detector = TRTDetector(params.get("weights"), 0, 0)
+        model = detector.model
+        params["batch_size_per_gpu"] = detector.batch_size
+        params["input_size"] = detector.input_size
+    else:
+        from edgeyolo import EdgeYOLO
+        ey = EdgeYOLO(weights=params.get("weights"))
+        model = ey.model
+        params["pixel_range"] = ey.ckpt.get("pixel_range") or 255
+
+    model.cuda(params["device"][rank])
+
+    evaluator = load_evaluator(rank, params, world_size > 1)
+    ap50_95, ap50, summary = evaluator.evaluate(
+        model, world_size > 1, params.get("fp16") or False
+    )
+    logger.info(f"ap50    : {ap50}")
+    logger.info(f"ap50_95 : {ap50_95}")
+    logger.info(summary)
+    # ap50, ap50_95 = evaluator.evaluate_only(params["weights"], False)
+
+    if params.get("save") and ey is not None:
+        ey.ckpt.pop("optimizer") if "optimizer" in ey.ckpt.keys() else None
+        ey.ckpt["ap50"] = ap50
+        ey.ckpt["ap50_95"] = ap50_95
+        ey.ckpt["epoch"] = -1
         logger.info(f"\nap50:95 = {ap50_95}\n"
                     f"ap50    = {ap50}")
         path, f = os.path.dirname(params["weights"]), os.path.basename(params["weights"])
         filepath = f"eval_{f}"
-        torch.save(evaluator.ckpt, os.path.join(path, filepath))
+        torch.save(ey.ckpt, os.path.join(path, filepath))
         logger.info(f"deploy model saved to {filepath}")
 
 
@@ -142,6 +216,8 @@ if __name__ == '__main__':
             batch_size_per_gpu=args.batch,
             input_size=args.input_size,
             obj_conf_enabled=not args.no_obj_conf,
-            save=args.save
+            save=args.save,
+            fp16=args.fp16,
+            trt=args.trt
         )
     )
