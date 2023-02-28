@@ -28,6 +28,9 @@ $\quad$[5.5 export onnx & tensorrt](#export-onnx--tensorrt)</br>
 - Our pre-print paper is released on [**arxiv**](https://arxiv.org/abs/2302.07483).
 
 ## Updates
+**[2023/2/28]** 
+1. Evaluation for TensorRT model is supported now. <br>
+
 **[2023/2/24]** 
 1. EdgeYOLO supports [dataset with yolo format](https://github.com/LSH9832/edgeyolo/blob/main/params/dataset/yolo.yaml) now. <br>
 2. Fix some errors and bugs(which happened when using "--loop" in linux cpp, and caching labels in distributed training).
@@ -40,7 +43,6 @@ $\quad$[5.5 export onnx & tensorrt](#export-onnx--tensorrt)</br>
 1. Publish TensorRT int8 export code with **Calibration** (**torch2trt** is required)
 
 ## Coming Soon
-- Now evaluate.py doesn't support tensorrt model, we will update it in the near future
 - MNN deployment code
 - More different models
 - C++ code for TensorRT inference with UI
@@ -166,11 +168,13 @@ python train.py --cfg ./params/train/train_XXX.yaml
 python evaluate.py --weights edgeyolo_coco.pth --dataset params/dataset/XXX.yaml --batch 16 --device 0
 
 # all options
-python evaluate.py --weights edgeyolo_coco.pth 
+python evaluate.py --weights edgeyolo_coco.pth        # or tensorrt model: output/export/edgeyolo_coco/model.pt
                    --dataset params/dataset/XXX.yaml 
-                   --batch 16   # batch size for each gpu
+                   --batch 16                         # batch size for each gpu, not valid if it's tensorrt model
                    --device 0
-                   --input-size 640 640   # height, width
+                   --input-size 640 640               # height, width
+                   --trt                              # if you use tensorrt model add this option
+                   --save                             # save weights without optimizer params and set epoch to -1
 ```
 
 ### export onnx & tensorrt
