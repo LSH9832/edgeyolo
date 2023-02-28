@@ -27,6 +27,9 @@ $\quad$[5.5 导出 onnx & tensorrt](#导出-onnx--tensorrt)</br>
 - 我们的论文（预印版）已在[**arxiv**](https://arxiv.org/abs/2302.07483)公布
 
 ## 更新
+**[2023/2/28]** <br>
+1. 现在支持对TensorRT模型进行evaluation了。 <br>
+
 **[2023/2/24]** <br>
 1. 现在edgeyolo支持[YOLO格式的数据集](https://github.com/LSH9832/edgeyolo/blob/main/params/dataset/yolo.yaml)了 <br>
 2. 修复了一些已知错误（在Linux下的cpp代码使用--loop选项时的错误以及分布式训练对标签进行缓存时发生的错误）
@@ -39,7 +42,6 @@ $\quad$[5.5 导出 onnx & tensorrt](#导出-onnx--tensorrt)</br>
 1. 发布带有校准训练过程的TensorRT int8模型导出代码 <br>
 
 ## 即将到来
-- 目前evaluate.py不支持tensorrt模型，我们将在近期更新
 - MNN 部署代码
 - 更多不同的模型
 - 用于TensorRT推理的、带有界面的C++代码
@@ -165,11 +167,13 @@ python train.py --cfg ./params/train/train_XXX.yaml
 python evaluate.py --weights edgeyolo_coco.pth --dataset params/dataset/XXX.yaml --batch 16 --device 0
 
 # 完整命令参数
-python evaluate.py --weights edgeyolo_coco.pth        # 权重文件
+python evaluate.py --weights edgeyolo_coco.pth        # 权重文件， 也可是tensorrt模型，output/export/edgeyolo_coco/model.pt
                    --dataset params/dataset/XXX.yaml  # 数据集配置文件
                    --batch 16                         # 每一个GPU上的批大小
                    --device 0                         # 只用一个就写0就行
                    --input-size 640 640               # 高、宽（注意别反了）
+                   --trt                              # 如果使用的是TensorRT模型需要加上此选项
+                   --save                             # 保存没有优化器参数的权重文件，并将训练次数重置为-1
 ```
 
 ### 导出 onnx & tensorrt
