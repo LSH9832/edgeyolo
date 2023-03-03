@@ -4,7 +4,7 @@ from torch2trt import Dataset
 import os
 import cv2
 import random
-
+import numpy as np
 from glob import glob
 from loguru import logger
 
@@ -51,6 +51,7 @@ class CalibDataset(Dataset):
             im, _ = preproc(cv2.imread(file), self.input_size)
             if self.norm:
                 im /= 255.0
+            im = np.ascontiguousarray(im, dtype=np.float16)
             ret.append(torch.from_numpy(im).unsqueeze(0).cuda())
         return [torch.cat(ret)]
 
