@@ -411,10 +411,10 @@ class COCOCreator:
         # print("counting categories")
         self.categorie_num = {}
         for anno in self.annotations:
-            if anno['category_id'] - 1 in self.categorie_num:
-                self.categorie_num[anno['category_id'] - 1] += 1
+            if anno['category_id'] in self.categorie_num:
+                self.categorie_num[anno['category_id']] += 1
             else:
-                self.categorie_num[anno['category_id'] - 1] = 1
+                self.categorie_num[anno['category_id']] = 1
 
     def _image_id_exists(self, image_id):
         """
@@ -525,7 +525,7 @@ class COCOCreator:
         """
         self.categories.append({
             'supercategory': supercategory,
-            'id': len(self.categories) + 1,
+            'id': len(self.categories),
             'name': name
         })
         self.categorie_num[len(self.categories) - 1] = 0
@@ -624,10 +624,10 @@ class COCOCreator:
             'category_id': category_id,
             'id': anno_id
         })
-        if category_id - 1 in self.categorie_num:
-            self.categorie_num[category_id - 1] += 1
+        if category_id in self.categorie_num:
+            self.categorie_num[category_id] += 1
         else:
-            self.categorie_num[category_id - 1] = 1
+            self.categorie_num[category_id] = 1
 
     def to_json(self):
         return {
