@@ -64,6 +64,10 @@ class EdgeYOLO:
                     self.ckpt["cfg_data"] = yaml.load(self.ckpt["cfg_data"], yaml.SafeLoader)
                 except:
                     pass
+            
+            if not self.ckpt["cfg_data"]["nc"] == len(self.ckpt["class_names"]):
+                self.ckpt["cfg_data"]["nc"] = len(self.ckpt["class_names"])
+                torch.save(self.ckpt, weights)
 
             restart = False
             if nc is not None:
@@ -78,7 +82,8 @@ class EdgeYOLO:
             self.model = load_model(self.cfg_data, nc=self.ckpt["cfg_data"]["nc"])
             try:
                 self.model.load_state_dict(self.ckpt["model"], strict=False)
-            except:
+            except Exception as e:
+                logger.info(e)
                 self.is_match = self.try_load_state_dict(self.ckpt["model"])
             if ("pretrain_epoch" if self.is_pretrain_mode else "epoch") in self.ckpt and not restart:
                 self.start_epoch = self.ckpt["pretrain_epoch" if self.is_pretrain_mode else "epoch"] + 1
