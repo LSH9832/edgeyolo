@@ -123,7 +123,7 @@ python detect.py --weights edgeyolo_coco.pth
 ```
 
 ### train
-- first preparing your dataset and create dataset config file(./params/dataset/XXX.yaml), make sure your dataset config file contains:
+- first prepare your dataset and create dataset config file(./params/dataset/XXX.yaml), make sure your dataset config file contains:
 
 (COCO, YOLO, VOC, VisDrone and DOTA formats are supported)
 ```yaml
