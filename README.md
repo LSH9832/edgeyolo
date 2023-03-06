@@ -225,7 +225,8 @@ output/export/edgeyolo_coco/640x640_batch1_fp16(int8).json     # for c++ inferen
 
 #### Benchmark of TensorRT Int8 Model 
 - enviroment: TensorRT Version 8.2.5.1, Windows, i5-12490F, RTX 3060 12GB
-- increase workspace and the number of images for calibration may improve the performance
+- For TensorRT, **diffirent calib dataset can cause appearent difference in both precision and speed. I think that's why most of official project didn't give int8 quantization results.** The table below is of little reference significance, I think.
+
 
 COCO2017-TensorRT-int8
 
