@@ -224,7 +224,7 @@ output/export/edgeyolo_coco/640x640_batch1_fp16(int8).json     # 用于 c++ 推�
 
 #### TensorRT Int8 量化模型基准测试
 - 测试环境: TensorRT版本8.2.5.1, Windows, i5-12490F, RTX 3060 12GB
-- 增加工作空间和用于校准训练的图片数量也许还能涨点
+- 对于TensorRT来说，使用不同的校准数据集，产生的int8模型之间的精度和速度都可能有很明显的差异，这是由于tensorrt不是强制转换为int8的，有些层它觉得转了后效果不好就不转了，所以我认为这是为什么大部分官方项目都不给出int8量化效果的代码。我自认为下表结果并不具有多少参考意义。
 
 COCO2017-TensorRT-int8
 
