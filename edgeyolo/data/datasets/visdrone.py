@@ -46,6 +46,7 @@ class VisDroneDataset(Dataset):
         super().__init__(img_size)
 
         self.test = test
+        self.unused_image = 0
 
         if cfg is None:
             self.data_dir = data_dir
@@ -142,7 +143,7 @@ class VisDroneDataset(Dataset):
                     if not self.is_train:
                         if not has_anno:
                             self.coco_data.add_image(
-                                image_id=self.idx,
+                                image_id=self.idx - self.unused_image,
                                 file_name=os.path.basename(msg["image"]),
                                 width=4000,
                                 height=4000,
@@ -150,13 +151,15 @@ class VisDroneDataset(Dataset):
                             has_anno = True
 
                         self.coco_data.add_annotation(
-                            image_id=self.idx,
+                            image_id=self.idx - self.unused_image,
                             anno_id=self.num_annos,
                             category_id=class_id,
                             bbox=[x1, y1, w, h],
                             iscrowd=0
                         )
                     self.num_annos += 1
+            if not has_anno:
+                self.unused_image += 1
             self.max_num_labels = max(self.max_num_labels, num_labels)
             msg["annotations"] = np.array(msg["annotations"])
             return msg
