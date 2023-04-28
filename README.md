@@ -21,6 +21,14 @@ $\quad$[5.5 export onnx & tensorrt](#export-onnx--tensorrt)</br>
 **[6 Cite EdgeYOLO](#cite-edgeyolo)**</br>
 **[7 Bugs found currently](#bugs-found-currently)**
 
+
+## 
+
+#### Tool Recommendation: SAM([Segment Anything Model](https://github.com/facebookresearch/segment-anything)) assisted labeling tools: [SAMLabeler Pro](https://github.com/LSH9832/SAMLabelerPro)，multi-person remote labeling is supported.
+#### 工具推荐: 使用SAM([Segment Anything Model](https://github.com/facebookresearch/segment-anything)) 辅助的图像标注工具: [SAMLabeler Pro](https://github.com/LSH9832/SAMLabelerPro)，支持多人同时远程标注
+
+##
+
 ## Intro
 - In embeded device such as Nvidia Jetson AGX Xavier, EdgeYOLO reaches 34FPS with **50.6**% AP in COCO2017 dataset and **25.9**% AP in VisDrone2019 **(image input size is 640x640, batch=16, post-process included)**. And for smaller model EdgeYOLO-S, it reaches 53FPS with **44.1**% AP and **63.3**% AP<sup>0.5</sup>(**SOTA** in P5 small models) in COCO2017.
 - we provide a more effective data augmentation during training.
