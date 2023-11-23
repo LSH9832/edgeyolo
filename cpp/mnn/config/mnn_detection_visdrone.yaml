@@ -1,0 +1,5 @@
+model: "models/edgeyolo_visdrone.mnn"
+names: ['pedestrian', 'people', 'bicycle', 'car', 'van', 'truck', 'tricycle', 'awning-tricycle', 'bus', 'motor']
+num_threads: 4
+conf_thres: 0.25
+nms_thres: 0.45
