@@ -21,7 +21,7 @@ chmod +x ./setup.bash && ./setup.bash
 
 ## 2. setup & model preparation
 
-- first, modify link_libraries of MNN in CMakeLists.txt
+- first, modify link_directories and include_directories of MNN in CMakeLists.txt
 - compile this demo
 
 ```bash
