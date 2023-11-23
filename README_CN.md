@@ -27,6 +27,9 @@ $\quad$[5.5 导出 onnx & tensorrt](#导出-onnx--tensorrt)</br>
 - 我们的论文（预印版）已在[**arxiv**](https://arxiv.org/abs/2302.07483)公布
 
 ## 更新
+**[2023/11/23]** <br>
+1. MNN模型推理部署代码已发布。 <br>
+
 **[2023/2/28]** <br>
 1. 现在支持对TensorRT模型进行evaluation了。 <br>
 
@@ -42,7 +45,6 @@ $\quad$[5.5 导出 onnx & tensorrt](#导出-onnx--tensorrt)</br>
 1. 发布带有校准训练过程的TensorRT int8模型导出代码 <br>
 
 ## 即将到来
-- MNN 部署代码
 - 更多不同的模型
 - 用于TensorRT推理的、带有界面的C++代码
 - 用于实例分割任务EdgeYOLO-mask模型
