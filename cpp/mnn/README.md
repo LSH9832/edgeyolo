@@ -61,6 +61,7 @@ nms_thres: 0.45
 ./build/mnn_det --cfg config/mnn_detection_coco.yaml   \  # model config
                 --video                                \  # or --device --picture
                 --source /path_to_video_file.mp4       \  # or 0 for camera, or /path/to/image.jpg for picture
-                --no-label # do not draw label
+                --no-label                             \  # do not draw label
+                --loop                                    # display in loop
 ```
 
