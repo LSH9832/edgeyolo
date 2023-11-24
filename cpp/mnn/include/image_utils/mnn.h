@@ -1,6 +1,8 @@
 #ifndef MNN_H
 #define MNN_H
 
+#include <thread>
+
 #include <opencv2/opencv.hpp>
 
 #include "MNN/MNNDefine.h"
@@ -60,8 +62,9 @@ namespace mnn_det {
 
         float *preds;
 
+        std::vector<float> batch_ratios;
+        std::vector<std::vector<detect::Object>> batch_objects;
 
-    
     public:
         std::string mnn_model;
         std::vector<std::string> names;
@@ -77,6 +80,15 @@ namespace mnn_det {
         float current_ratio;
 
         YOLO() {};
+
+        ~YOLO() {
+            INFO << "release yolo" << ENDL;
+            // delete session;
+            // delete inputTensor;
+            // delete outputTensor;
+            // delete current_img;
+            // delete preds;
+        }
 
         YOLO(std::string mnn_config) {
             set_config(mnn_config);
@@ -115,7 +127,7 @@ namespace mnn_det {
 
             length_array = outputTensor->shape().at(2);
 
-            assert(inputTensor->shape().size() == 4);    // natch, c, h, w
+            assert(inputTensor->shape().size() == 4);    // batch, c, h, w
             assert(outputTensor->shape().size() == 3);   // batch, num_dets, array
             assert(length_array == names.size()+5);
             
@@ -136,6 +148,27 @@ namespace mnn_det {
             preds = outputTensor->host<float>();
 
             // INFO << "RATIO: " << current_ratio << ENDL;
+        }
+
+        void __preprocess_batch_once(cv::Mat img, int batch_id=0) {
+            img_size = img.size();
+            batch_ratios[batch_id] = img2mnn(img, inputTensor, batch_id);
+        }
+
+        void _forward_multi(std::vector<cv::Mat> imgs) {
+            assert(imgs.size()==num_batch);
+            batch_ratios.clear();
+            batch_ratios.resize(num_batch);
+
+            std::vector<std::thread> threads;
+            for (int i=0;i<num_batch;i++) {
+                std::thread _t(std::mem_fn(&YOLO::__preprocess_batch_once), this, imgs.at(i), i);
+                threads.push_back(std::move(_t));
+            }
+            for (auto& _t: threads) _t.join();
+
+            net->runSession(session);
+            preds = outputTensor->host<float>();
         }
 
         void generate_yolo_proposals(std::vector<detect::Object>& objects, int batch_id) {
@@ -172,7 +205,11 @@ namespace mnn_det {
             }
         }
 
-        std::vector<detect::Object> _decode_output(int batch_id=0) {
+        void _decode_outputs(int batch_id=0) {
+            batch_objects[batch_id] = this->_decode_output(batch_id, batch_ratios[batch_id]);
+        }
+
+        std::vector<detect::Object> _decode_output(int batch_id=0, float ratio=1.0) {
             std::vector<detect::Object> proposals, objects;
             std::vector<int> picked;
 
@@ -186,10 +223,10 @@ namespace mnn_det {
             {
                 objects[i] = proposals[picked[i]];
 
-                float x0 = (objects[i].rect.x) * current_ratio;
-                float y0 = (objects[i].rect.y) * current_ratio;
-                float x1 = (objects[i].rect.x + objects[i].rect.width) * current_ratio;
-                float y1 = (objects[i].rect.y + objects[i].rect.height) * current_ratio;
+                float x0 = (objects[i].rect.x) * ratio;
+                float y0 = (objects[i].rect.y) * ratio;
+                float x1 = (objects[i].rect.x + objects[i].rect.width) * ratio;
+                float y1 = (objects[i].rect.y + objects[i].rect.height) * ratio;
 
                 // clip
                 x0 = std::max(std::min(x0, (float)(img_size.width - 1)), 0.f);
@@ -207,13 +244,23 @@ namespace mnn_det {
 
         }
 
-        void batch_infer(std::vector<cv::Mat> images) {
+        std::vector<std::vector<detect::Object>> batch_infer(std::vector<cv::Mat> images) {
+            this->_forward_multi(images);
+            batch_objects.clear();
+            batch_objects.resize(num_batch);
+            std::vector<std::thread> threads;
+            for (int i=0;i<num_batch;i++) {
+                std::thread _t(std::mem_fn(&YOLO::_decode_outputs), this, i);
+                threads.push_back(std::move(_t));
+            }
+            for (auto& _t: threads) _t.join();
 
+            return batch_objects;
         }
 
         std::vector<detect::Object> infer(cv::Mat image) {
             this->_forward(&image, 0);
-            return this->_decode_output(0);
+            return this->_decode_output(0, current_ratio);
         }
 
 
