@@ -649,13 +649,15 @@ class argparser
 
     void check_add_option_sname(const std::string &key) const
     {
-        if (key.size() != 2 || key.front() != '-')
+        // std::cout << key << std::endl;
+        if (key.size() > 6 || key.front() != '-')
         {
-            std::cerr << "(build error) short option name must be `-` followed by one character" << std::endl;
+            std::cerr << "(build error) short option name must be `-` followed by no more than 5 character" << std::endl;
             std::exit(-1);
         }
-        char ch = key.back();
-        if (short_name_index.find(ch) != short_name_index.end())
+        const char *ch = key.c_str();
+        // std::cout << ch << std::endl;
+        if (short_name_index.find(*ch) != short_name_index.end())
         {
             std::cerr << "(build error) short option name " << key << " already exists" << std::endl;
             std::exit(-1);
