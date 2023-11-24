@@ -26,7 +26,8 @@ argsutil::argparser get_args(int argc, char** argv) {
     parser.add_option<bool>("-v", "--video", "use video", false);
     parser.add_option<bool>("-d", "--device", "use camera", false);
     parser.add_option<bool>("-p", "--picture", "use picture", false);
-    parser.add_option<bool>("-l", "--no-label", "do not show label", false);
+    parser.add_option<bool>("-nl", "--no-label", "do not show label", false);
+    parser.add_option<bool>("-l", "--loop", "play in loop", false);
     parser.add_option<std::string>("-s", "--source", "video source path", "0");
     parser.add_help_option();
     parser.parse(argc, argv);
@@ -55,9 +56,23 @@ int main(int argc, char** argv) {
 
     struct timeval t0, t1;
     int delay=1;
+
+    bool flag = true;
+    bool loop = args.get_option_bool("--loop");
     while (cap.isOpened()) {
-        if (!cap.read(_img)) break;
-        if (_img.empty()) break;
+        if (!cap.read(_img)) flag=false;
+        if (_img.empty()) flag=false;
+
+        if (!flag) {
+            if (loop) {
+                cap.release();
+                if (args.get_option_bool("--video")) cap.open(args.get_option_string("--source"));
+                else if (args.get_option_bool("--device")) cap.open(std::stoi(args.get_option_string("--source")));
+                flag=true;
+                continue;
+            }
+            else break;
+        }
 
         
         gettimeofday(&t0, NULL);
