@@ -8,7 +8,25 @@ git clone https://github.com/alibaba/MNN
 cd MNN
 ./schema/generate.sh
 mkdir build && cd build
+
+# cpu only
 cmake .. -DMNN_OPENCL=ON -DMNN_BUILD_CONVERTER=ON -DMNN_BUILD_TOOL=ON -DMNN_BUILD_QUANTOOLS=ON -DMNN_BUILD_OPENCV=ON
+
+# cuda
+cmake .. -DCMAKE_BUILD_TYPE=Release \
+         -DMNN_BUILD_QUANTOOLS=ON   \
+         -DMNN_BUILD_CONVERTER=ON   \
+         -DMNN_OPENGL=ON            \
+         -DMNN_VULKAN=ON            \
+         -DMNN_CUDA=ON              \
+         -DMNN_TENSORRT=OFF         \
+         -DMNN_BUILD_DEMO=ON        \
+         -DMNN_BUILD_BENCHMARK=ON
+
+# if -DMNN_OPENGL=ON and openglv3 is not installed in your device, then you can run the following command
+# sudo ln -s /usr/lib/x86_64-linux-gnu/libGLESv2.so /usr/lib/x86_64-linux-gnu/libGLESv3.so     # x86_64
+# sudo ln -s /usr/lib/aarch64-linux-gnu/libGLESv2.so /usr/lib/aarch64-linux-gnu/libGLESv3.so   # arm64
+
 make -j8
 ```
 
