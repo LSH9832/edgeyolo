@@ -16,7 +16,12 @@ or just [**download here**](https://github.com/LSH9832/edgeyolo/releases/downloa
 ```bash
 unzip mnn_dev.zip
 cd mnn_dev
+
+# if you use cpu only
 chmod +x ./setup.bash && ./setup.bash
+
+# if you want to use cuda opencl opengl
+chmod +x ./setup_cuda.bash && ./setup_cuda.bash
 ```
 
 ## 2. setup & model preparation
@@ -62,6 +67,7 @@ nms_thres: 0.45
                 --video                                \  # or --device --picture
                 --source /path_to_video_file.mp4       \  # or 0 for camera, or /path/to/image.jpg for picture
                 --no-label                             \  # do not draw label
-                --loop                                    # display in loop
+                --loop                                 \  # display in loop
+                --cpu                                     # use cpu, or --gpu, default is auto choose
 ```
 
