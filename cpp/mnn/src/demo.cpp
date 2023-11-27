@@ -7,12 +7,6 @@
 #include <sys/time.h>
 #include <ctime>
 
-#include "MNN/MNNDefine.h"
-#include "MNN/expr/Expr.hpp"
-#include "MNN/expr/ExprCreator.hpp"
-#include "MNN/AutoTime.hpp"
-#include "MNN/Interpreter.hpp"
-
 #include "print_utils.h"
 #include "image_utils/detect_process.h"
 #include "image_utils/mnn.h"
