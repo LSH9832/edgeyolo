@@ -7,6 +7,12 @@
 #include <sys/time.h>
 #include <ctime>
 
+#include "MNN/MNNDefine.h"
+#include "MNN/expr/Expr.hpp"
+#include "MNN/expr/ExprCreator.hpp"
+#include "MNN/AutoTime.hpp"
+#include "MNN/Interpreter.hpp"
+
 #include "print_utils.h"
 #include "image_utils/detect_process.h"
 #include "image_utils/mnn.h"
@@ -22,6 +28,10 @@ argsutil::argparser get_args(int argc, char** argv) {
     parser.add_option<bool>("-p", "--picture", "use picture", false);
     parser.add_option<bool>("-nl", "--no-label", "do not show label", false);
     parser.add_option<bool>("-l", "--loop", "play in loop", false);
+
+    parser.add_option<bool>("-cpu", "--cpu", "cpu mode, default auto", false);
+    parser.add_option<bool>("-gpu", "--gpu", "gpu mode, default auto", false);
+
     parser.add_option<std::string>("-s", "--source", "video source path", "0");
     parser.add_help_option();
     parser.parse(argc, argv);
@@ -35,10 +45,12 @@ int main(int argc, char** argv) {
     bool show_label = !args.get_option_bool("--no-label");
 
     auto yoloNet = mnn_det::YOLO(args.get_option_string("--cfg"));
+    yoloNet.set_device(args.get_option_bool("--cpu"), args.get_option_bool("--gpu"));
     if (!yoloNet.load_model()) {
         ERROR << "FAILED TO LOAD MNN MODEL " << yoloNet.mnn_model << ENDL;
         return -1;
     }
+
     detect::names = yoloNet.names;
 
     cv::VideoCapture cap;
@@ -53,6 +65,7 @@ int main(int argc, char** argv) {
 
     bool flag = true;
     bool loop = args.get_option_bool("--loop");
+
     while (cap.isOpened()) {
         if (!cap.read(_img)) flag=false;
         if (_img.empty()) flag=false;
@@ -68,7 +81,6 @@ int main(int argc, char** argv) {
             else break;
         }
 
-        
         gettimeofday(&t0, NULL);
         std::vector<detect::Object> objs = yoloNet.infer(_img);
         gettimeofday(&t1, NULL);
