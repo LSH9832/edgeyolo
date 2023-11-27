@@ -14,6 +14,8 @@
 #include "image_utils/detect_process.h"
 #include "yaml-cpp/yaml.h"
 
+#include "print_utils.h"
+
 
 namespace mnn_det {
 
@@ -78,6 +80,7 @@ namespace mnn_det {
 
         cv::Mat *current_img;
         float current_ratio;
+        MNNForwardType DEVICE=MNN_FORWARD_AUTO;
 
         YOLO() {};
 
@@ -105,6 +108,11 @@ namespace mnn_det {
             config_set = true;
         }
 
+        void set_device(bool _cpu=false, bool _gpu=false) {
+            if (_cpu) DEVICE = MNN_FORWARD_CPU;
+            if (_gpu) DEVICE = MNN_FORWARD_CUDA;
+        }
+
         void set_confidence_threshold(float _value) {
             conf_thres = _value;
         }
@@ -118,9 +126,11 @@ namespace mnn_det {
 
             net = std::shared_ptr<MNN::Interpreter>(MNN::Interpreter::createFromFile(this->mnn_model.c_str()));
             config.numThread = num_threads;
-            config.type = MNN_FORWARD_CPU;
-            session = net->createSession(config);
 
+            // config.type = MNN_FORWARD_AUTO;
+            config.type = DEVICE;
+
+            session = net->createSession(config);
             //获取输入输出tensor
             inputTensor = net->getSessionInput(session, NULL);
             outputTensor = net->getSessionOutput(session, NULL);
@@ -137,6 +147,7 @@ namespace mnn_det {
             num_dets = outputTensor->shape().at(1);
 
             model_loaded=true;
+
             return model_loaded;
         }
 
@@ -145,8 +156,10 @@ namespace mnn_det {
             img_size = current_img->size();
             current_ratio = img2mnn(*current_img, inputTensor, batch_id);
             net->runSession(session);
-            preds = outputTensor->host<float>();
 
+            auto outNchwTensor = new MNN::Tensor(outputTensor, MNN::Tensor::CAFFE);
+            outputTensor->copyToHostTensor(outNchwTensor);
+            preds = outNchwTensor->host<float>();
             // INFO << "RATIO: " << current_ratio << ENDL;
         }
 
@@ -168,7 +181,12 @@ namespace mnn_det {
             for (auto& _t: threads) _t.join();
 
             net->runSession(session);
-            preds = outputTensor->host<float>();
+
+            auto outNchwTensor = new MNN::Tensor(outputTensor, MNN::Tensor::CAFFE);
+            outputTensor->copyToHostTensor(outNchwTensor);
+            preds = outNchwTensor->host<float>();
+
+            INFO << preds << ENDL;
         }
 
         void generate_yolo_proposals(std::vector<detect::Object>& objects, int batch_id) {
@@ -178,7 +196,9 @@ namespace mnn_det {
                 // 解析类别及其置信度
                 int label = -1;
                 float prob = 0.0;
+                // INFO << 1 << ENDL;
                 float box_objectness = preds[basic_pos+4];    // obj conf
+                // INFO << 2 << ENDL;
                 for (int class_idx = 0; class_idx < length_array - 5; class_idx++)
                 {
                     float box_cls_score = preds[basic_pos + 5 + class_idx];
@@ -188,6 +208,7 @@ namespace mnn_det {
                         prob = box_prob;
                     }
                 }
+                // INFO << 3 << ENDL;
 
                 // 若置信度大于阈值则输出
                 if(prob > conf_thres) {
@@ -202,6 +223,7 @@ namespace mnn_det {
 
                     objects.push_back(obj);
                 }
+                // INFO << 4 << ENDL;
             }
         }
 
