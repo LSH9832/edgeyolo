@@ -220,7 +220,7 @@ python export.py --trt                       # you can add --onnx and relative o
                  --workspace 10              # (GB)
                  --no-fp16        # fp16 mode in default, use this option to disable it(fp32)
                  --int8           # int8 mode, the following options are needed for calibration
-                 --datset params/dataset/coco.yaml   # generates calibration images from its val images(upper limit：5120)
+                 --dataset params/dataset/coco.yaml   # generates calibration images from its val images(upper limit：5120)
                  --train          # use train images instead of val images(upper limit：5120)
                  --all            # use all images(upper limit：5120)
                  --num-imgs 512   # (upper limit：5120)
