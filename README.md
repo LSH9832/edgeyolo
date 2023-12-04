@@ -54,6 +54,7 @@ $\quad$[5.5 export onnx & tensorrt](#export-onnx--tensorrt)</br>
 1. Publish TensorRT int8 export code with **Calibration** (**torch2trt** is required)
 
 ## Coming Soon
+- RKNN Models for RK3588
 - More different models
 - C++ code for TensorRT inference with UI
 - EdgeYOLO-mask for segmentation task
