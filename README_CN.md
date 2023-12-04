@@ -28,7 +28,7 @@ $\quad$[5.5 导出 onnx & tensorrt](#导出-onnx--tensorrt)</br>
 
 ## 更新
 **[2023/11/23]** <br>
-1. MNN模型推理部署代码已发布。 <br>
+1. [MNN模型推理部署代码](https://github.com/LSH9832/edgeyolo/tree/main/cpp/mnn)已发布。 <br>
 
 **[2023/2/28]** <br>
 1. 现在支持对TensorRT模型进行evaluation了。 <br>
@@ -45,6 +45,7 @@ $\quad$[5.5 导出 onnx & tensorrt](#导出-onnx--tensorrt)</br>
 1. 发布带有校准训练过程的TensorRT int8模型导出代码 <br>
 
 ## 即将到来
+- 用于RK3588芯片的RKNN模型
 - 更多不同的模型
 - 用于TensorRT推理的、带有界面的C++代码
 - 用于实例分割任务EdgeYOLO-mask模型
