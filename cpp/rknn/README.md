@@ -8,7 +8,7 @@
 |**Tiny**      |  384×640  |              22 </br>(too many SiLU activate layers)              |       [**model**](https://github.com/LSH9832/edgeyolo/releases/download/v1.0.2/edgeyolo_tiny_coco.rknn), [**config**](https://github.com/LSH9832/edgeyolo/releases/download/v1.0.2/edgeyolo_tiny_coco.yaml)       |
 
 ## 1. Model convert
-### 1.1 Setup RKNN Toolkit2 on your PC with edgeyolo requirements
+### 1.1 Setup RKNN Toolkit2 on your PC(x86_64) with edgeyolo requirements
 
 - this toolkit only supports python3.6, python3.8 and python3.10 
 
