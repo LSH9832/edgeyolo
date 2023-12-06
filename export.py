@@ -4,17 +4,14 @@ import yaml
 import torch
 import argparse
 import numpy as np
-import tensorrt as trt
 
 from loguru import logger
 
 from edgeyolo import EdgeYOLO
-from edgeyolo.utils import replace_module
-from edgeyolo.utils2.activations import SiLU
 
 
 def get_args():
-    parser = argparse.ArgumentParser("EdgeYOLO TensorRT deploy")
+    parser = argparse.ArgumentParser("EdgeYOLO Export Parser")
 
     # basic
     parser.add_argument("--weights", type=str, default="./weights/edgeyolo_tiny_coco.pth")
@@ -27,14 +24,26 @@ def get_args():
     parser.add_argument("--no-simplify", action="store_true", help="do not simplify models(not recommend)")
     parser.add_argument("--opset", type=int, default=11, help="onnx opset")
 
+    # parser.add_argument("--relu", action="store_true", help="replace silu with relu")
+
     # tensorrt
     parser.add_argument("--trt", action="store_true", help="save tensorrt models")
     parser.add_argument("-w", '--workspace', type=float, default=8, help='max workspace size(GB)')
+
     ## fp16 quantization
     parser.add_argument("--no-fp16", action="store_true", help="default is fp16, use this option to disable it(fp32)")
+
     ## int8 quantization
     parser.add_argument("--int8", action="store_true", help="enable int8 quantization")
-    parser.add_argument("--dataset", type=str, default="params/dataset/coco.yaml", help="calibration dataset(int8)")
+
+    # rknn
+    parser.add_argument("--rknn", action="store_true", help="save rknn model")
+
+    ## rknn quantization
+    parser.add_argument("--rknn-platform", type=str, default="rk3588", help="rknn platform")
+
+    # calib
+    parser.add_argument("--dataset", type=str, default="cfg/dataset/coco.yaml", help="calibration dataset(int8)")
     parser.add_argument("--train", action="store_true", help="use train dataset for calibration(default: val)")
     parser.add_argument("--all", action="store_true", help="use both train and val dataset")
     parser.add_argument("--num-imgs", type=int, default=512, help="number of images for calibration, -1 for all images")
@@ -48,7 +57,7 @@ def main():
 
     args = get_args()
 
-    assert any([args.onnx, args.onnx_only, args.trt]), "no export output!"
+    assert any([args.onnx, args.onnx_only, args.trt, args.rknn]), "no export output!"
 
     if isinstance(args.input_size, int):
         args.input_size = [args.input_size] * 2
@@ -57,11 +66,20 @@ def main():
 
     exp = EdgeYOLO(weights=args.weights)
     model = exp.model
-    replace_module(model, torch.nn.SiLU, SiLU)
 
     model.fuse()
     model.eval()
     # model.cuda()
+
+    if args.rknn:
+        from edgeyolo.models.yolo import YOLOXDetect
+        for k, v in model.named_modules():
+            if isinstance(v, YOLOXDetect):
+                v.rknn_export = True
+
+        if args.batch > 1:
+            logger.warning("Currently, RKNN export only support batch 1!, change to batch 1")
+            args.batch = 1
 
     export_path = f"output/export/{os.path.basename(args.weights).split('.')[0]}"
 
@@ -103,11 +121,16 @@ def main():
     model(x)  # warm and init
 
     input_names = ["input_0"]
-    output_names = ["output_0"]
+    output_names = ["output_0"]    # ["output_0", "output_1", "output_2"] if args.rknn else
 
-    if args.onnx_only:
+    if args.onnx_only or args.rknn:
+        if args.rknn:
+            output_names = []
+            for otype in ["xy", "wh", "conf"]:
+                output_names.extend([f"{otype}{i}" for i in range(3)])
+
         import onnx
-        onnx_file = file_name + ".onnx"
+        onnx_file = file_name + "_for_rknn.onnx" if args.rknn else ".onnx"
         torch.onnx.export(model,
                           x,
                           onnx_file,
@@ -129,8 +152,30 @@ def main():
 
         onnx.save(onnx_model, onnx_file)
         logger.info(f'ONNX export success, saved as {onnx_file}')
+        data_save = {
+            "names": exp.class_names,
+            "img_size": args.input_size,
+            "batch_size": args.batch,
+            "pixel_range": exp.ckpt.get("pixel_range") or 255,  # input image pixel value range: 0-1 or 0-255
+            "obj_conf_enabled": True,  # Edge-YOLO use cls conf and obj conf
+            "input_name": "input_0",
+            "output_name": "output_0",
+            "dtype": "uint8" if args.int8 or args.rknn else "float"
+        }
+        with open(file_name + ".yaml", "w") as yamlf:
+            yaml.dump(data_save, yamlf)
+
+        with open(file_name + ".json", "w") as jsonf:
+            json.dump(data_save, jsonf)
+
+        if args.rknn:
+            from edgeyolo.export.rknn import RKNNExporter
+            rknn_file = file_name + ".rknn"
+            rknn_exporter = RKNNExporter(onnx_file, rknn_file, args.rknn_platform, args.dataset, args.num_imgs, args.train, args.all)
+            rknn_exporter.convert(np.ones([*args.input_size, 3], dtype="uint8"), args.batch)
 
     else:
+        import tensorrt as trt
         from edgeyolo.export import torch2onnx2trt
         model_trt = torch2onnx2trt(
             model,
@@ -161,9 +206,11 @@ def main():
             "dtype": "uint8" if args.int8 else "float"
         }
 
-
         with open(file_name + ".json", "w") as jsonf:
             json.dump(data_save, jsonf)
+
+        with open(file_name + ".yaml", "w") as yamlf:
+            yaml.dump(data_save, yamlf)
 
         if model_trt is not None:
             data_save["model"] = model_trt.state_dict()
