@@ -31,7 +31,7 @@ python export.py --weights edgeyolo_tiny_lrelu_coco.pth \   # your pth weights
                  --num-img 100        \  # number of calib img
                  
                  # optional but not commend
-                 --rknn-platform rk3588 \  # rk3566 and so on, you can convert model, but our code only support rk3588
+                 --rknn-platform rk3588 \  # rk3566 and so on, you can convert model, but our code only support rk3588(and rk3588s)
 ```
 
 then it generates 4 files as follows
