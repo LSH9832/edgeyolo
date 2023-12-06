@@ -42,7 +42,7 @@ output/export/edgeyolo_tiny_lrelu_coco/384x640_batch1.json             # json fi
 output/export/edgeyolo_tiny_lrelu_coco/384x640_batch1.yaml             # config file to use
 ```
 
-## Run rknn model in your rk3588 device
+## 2. Run rknn model in your rk3588 device
 
 - copy dir '**cpp/rknn**' to your rk3588 device.
 - cd rknn
