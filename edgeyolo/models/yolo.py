@@ -75,6 +75,8 @@ class YOLOXDetect(nn.Module):
         self.im = nn.ModuleList(ImplicitM((self.num_classes + 5) * self.n_anchors) for _ in ch)
         self.rego_preds = None
 
+        self.rknn_export=False
+
     @staticmethod
     def _make_grid(nx=20, ny=20):
         yv, xv = torch.meshgrid([torch.arange(ny), torch.arange(nx)])
@@ -82,8 +84,13 @@ class YOLOXDetect(nn.Module):
 
     def forward(self, x):
         z = []
-        self.training |= self.export
-        export = torch.onnx.is_in_onnx_export()
+
+        regs = []
+        objs = []
+        confs = []
+
+        # self.training |= self.export
+        export = torch.onnx.is_in_onnx_export() or self.export
 
         for i in range(self.n_layers):
             out = self.stems[i](x[i])
@@ -93,23 +100,37 @@ class YOLOXDetect(nn.Module):
             cls_feat = self.cls_convs[i](cls_x)
             reg_feat = self.reg_convs[i](reg_x)
 
-            if not self.is_fused:
+            if self.rknn_export:
+                x_cls = self.cls_preds[i](cls_feat)
+                x_reg = self.reg_preds[i](reg_feat)
+                x_obj = self.obj_preds[i](reg_feat)
+
+                regs.append(x_reg)
+                objs.append(x_obj)
+                confs.append(x_cls)
+                continue
+            elif not self.is_fused:
                 x_cls = self.cls_preds[i](self.ia[i](cls_feat))
                 x_reg = self.reg_preds[i](self.ia[i](reg_feat))
                 x_obj = self.obj_preds[i](self.ia[i](reg_feat))
                 x[i] = torch.cat([x_reg, x_obj, x_cls], dim=1)
                 x[i] = self.im[i](x[i])
+
             else:
                 x_cls = self.cls_preds[i](cls_feat)
                 x_rego = self.rego_preds[i](reg_feat)
+
+
                 x[i] = torch.cat([x_rego, x_cls], dim=1)
 
             bs, _, ny, nx = x[i].shape  # x(bs,85,20,20) to x(bs,1,20,20,85)
             x[i] = x[i].view(bs, self.n_anchors, self.num_classes + 5, ny, nx).permute(0, 1, 3, 4, 2).contiguous()
 
+
             if not self.training:  # inference
                 # if self.grid[i].shape[2:4] != x[i].shape[2:4]:
-                self.grid[i] = self._make_grid(nx, ny).to(x[i].device)
+                if self.grid[i] is None or not self.export:
+                    self.grid[i] = self._make_grid(nx, ny).to(x[i].device)
 
                 y = x[i]
                 if not export:
@@ -118,14 +139,16 @@ class YOLOXDetect(nn.Module):
                     y[..., 2:4] = torch.exp(y[..., 2:4]) * self.stride[i]  # wh
                 else:
                     xy, wh, conf = y.split((2, 2, self.num_classes + 1), 4)  # y.tensor_split((2, 4, 5), 4)# torch 1.8.0
+
                     conf = conf.sigmoid()
                     xy = (xy + self.grid[i]) * self.stride[i]  # new xy
                     wh = torch.exp(wh) * self.stride[i]  # new wh
+
                     y = torch.cat((xy, wh, conf), 4)
 
                 z.append(y.view(bs, -1, self.num_classes + 5))
 
-        return x if self.training else torch.cat(z, 1)
+        return x if self.training else (regs, objs, confs) if self.rknn_export else torch.cat(z, 1)
 
     def fuse(self):
         # print("YOLOXDetect.fuse")
