@@ -36,6 +36,9 @@ $\quad$[5.5 export onnx & tensorrt](#export-onnx--tensorrt)</br>
 - Our pre-print paper is released on [**arxiv**](https://arxiv.org/abs/2302.07483).
 
 ## Updates
+**[2023/12/6]**
+1. [RKNN(for rk3588) deployment code](https://github.com/LSH9832/edgeyolo/tree/main/cpp/rknn) is released. <br>
+
 **[2023/11/23]** 
 1. [MNN deployment code](https://github.com/LSH9832/edgeyolo/tree/main/cpp/mnn) is released. <br>
 
@@ -54,7 +57,6 @@ $\quad$[5.5 export onnx & tensorrt](#export-onnx--tensorrt)</br>
 1. Publish TensorRT int8 export code with **Calibration** (**torch2trt** is required)
 
 ## Coming Soon
-- RKNN Models for RK3588
 - More different models
 - C++ code for TensorRT inference with UI
 - EdgeYOLO-mask for segmentation task
