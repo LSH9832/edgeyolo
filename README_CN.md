@@ -48,6 +48,7 @@ $\quad$[5.5 导出 onnx & tensorrt](#导出-onnx--tensorrt)</br>
 1. 发布带有校准训练过程的TensorRT int8模型导出代码 <br>
 
 ## 即将到来
+- 重构TensorRT部署带码，使其更方便使用
 - 更多不同的模型
 - 用于TensorRT推理的、带有界面的C++代码
 - 用于实例分割任务EdgeYOLO-mask模型
