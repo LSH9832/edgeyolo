@@ -1,6 +1,6 @@
 # EdgeYOLO RKNN deployment tool
 
-## note: this rknn code can only run in linux.
+## note: this rknn code can only run in linux and only for rk3588.
 
 | Model |   Size    | FPS<sup>RK3588, 3 cores<br/>int8 batch=1 <br/>include all process |                                                                                                     Download                                                                                                      |
 |:------|:---------:|:-----------------------------------------------------------------:|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|
