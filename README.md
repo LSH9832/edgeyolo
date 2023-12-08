@@ -269,18 +269,19 @@ python detect.py --trt
 #### for c++ inference
 ```shell
 # build
-cd cpp/console/linux
+cd cpp/tensorrt
 mkdir build && cd build
 cmake ..
-make -j4
+make
 
 # help
 ./yolo -?
 ./yolo --help
 
 # run
-# ./yolo [json file] [source] [--conf] [--nms] [--loop] [--no-label]
-./yolo ../../../../output/export/edgeyolo_coco/640x640_batch1_int8.json ~/Videos/test.avi --conf 0.25 --nms 0.5 --loop --no-label
+# ./yolo [engine file] [source] [--conf] [--nms] [--loop] [--no-label]
+# make sure your engine file and your yaml file are both in a same path
+./yolo ../../../output/export/edgeyolo_coco/640x640_batch1_int8.engine ~/Videos/test.avi --conf 0.25 --nms 0.5 --loop --no-label
 ```
 
 ## Cite EdgeYOLO
