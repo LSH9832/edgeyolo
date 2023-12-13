@@ -74,7 +74,7 @@ class Trainer(EdgeYOLO):
         self.data_type = torch.float16 if self.params["fp16"] else torch.float32
         self.world_size = len(params["device"])
 
-        self.max_epoch = self.params.get("max_epoch") or 300
+        self.max_epoch = max(self.params.get("max_epoch", 300), 1)
 
         self.max_iter = 0
         self.now_iter = 0
@@ -85,10 +85,10 @@ class Trainer(EdgeYOLO):
         self.print_data = {}
         self.is_distributed = self.world_size > 1
 
-        self.eval_interval = self.params.get("eval_interval") or 1
-        self.input_size = self.params.get("input_size") or (640, 640)
+        self.eval_interval = max(self.params.get("eval_interval", 1), 1)
+        self.input_size = self.params.get("input_size", (640, 640))
 
-        self.params["multiscale_range"] = self.params.get("multiscale_range") or 5
+        self.params["multiscale_range"] = self.params.get("multiscale_range", 5)
 
         min_size = int(self.input_size[0] / 32) - self.params["multiscale_range"]
         max_size = int(self.input_size[0] / 32) + self.params["multiscale_range"]
