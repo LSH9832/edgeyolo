@@ -71,7 +71,7 @@ class Trainer(EdgeYOLO):
         torch.cuda.set_device(self.device)
 
         self.data_show = [[k, v] for k, v in params.items()]
-        self.data_type = torch.float16 if self.params["fp16"] else torch.float32
+        self.data_type = torch.float32   # torch.float16 if self.params["fp16"] else 
         self.world_size = len(params["device"])
 
         self.max_epoch = max(self.params.get("max_epoch", 300), 1)
