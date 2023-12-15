@@ -7,7 +7,7 @@ Currently, this demo only supports models with batch = 1.
 ## requirements
 
 - libopencv-dev
-- yaml-cpp0.6
+- libyaml-cpp0.6
 
 ## build
 modify CMakeLists.txt and then
