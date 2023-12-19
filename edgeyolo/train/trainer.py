@@ -228,7 +228,8 @@ class Trainer(EdgeYOLO):
                 weight_decay=self.params["weight_decay"],
                 train_backbone=self.params["train_backbone"],
                 head_layer_num=self.params["train_start_layers"],
-                optimizer_type=self.params["optimizer"]
+                optimizer_type=self.params["optimizer"],
+                rank=self.rank
             )
             if self.is_match and self.params["load_optimizer_params"]:
                 if hasattr(self, "ckpt") and "optimizer" in self.ckpt:
