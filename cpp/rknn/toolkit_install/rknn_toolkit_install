@@ -4,18 +4,21 @@ if [ $# == 1 ]; then
 
   if [ "$1" == '36' ]; then
   
-    wget https://github.com/LSH9832/edgeyolo/releases/download/v1.0.2/rknn_toolkit2-1.5.2+b642f30c-cp36-cp36m-linux_x86_64.whl -O rknn.whl
+    wget https://github.com/LSH9832/edgeyolo/releases/download/v1.0.2/rknn_toolkit2-1.5.2+b642f30c-cp36-cp36m-linux_x86_64.whl
     pip3 install -r requirements36.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
+    pip3 install rknn_toolkit2-1.5.2+b642f30c-cp36-cp36m-linux_x86_64.whl --no-dependencies
   
   elif [ "$1" == '38' ]; then
   
-    wget https://github.com/LSH9832/edgeyolo/releases/download/v1.0.2/rknn_toolkit2-1.5.2+b642f30c-cp38-cp38-linux_x86_64.whl -O rknn.whl
+    wget https://github.com/LSH9832/edgeyolo/releases/download/v1.0.2/rknn_toolkit2-1.5.2+b642f30c-cp38-cp38-linux_x86_64.whl
     pip3 install -r requirements38-310.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
+    pip3 install rknn_toolkit2-1.5.2+b642f30c-cp38-cp38-linux_x86_64.whl --no-dependencies
   
   elif [ "$1" == '310' ]; then
   
-    wget https://github.com/LSH9832/edgeyolo/releases/download/v1.0.2/rknn_toolkit2-1.5.2+b642f30c-cp310-cp310-linux_x86_64.whl -O rknn.whl
+    wget https://github.com/LSH9832/edgeyolo/releases/download/v1.0.2/rknn_toolkit2-1.5.2+b642f30c-cp310-cp310-linux_x86_64.whl
     pip3 install -r requirements38-310.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
+    pip3 install rknn_toolkit2-1.5.2+b642f30c-cp310-cp310-linux_x86_64.whl --no-dependencies
   
   else
     
@@ -24,7 +27,7 @@ if [ $# == 1 ]; then
     
   fi
   
-  pip3 install rknn.whl --no-dependencies
+  
   
 
 else
