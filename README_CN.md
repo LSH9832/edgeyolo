@@ -168,6 +168,15 @@ names: ['person', 'bicycle', 'car', 'motorcycle', 'airplane', 'bus', 'train', 't
 python train.py --cfg ./params/train/train_XXX.yaml
 ```
 
+你可以通过"plot.py"绘制损失曲线、学习率曲线和准确度曲线(AP50 和 AP50:95)
+```shell
+python plot.py --all \                                   # 绘制所有曲线或 (--lr：学习率, --ap：准确度, --loss：损失)
+               -f ./output/train/edgeyolo_tiny_lrelu \   # 训练的输出文件夹路径或 (文件路径：--ap则使用output_path/eval.yaml， --lr和--loss则使用output_path/log.txt)
+               --no-show \                               # 不使用plt.show()显示曲线, 适用于无图形界面的设备（如云服务器），或你仅仅想保存图片
+               --save    \                               # 保存图片
+               --format pdf png svg jpg eps              # 保存图片的格式，支持多种格式同时保存
+```
+
 ### 验证
 ```shell
 python evaluate.py --weights edgeyolo_coco.pth --dataset params/dataset/XXX.yaml --batch 16 --device 0
