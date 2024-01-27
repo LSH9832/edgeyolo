@@ -177,6 +177,15 @@ names: ['person', 'bicycle', 'car', 'motorcycle', 'airplane', 'bus', 'train', 't
 python train.py --cfg ./params/train/train_XXX.yaml
 ```
 
+you can plot figures about loss, learning rate and precision(AP50 and AP50:95) curve using "plot.py"
+```shell
+python plot.py --all \                                   # plot all figures or (--lr, --ap, --loss)
+               -f ./output/train/edgeyolo_tiny_lrelu \   # train ouput path or (output_path/eval.yaml for --ap and output_path/log.txt for --lr and --loss)
+               --no-show \                               # do not show by plt.show(), (for device without desktop env, or you just want to save the figs)
+               --save    \                               # save figures
+               --format pdf png svg jpg eps              # save format
+```
+
 ### evaluate
 ```shell
 python evaluate.py --weights edgeyolo_coco.pth --dataset params/dataset/XXX.yaml --batch 16 --device 0
