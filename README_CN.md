@@ -177,6 +177,22 @@ python plot.py --all \                                   # 绘制所有曲线或
                --format pdf png svg jpg eps              # 保存图片的格式，支持多种格式同时保存
 ```
 
+<details>
+<summary>绘图将如下所示</summary>
+
+准确度曲线
+![ap](https://github.com/LSH9832/edgeyolo/assets/69880398/091cddab-c79e-44ae-bead-43391c7d8916)
+
+损失曲线
+![loss](https://github.com/LSH9832/edgeyolo/assets/69880398/51de4116-2c4a-4a35-ab95-62a41f791749)
+
+
+学习率曲线
+![lr](https://github.com/LSH9832/edgeyolo/assets/69880398/1be1d98d-5440-4e2d-8f8c-89aa9f07bd42)
+
+
+</details>
+
 ### 验证
 ```shell
 python evaluate.py --weights edgeyolo_coco.pth --dataset params/dataset/XXX.yaml --batch 16 --device 0
