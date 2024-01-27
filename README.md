@@ -186,6 +186,22 @@ python plot.py --all \                                   # plot all figures or (
                --format pdf png svg jpg eps              # save format
 ```
 
+<details>
+<summary>figs will be like the following</summary>
+
+ap
+![ap](https://github.com/LSH9832/edgeyolo/assets/69880398/091cddab-c79e-44ae-bead-43391c7d8916)
+
+loss
+![loss](https://github.com/LSH9832/edgeyolo/assets/69880398/51de4116-2c4a-4a35-ab95-62a41f791749)
+
+
+learning rate
+![lr](https://github.com/LSH9832/edgeyolo/assets/69880398/1be1d98d-5440-4e2d-8f8c-89aa9f07bd42)
+
+
+</details>
+
 ### evaluate
 ```shell
 python evaluate.py --weights edgeyolo_coco.pth --dataset params/dataset/XXX.yaml --batch 16 --device 0
