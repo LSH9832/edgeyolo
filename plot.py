@@ -21,6 +21,7 @@ def get_args():
     parser.add_argument("-f", "--file", type=str, required=True)
 
     parser.add_argument("-s", "--save", action="store_true")
+    parser.add_argument("--format", type=str, default=DEFAULT_SUFFIX, nargs="+")
     parser.add_argument("--no-show", action="store_true")
     return parser.parse_args()
 
@@ -28,12 +29,12 @@ def get_args():
 if __name__ == '__main__':
     args = get_args()
     if args.ap:
-        plot_ap(args.file, show=not args.no_show, save=args.save, suffix=DEFAULT_SUFFIX, figsize=DEFAULT_SIZE)
+        plot_ap(args.file, show=not args.no_show, save=args.save, suffix=args.format, figsize=DEFAULT_SIZE)
     elif args.loss:
-        plot(args.file, plot_type="loss", show=not args.no_show, save=args.save, suffix=DEFAULT_SUFFIX, figsize=DEFAULT_SIZE)
+        plot(args.file, plot_type="loss", show=not args.no_show, save=args.save, suffix=args.format, figsize=DEFAULT_SIZE)
     elif args.lr:
-        plot(args.file, plot_type="lr", show=not args.no_show, save=args.save, suffix=DEFAULT_SUFFIX, figsize=DEFAULT_SIZE)
+        plot(args.file, plot_type="lr", show=not args.no_show, save=args.save, suffix=args.format, figsize=DEFAULT_SIZE)
     elif args.all:
         if osp.isfile(args.file):
             args.file = osp.dirname(args.file)
-        plot_all(args.file, show=not args.no_show, figsize=DEFAULT_SIZE, save=args.save, suffix=DEFAULT_SUFFIX)
+        plot_all(args.file, show=not args.no_show, figsize=DEFAULT_SIZE, save=args.save, suffix=args.format)
