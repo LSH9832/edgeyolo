@@ -32,12 +32,14 @@ def plot(file, plot_type="loss", show=True, figsize=DEFAULT_SIZE, save=False, su
     lrs = []
     for line in open(file, encoding="utf8").read().split("\n"):
         if "epoch:" in line and "iter:" in line and "loss:" in line:
+            if "l1:" not in line:
+                losses["l1 loss"].append(0.)
             now_epoch = 0
             for element in line.split("- ")[-1].split():
                 if element.startswith("epoch:"):
                     now_epoch = float(element.split(":")[-1].split("/")[0])
                 if element.startswith("iter:"):
-                    point = eval(element.split(":")[-1])
+                    point = float(eval(element.split(":")[-1]))
                     now_value = now_epoch - 1 + point
                     if len(epochs) and now_value <= epochs[-1]:
                         idx = 0
@@ -63,7 +65,7 @@ def plot(file, plot_type="loss", show=True, figsize=DEFAULT_SIZE, save=False, su
                         losses["l1 loss"].append(float(element.split(":")[-1]))
                 elif plot_type == "lr":
                     if "lr:" in element:
-                        lrs.append(eval(element.split(":")[-1]))
+                        lrs.append(float(eval(element.split(":")[-1])))
 
     if plot_type == "loss":
         fig = plt.figure("loss", figsize=figsize)
@@ -126,7 +128,8 @@ def plot_ap(file, show=True, figsize=DEFAULT_SIZE, save=False, suffix="pdf"):
 
 def plot_all(path, show=False, figsize=DEFAULT_SIZE, save=False, suffix="pdf"):
     if save:
-        logger.info(f"figs will be saved to {osp.join(path, 'figures')}, please wait for seconds and see")
+        _p = osp.join(path, 'figures').replace('\\', '/')
+        logger.info(f"figs will be saved to {_p}, please wait for seconds and see")
     try:
         plot(osp.join(path, "log.txt"), plot_type="loss", show=False, save=save, suffix=suffix, figsize=figsize)
         plot(osp.join(path, "log.txt"), plot_type="lr", show=False, save=save, suffix=suffix, figsize=figsize)
