@@ -43,11 +43,12 @@ def plot(file, plot_type="loss", show=True, figsize=DEFAULT_SIZE, save=False, su
                         idx = 0
                         while epochs[idx-1] >= now_value:
                             idx -= 1
+                        epochs = epochs[:idx]
                         for k in losses.keys():
                             losses[k] = losses[k][:idx]
                         lrs = lrs[:idx]
-                    else:
-                        epochs.append(now_value)
+
+                    epochs.append(now_value)
 
                 if plot_type == "loss":
                     if "total:" in element:
@@ -129,7 +130,9 @@ def plot_all(path, show=False, figsize=DEFAULT_SIZE, save=False, suffix="pdf"):
     try:
         plot(osp.join(path, "log.txt"), plot_type="loss", show=False, save=save, suffix=suffix, figsize=figsize)
         plot(osp.join(path, "log.txt"), plot_type="lr", show=False, save=save, suffix=suffix, figsize=figsize)
-        plot_ap(osp.join(path, "eval.yaml"), show=show, save=save, suffix=suffix, figsize=figsize)
+        plot_ap(osp.join(path, "eval.yaml"), show=False, save=save, suffix=suffix, figsize=figsize)
     except Exception as e:
         logger.error(f"plot error: {e}")
 
+    if show:
+        plt.show()
