@@ -1,4 +1,7 @@
+
+
 ![](assets/visdrone.jpg)
+
 # <a href="https://www.bit.edu.cn"><img src="assets/bit.png" align="left" height="60" width="60" ></a> EdgeYOLO: anchor-free, edge-friendly
 
 <div align="center">
@@ -318,6 +321,7 @@ make
   year={2023}
 }
 ```
+[![Star History Chart](https://api.star-history.com/svg?repos=LSH9832/edgeyolo&type=Timeline)](https://star-history.com/#LSH9832/edgeyolo&Timeline)
 
 ## Bugs found currently
 - Sometimes it raises error as follows during training. Reduce pytorch version to 1.8.0 might solve this problem.
@@ -330,3 +334,5 @@ For debugging consider passing CUDA_LAUNCH_BLOCKING=1.
 ```
 - For DOTA dataset, we only support single GPU training mode now, please do not train DOTA dataset with distributed mode or model can not be trained correctly.
 - Sometimes converting to TensorRT fp16 model with 8.4.X.X or higher version might lose a lot of precision, please use TensorRT Verson 7.X.X.X or 8.2.X.X
+
+
