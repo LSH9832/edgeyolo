@@ -118,6 +118,26 @@ python setup.py install
 ```
 or to make sure you use the same version of torch2trt as ours, [download here](https://github.com/LSH9832/edgeyolo/releases/download/v1.0.0/torch2trt.zip)
 
+#### if you want to use docker, then
+- download docker image from [Baiduyun](), pwd: XXXX
+```shell
+docker import edgeyolo_deploy.tar.gz > edgeyolo:latest
+```
+
+- run docker
+```shell
+docker run -it \
+           --runtime=nvidia \
+           -e NVIDIA_DRIVER_CAPABILITIES=compute,utility \
+           -e NVIDIA_VISIBLE_DEVICES=all \
+           --shm-size 15g \
+           -w /code \
+           -v "/path/to/your/edgeyolo/parent_dir":/code \
+           -v "/path/to/your/dataset/parent_dir":/dataset \
+           edgeyolo:latest
+```
+then you can use "[docker_export.py](https://github.com/LSH9832/edgeyolo/blob/main/docker_export.py)" instead of "[export.py](https://github.com/LSH9832/edgeyolo/blob/main/export.py)"
+
 ### inference
 
 **First [download weights here](https://github.com/LSH9832/edgeyolo/releases/tag/v0.0.0)**
