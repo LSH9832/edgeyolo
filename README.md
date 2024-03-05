@@ -121,7 +121,7 @@ or to make sure you use the same version of torch2trt as ours, [download here](h
 #### if you want to use docker, then
 - download docker image from [Baiduyun](), pwd: XXXX
 ```shell
-docker import edgeyolo_deploy.tar.gz > edgeyolo:latest
+docker import edgeyolo_deploy.tar.gz edgeyolo:latest
 ```
 
 - run docker
