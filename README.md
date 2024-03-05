@@ -60,6 +60,7 @@ $\quad$[5.5 export onnx & tensorrt](#export-onnx--tensorrt)</br>
 1. Publish TensorRT int8 export code with **Calibration** (**torch2trt** is required)
 
 ## Coming Soon
+- docker enviroment for training and exporting models for edge device. (RKNN, Horizon J5, Jetson...)
 - Rebuild TensorRT deployment c++ code for easy to use.
 - More different models
 - C++ code for TensorRT inference with UI
