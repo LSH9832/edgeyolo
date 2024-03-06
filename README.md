@@ -119,7 +119,7 @@ python setup.py install
 or to make sure you use the same version of torch2trt as ours, [download here](https://github.com/LSH9832/edgeyolo/releases/download/v1.0.0/torch2trt.zip)
 
 #### if you want to use docker, then
-- download docker image from [Baiduyun, 14.3G](), pwd: XXXX
+- download docker image from [Baiduyun, 14.3G](https://pan.baidu.com/s/1D9ReGtI-iM79RoEGat1eAw?pwd=ujar), pwd: ujar
 ```shell
 docker import edgeyolo_deploy.tar.gz edgeyolo:latest
 ```
