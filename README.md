@@ -40,7 +40,7 @@ $\quad$[5.5 export onnx & tensorrt](#export-onnx--tensorrt)</br>
 
 ## Updates
 **[2024/3/6]**
-1. [docker enviroment](https://github.com/LSH9832/edgeyolo/blob/main/README.md#if-you-want-to-use-docker-then) for training and exporting models for edge device. (RKNN, Horizon J5, Jetson...)
+1. [docker enviroment](#if-you-want-to-use-docker-then) for training and exporting models for edge device. (RKNN, Horizon J5, Jetson...)
 
 **[2023/12/6]**
 1. [RKNN(for rk3588) deployment code](https://github.com/LSH9832/edgeyolo/tree/main/cpp/rknn) is released. <br>
