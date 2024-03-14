@@ -63,7 +63,7 @@ $\quad$[5.5 export onnx & tensorrt](#export-onnx--tensorrt)</br>
 1. Publish TensorRT int8 export code with **Calibration** (**torch2trt** is required)
 
 ## Coming Soon
-- upload [tools/amct_onnx2om.py](https://github.com/LSH9832/edgeyolo/blob/main/tools/amct_onnx2om.py) that exports onnx to om models for Huawei Ascend devices(such as Ascend310) and [cpp deployment code](https://github.com/LSH9832/edgeyolo/blob/main/cpp/ascend).
+- upload [tools/amct_onnx2om.py](https://github.com/LSH9832/edgeyolo/blob/main/tools/amct_onnx2om.py) that exports onnx to om models for Huawei Ascend devices(such as Ascend310) and [cpp deployment code](https://github.com/LSH9832/edgeyolo/blob/main/cpp/ascend).(Please note that you must have the corresponding Python library provided on the Huawei official website, and only users who purchase the corresponding hardware have download permissions)
 - Rebuild TensorRT deployment c++ code for easy to use.
 - More different models
 - C++ code for TensorRT inference with UI
