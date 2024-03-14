@@ -27,6 +27,9 @@ $\quad$[5.5 导出 onnx & tensorrt](#导出-onnx--tensorrt)</br>
 - 我们的论文（预印版）已在[**arxiv**](https://arxiv.org/abs/2302.07483)公布
 
 ## 更新
+**[2024/3/6]** <br>
+1. 我们上传了用于方便训练和模型导出的[docker镜像](#如果你想使用docker那么)，可以方便地将模型一键导出为RKNN，MNN，地平线J5，Jetson等平台支持的部署模型
+
 **[2023/12/6]** <br>
 1. [RKNN模型推理部署代码(仅用于RK3588芯片)](https://github.com/LSH9832/edgeyolo/tree/main/cpp/rknn)已发布。 <br>
 
@@ -48,6 +51,7 @@ $\quad$[5.5 导出 onnx & tensorrt](#导出-onnx--tensorrt)</br>
 1. 发布带有校准训练过程的TensorRT int8模型导出代码 <br>
 
 ## 即将到来
+- 我们将上传[tools/amct_onnx2om.py](https://github.com/LSH9832/edgeyolo/blob/main/tools/amct_onnx2om.py) 该脚本用于将onnx模型转换为华为昇腾系列设备上支持的om模型(比如昇腾310)，并且发布[c++部署代码示例](https://github.com/LSH9832/edgeyolo/blob/main/cpp/ascend). （注意，你必须拥有华为官网提供的相应python库，仅购买相应硬件的用户才有下载权限）
 - 用于训练和一键式导出边缘设备支持的模型（RKNN/地平线J5/Jetson等）
 - 重构TensorRT部署代码，使其更方便使用
 - 更多不同的模型
@@ -104,6 +108,28 @@ cd torch2trt
 python setup.py install
 ```
 或者为了保证和我们用的是同一个版本的torch2trt, [请在这里下载](https://github.com/LSH9832/edgeyolo/releases/download/v1.0.0/torch2trt.zip)
+
+#### 如果你想使用docker那么
+
+- 从[百度网盘, 14.3G](https://pan.baidu.com/s/1D9ReGtI-iM79RoEGat1eAw?pwd=ujar)下载docker镜像, 分享码: ujar
+- 然后导入镜像
+```shell
+docker import edgeyolo_deploy.tar.gz edgeyolo:latest
+```
+
+- 运行镜像
+```shell
+docker run -it \
+           --runtime=nvidia \
+           -e NVIDIA_DRIVER_CAPABILITIES=compute,utility \
+           -e NVIDIA_VISIBLE_DEVICES=all \
+           --shm-size 15g \
+           -w /code \
+           -v "/path/to/your/edgeyolo/parent_dir":/code \
+           -v "/path/to/your/dataset/parent_dir":/dataset \
+           edgeyolo:latest
+```
+之后你就可以在docker镜像里使用 "[docker_export.py](https://github.com/LSH9832/edgeyolo/blob/main/docker_export.py)" 导出模型而不是使用 "[export.py](https://github.com/LSH9832/edgeyolo/blob/main/export.py)" 了，这将会更加方便。
 
 ### 推理
 
