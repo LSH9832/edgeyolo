@@ -27,6 +27,9 @@ $\quad$[5.5 导出 onnx & tensorrt](#导出-onnx--tensorrt)</br>
 - 我们的论文（预印版）已在[**arxiv**](https://arxiv.org/abs/2302.07483)公布
 
 ## 更新
+**[2024/3/16]** <br>
+1. 我们将上传[demo/amct_onnx2om.py](https://github.com/LSH9832/edgeyolo/blob/main/demo/amct_onnx2om.py) 该脚本用于将onnx模型转换为华为昇腾系列设备上支持的om模型(比如昇腾310)，并且发布[c++部署代码示例](https://github.com/LSH9832/edgeyolo/blob/main/cpp/ascend). （注意，你必须拥有华为官网提供的相应python库，部分依赖仅购买相应硬件的用户才有下载权限）
+
 **[2024/3/6]** <br>
 1. 我们上传了用于方便训练和模型导出的[docker镜像](#如果你想使用docker那么)，可以方便地将模型一键导出为RKNN，MNN，地平线J5，Jetson等平台支持的部署模型
 
@@ -51,7 +54,6 @@ $\quad$[5.5 导出 onnx & tensorrt](#导出-onnx--tensorrt)</br>
 1. 发布带有校准训练过程的TensorRT int8模型导出代码 <br>
 
 ## 即将到来
-- 我们将上传[demo/amct_onnx2om.py](https://github.com/LSH9832/edgeyolo/blob/main/demo/amct_onnx2om.py) 该脚本用于将onnx模型转换为华为昇腾系列设备上支持的om模型(比如昇腾310)，并且发布[c++部署代码示例](https://github.com/LSH9832/edgeyolo/blob/main/cpp/ascend). （注意，你必须拥有华为官网提供的相应python库，仅购买相应硬件的用户才有下载权限）
 - 用于训练和一键式导出边缘设备支持的模型（RKNN/地平线J5/Jetson等）
 - 重构TensorRT部署代码，使其更方便使用
 - 更多不同的模型
