@@ -40,7 +40,7 @@ $\quad$[5.5 export onnx & tensorrt](#export-onnx--tensorrt)</br>
 
 ## Updates
 **[2024/3/16]**
-1. upload [demo/amct_onnx2om.py](https://github.com/LSH9832/edgeyolo/blob/main/demo/amct_onnx2om.py) that exports onnx to om models for Huawei Ascend devices(such as Ascend310) and [cpp deployment code](https://github.com/LSH9832/edgeyolo/blob/main/cpp/ascend).(Please note that you must have the corresponding Python library provided on the Huawei official website, and only users who purchase the corresponding hardware have download permissions)
+1. upload [demo/amct_onnx2om.py](https://github.com/LSH9832/edgeyolo/blob/main/demo/amct_onnx2om.py) that exports onnx to om models for Huawei Ascend devices(such as Ascend310) and [cpp deployment code](https://github.com/LSH9832/edgeyolo/blob/main/cpp/ascend).(Please note that you must have the corresponding libraries and tools provided on the Huawei official website, part of which only clients who purchase the corresponding hardware have download permissions)
 
 **[2024/3/6]**
 1. [docker enviroment](#if-you-want-to-use-docker-then) for training and exporting models for edge device. (RKNN, Horizon J5, Jetson...)
