@@ -138,7 +138,7 @@ def main():
 
         import onnx
         file_name += "_for_rknn" if args.rknn else "_for_j5" if args.j5 \
-                     else "_for_mnn" if args.mnn else ""
+                     else "_for_mnn" if args.mnn else "_int8" if args.int8 else ""
         onnx_file = file_name + ".onnx"
         
         torch.onnx.export(model,
