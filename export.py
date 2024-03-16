@@ -130,7 +130,7 @@ def main():
                 output_names.extend([f"{otype}{i}" for i in range(3)])
 
         import onnx
-        onnx_file = file_name + ("_for_rknn.onnx" if args.rknn else ".onnx")
+        onnx_file = file_name + ("_for_rknn" if args.rknn else "_int8" if args.int8 else "") + ".onnx"
         torch.onnx.export(model,
                           x,
                           onnx_file,
