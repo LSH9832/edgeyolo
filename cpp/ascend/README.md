@@ -33,7 +33,6 @@ make -j4
 ```yaml
 # cfg/model.yaml
 model_path: /absolute/path/to/your/model.om
-rerank: [1, 4, 7, 2, 5, 8, 0, 3, 6]
 names: ['person', 'bicycle', 'car', 'motorcycle', 'airplane', 'bus', 'train', 'truck', 'boat', 'traffic light',
         'fire hydrant', 'stop sign', 'parking meter', 'bench', 'bird', 'cat', 'dog', 'horse', 'sheep', 'cow',
         'elephant', 'bear', 'zebra', 'giraffe', 'backpack', 'umbrella', 'handbag', 'tie', 'suitcase', 'frisbee',
@@ -43,17 +42,6 @@ names: ['person', 'bicycle', 'car', 'motorcycle', 'airplane', 'bus', 'train', 't
         'potted plant', 'bed', 'dining table', 'toilet', 'tv', 'laptop', 'mouse', 'remote', 'keyboard', 'cell phone',
         'microwave', 'oven', 'toaster', 'sink', 'refrigerator', 'book', 'clock', 'vase', 'scissors', 'teddy bear',
         'hair drier', 'toothbrush']
-```
-
-- then run test and view output rank
-```bash
-cd bin
-./ascend_det --view-only --cfg cfg/model.yaml --source /path/to/your/video.mp4
-
-# the following will display origin output rank
-# make sure output is reranked as:
-#    [3×reg(4), 3×obj(1), 3×cls(number of classes, coco is 80)]
-# which is writen in cfg/model.yaml, just modify it and make it correct
 ```
 
 - finally, run this demo
