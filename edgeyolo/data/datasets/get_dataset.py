@@ -4,6 +4,7 @@ from .coco import COCODataset
 from .dota import DotaDataset
 from .visdrone import VisDroneDataset
 from .yolo import YOLODataset
+from .samlabel import SAMLabelDataset
 import os.path as osp
 
 
@@ -12,7 +13,8 @@ datasets = {
     "coco": COCODataset,
     "dota": DotaDataset,
     "visdrone": VisDroneDataset,
-    "yolo": YOLODataset
+    "yolo": YOLODataset,
+    "samlabel": SAMLabelDataset
 }
 
 
