@@ -1,0 +1,24 @@
+type: "samlabel"
+
+dataset_path: "E:/dataset/my_sam_dataset"
+
+kwargs:
+  suffix: "jpg"
+  use_cache: true
+
+train:
+  image_dir: "images/train"
+  label: "labels/train"
+
+val:
+  image_dir: "images/val"
+  label: "labels/val"
+
+test:
+  test_dir: "images/test"
+
+segmentaion_enabled: true
+
+names: ['person','rider','car','bus','truck','bike',
+        'motor', 'traffic_light_green', 'traffic_light_red', 
+        'traffic_light_yellow', 'traffic_light_none', 'traffic_sign', 'train']
