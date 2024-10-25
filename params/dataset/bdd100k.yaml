@@ -19,6 +19,6 @@ test:
 
 segmentaion_enabled: false
 
-names: ['person','rider','car','bus','truck','bike','motor',
-        'traffic_light_green', 'traffic_light_red', 'traffic_light_yellow', 'traffic_light_none', 'traffic_sign',
-        'train']
+names: ['person','rider','car','bus','truck','bike',
+        'motor', 'traffic_light_green', 'traffic_light_red', 
+        'traffic_light_yellow', 'traffic_light_none', 'traffic_sign', 'train']
