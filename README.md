@@ -135,7 +135,8 @@ python detect.py --weights edgeyolo_coco.pth --source XXX.mp4 --fp16
 
 # all options
 python detect.py --weights edgeyolo_coco.pth 
-                 --source /XX/XXX.mp4     # or dir with images, such as /dataset/coco2017/val2017    (jpg/jpeg, png, bmp, webp is available)
+                 --source /XX/XXX.mp4     # or dir with images, or rosbag (xxx.bag)
+                 --topic /camera/XXXX     # fill this option only if use images from ros or rosbag
                  --conf-thres 0.25 
                  --nms-thres 0.5 
                  --input-size 640 640 
