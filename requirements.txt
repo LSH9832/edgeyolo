@@ -13,6 +13,7 @@ pandas
 pathlib
 pillow
 matplotlib
+mahotas
 seaborn
 scipy
 onnx
