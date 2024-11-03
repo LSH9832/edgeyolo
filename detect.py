@@ -24,7 +24,7 @@ def get_args():
     parser.add_argument("--fp16", action="store_true", help="fp16")
     parser.add_argument("--no-fuse", action="store_true", help="do not fuse model")
     parser.add_argument("--input-size", type=int, nargs="+", default=[640, 640], help="input size: [height, width]")
-    parser.add_argument("-s", "--source", type=str, default="E:/videos/test.avi", help="video source or image dir")
+    parser.add_argument("-s", "--source", type=str, default=None, help="video source/image dir/rosbag")
     parser.add_argument("--trt", action="store_true", help="is trt model")
     parser.add_argument("--legacy", action="store_true", help="if img /= 255 while training, add this command.")
     parser.add_argument("--use-decoder", action="store_true", help="support original yolox model v0.2.0")
@@ -33,7 +33,134 @@ def get_args():
     parser.add_argument("--save-dir", type=str, default="./output/detect/imgs/", help="image result save dir")
     parser.add_argument("--fps", type=int, default=99999, help="max fps")
 
+    parser.add_argument("--topic", type=str, default=None, help="ros or rosbag image topic")
+
     return parser.parse_args()
+
+
+class ROSBase:
+
+    def __init__(self):
+        import numpy as np
+        self.np = np
+
+    def _compressedImage2CVMat(self, msg):
+        return cv2.imdecode(self.np.frombuffer(msg.data, dtype=self.np.uint8), cv2.IMREAD_COLOR)
+
+
+    def _Image2CVMat(self, msg):
+        return self.np.reshape(self.np.fromstring(msg.data, dtype="bgr8"), [msg.height, msg.width, 3])
+    
+
+
+class ROSBagCapture(ROSBase):
+
+    def __init__(self, bagfile: str, topic: str):
+        super(ROSBagCapture, self).__init__()
+        from rosbag import Bag
+        
+        self.bag = Bag(bagfile)
+        self.len = self.bag.get_message_count(topic)
+        self.iter = self.bag.read_messages(topic)
+        self.idx = 0
+        self.first = True
+        self.compressed = True
+
+    def isOpened(self):
+        return self.idx < self.len - 1
+
+    def read(self):
+        if self.isOpened():
+            topic, msg, timestamp = next(self.iter)
+            self.idx += 1
+            if self.first:
+                self.first = False
+                self.compressed = hasattr(msg, "format")
+            
+            img = (self._compressedImage2CVMat if self.compressed else self._Image2CVMat)(msg)
+            return img is not None, img
+        else:
+            return False, None
+        
+
+class ROSCapture(ROSBase):
+
+    def __init__(self, topic):
+        super().__init__()
+        import rospy
+        import rostopic
+        from sensor_msgs.msg import CompressedImage, Image
+        img_type, *_ = rostopic.get_topic_type(topic)
+        self.img = None
+        assert img_type.lower().endswith("image")
+        self.compressed = img_type.lower().endswith("compressedimage")
+        self.updated = False
+        rospy.init_node('edgeyolo_detector', anonymous=True)
+        rospy.Subscriber(topic, CompressedImage if self.compressed else Image, self.__imageReceivedCallback)
+
+    def __imageReceivedCallback(self, msg):
+        self.img = (self._compressedImage2CVMat if self.compressed else self._Image2CVMat)(msg)
+        self.updated = True
+
+    def isOpened(self):
+        return True
+    
+    def read(self):
+        while not self.updated:
+            pass
+        self.updated = False
+        return True, self.img
+
+
+def setup_source(args):
+    if isinstance(args.source, str) and os.path.isdir(args.source):
+
+        class DirCapture:
+
+            def __init__(self, dir_name):
+                self.imgs = []
+                for img_type in ["jpg", "png", "jpeg", "bmp", "webp"]:
+                    self.imgs += sorted(glob(os.path.join(dir_name, f"*.{img_type}")))
+
+            def isOpened(self):
+                return bool(len(self.imgs))
+
+            def read(self):
+                print(self.imgs[0])
+                now_img = cv2.imread(self.imgs[0])
+                self.imgs = self.imgs[1:]
+                return now_img is not None, now_img
+
+        source = DirCapture(args.source)
+        delay = 0
+    else:
+        if args.source is not None and args.source.lower().endswith(".bag"):
+            cmd_check_topic = f"rosbag info {args.source}"
+            if args.topic is None:
+                str_show = ""
+                for line in os.popen(cmd_check_topic).read().split("topics:")[-1].split("\n"):
+                    if len(line):
+                        str_show += line.split()[0] + "\n"
+
+                logger.error(f"choose one topic from the following topics:\n{str_show[:-1]}")
+                return
+            source = ROSBagCapture(args.source, args.topic)
+            delay = 0
+        elif args.source is None:
+            if args.topic is None:
+                str_show = ""
+                for line in os.popen(cmd_check_topic).read().split("topics:")[-1].split("\n"):
+                    if len(line):
+                        str_show += line.split()[0] + "\n"
+
+                logger.error(f"choose one topic from the following topics:\n{str_show[:-1]}")
+                return
+            source = ROSCapture(args.topic)
+            delay = 1
+        else:
+            source = cv2.VideoCapture(int(args.source) if args.source.isdigit() else args.source)
+            delay = 1
+    return source, delay
 
 
 def detect_single(args):
@@ -55,29 +182,7 @@ def detect_single(args):
         args.batch = detect.batch_size
 
     # source loader setup
-    if os.path.isdir(args.source):
-
-        class DirCapture:
-
-            def __init__(self, dir_name):
-                self.imgs = []
-                for img_type in ["jpg", "png", "jpeg", "bmp", "webp"]:
-                    self.imgs += sorted(glob(os.path.join(dir_name, f"*.{img_type}")))
-
-            def isOpened(self):
-                return bool(len(self.imgs))
-
-            def read(self):
-                print(self.imgs[0])
-                now_img = cv2.imread(self.imgs[0])
-                self.imgs = self.imgs[1:]
-                return now_img is not None, now_img
-
-        source = DirCapture(args.source)
-        delay = 0
-    else:
-        source = cv2.VideoCapture(int(args.source) if args.source.isdigit() else args.source)
-        delay = 1
+    source, delay = setup_source(args)
 
     all_dt = []
     dts_len = 300 // args.batch
@@ -158,29 +263,7 @@ def inference(msg, results, args):
         args.batch = detect.batch_size
 
     # source loader setup
-    if os.path.isdir(args.source):
-
-        class DirCapture:
-
-            def __init__(self, dir_name):
-                self.imgs = []
-                for img_type in ["jpg", "png", "jpeg", "bmp", "webp"]:
-                    self.imgs += sorted(glob(os.path.join(dir_name, f"*.{img_type}")))
-
-            def isOpened(self):
-                return bool(len(self.imgs))
-
-            def read(self):
-                print(self.imgs[0])
-                now_img = cv2.imread(self.imgs[0])
-                self.imgs = self.imgs[1:]
-                return now_img is not None, now_img
-
-        source = DirCapture(args.source)
-        delay = 0
-    else:
-        source = cv2.VideoCapture(int(args.source) if args.source.isdigit() else args.source)
-        delay = 1
+    source, delay = setup_source(args)
 
     msg["class_names"] = detect.class_names
     msg["delay"] = delay
@@ -311,3 +394,4 @@ def detect_multi(args):
 if __name__ == '__main__':
     opt = get_args()
     (detect_multi if opt.mp else detect_single)(opt)
+    print()
