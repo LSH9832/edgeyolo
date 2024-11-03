@@ -130,7 +130,7 @@ python detect.py --weights edgeyolo_coco.pth --source XXX.mp4 --fp16
 # 完整命令参数
 python detect.py --weights edgeyolo_coco.pth      # 权重文件
                  --source /XX/XXX.mp4             # 或网络视频流地址，或目录下全部为图片的文件夹, 或rosbag（xxx.bag）
-                 --topic                          # 仅当使用rosbag或从ros中某个话题提取图片时使用该选项
+                 --topic  /camera/xxx             # 仅当使用rosbag或从ros中某个话题提取图片时使用该选项
                  --conf-thres 0.25                # 置信度阈值
                  --nms-thres 0.5                  # 重合度阈值
                  --input-size 640 640             # 输入大小
