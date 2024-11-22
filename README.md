@@ -8,7 +8,10 @@
 
 [简体中文](README_CN.md)
 
+[![arXiv](https://img.shields.io/badge/arXiv-2302.07483-<COLOR>.svg)](https://arxiv.org/abs/2302.07483)
+
 </div>
+
 
 
 #### Tool Recommendation: SAM([Segment Anything Model](https://github.com/facebookresearch/segment-anything)) assisted labeling tools: [SAMLabeler Pro](https://github.com/LSH9832/SAMLabelerPro)，multi-person remote labeling is supported.
