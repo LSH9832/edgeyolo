@@ -8,8 +8,10 @@ import torch.cuda
 import argparse
 import cv2
 import os
+import numpy as np
 
 from edgeyolo.detect import Detector, TRTDetector, draw
+from copy import deepcopy
 
 
 def get_args():
@@ -138,23 +140,66 @@ def setup_source(args):
             cmd_check_topic = f"rosbag info {args.source}"
             if args.topic is None:
                 str_show = ""
+                topics = []
+                count = 0
                 for line in os.popen(cmd_check_topic).read().split("topics:")[-1].split("\n"):
                     if len(line):
-                        str_show += line.split()[0] + "\n"
-
+                        contents = line.split()
+                        if contents[-1] not in ["sensor_msgs/CompressedImage", "sensor_msgs/Image"]:
+                            continue
+                        # print(line)
+                        count += 1
+                        topics.append(contents[0])
+                        str_show += f"{count}. " + topics[-1] + "\n"
+                        
                 logger.error(f"choose one topic from the following topics:\n{str_show[:-1]}")
-                return
+                idx = -1
+                while True:
+                    try:
+                        idx = int(input(f"input 1~{count} as your choise and then press enter(-1 to exit):\n>>> "))
+                        if idx == -1:
+                            break
+                        if idx > count or idx < 1:
+                            assert False
+                        args.topic = topics[idx-1]
+                        break
+                    except:
+                        print("wrong input!")
+                        pass
+                # return
+                if idx == -1:
+                    exit(0)
             source = ROSBagCapture(args.source, args.topic)
             delay = 0
         elif args.source is None:
             if args.topic is None:
                 str_show = ""
-                for line in os.popen(cmd_check_topic).read().split("topics:")[-1].split("\n"):
+                cmd_check_topic = "rostopic list"
+                count = 0
+                topics = []
+                for line in os.popen(cmd_check_topic).read().split("\n"):
                     if len(line):
-                        str_show += line.split()[0] + "\n"
+                        if os.popen(f"rostopic type {line}").read().split("\n")[0] in ["sensor_msgs/CompressedImage", "sensor_msgs/Image"]:
+                            count += 1
+                            topics.append(line.split()[0])
+                            str_show += f"{count}. " + topics[-1] + "\n"
 
                 logger.error(f"choose one topic from the following topics:\n{str_show[:-1]}")
-                return
+                while True:
+                    try:
+                        idx = int(input(f"input 1~{count} as your choise and then press enter(-1 to exit):\n>>> "))
+                        if idx == -1:
+                            break
+                        if idx > count or idx < 1:
+                            assert False
+                        args.topic = topics[idx-1]
+                        break
+                    except:
+                        print("wrong input!")
+                        pass
+                # return
+                if idx == -1:
+                    exit(0)
             source = ROSCapture(args.topic)
             delay = 1
         else:
@@ -221,9 +266,9 @@ def detect_single(args):
 
         # [print(result.shape) for result in results]
 
-        imgs = draw(frames, results, detect.class_names, 2, draw_label=not args.no_label)
+        imgs = draw(deepcopy(frames), results, detect.class_names, 2, draw_label=not args.no_label)
         # print([im.shape for im in frames])
-        for img in imgs:
+        for i, img in enumerate(imgs):
             # print(img.shape)
             cv2.imshow("EdgeYOLO result", img)
             count += 1
@@ -237,13 +282,22 @@ def detect_single(args):
                 if not exist_save_dir:
                     os.makedirs(args.save_dir, exist_ok=True)
                     exist_save_dir = True
-                file_name = f"{str(date.now()).split('.')[0].replace(':', '').replace('-', '').replace(' ', '')}.jpg"
+                fn = f"{str(date.now()).split('.')[0].replace(':', '').replace('-', '').replace(' ', '')}"
+                file_name = fn + ".jpg"
+                # ori_img_name = fn + "_ori.jpg"
+                # output_file = fn + ".npy"
+                
                 cv2.imwrite(os.path.join(args.save_dir, file_name), img)
+                # cv2.imwrite(os.path.join(args.save_dir, ori_img_name), frames[i])
+
+                # np.save(os.path.join(args.save_dir, output_file), detect.net_outputs)
+                
                 logger.info(f"image saved to {file_name}.")
         if key in [ord("q"), 27]:
-            cv2.destroyAllWindows()
+            # cv2.destroyAllWindows()
             break
-
+    print()
+    cv2.destroyAllWindows()
     logger.info(f"\ntotal frame: {count}, total average latency: {(time.time() - t_start) * 1000 / count - 1}ms")
 
 
