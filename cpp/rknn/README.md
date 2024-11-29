@@ -44,6 +44,8 @@ output/export/edgeyolo_tiny_lrelu_coco/384x640_batch1.yaml             # config 
 
 ## 2. Run rknn model in your rk3588 device(arm64)
 
+if you want to use the newest rknn library, see [official website](https://github.com/airockchip/rknn-toolkit2)
+
 - copy dir '**cpp/rknn**' to your rk3588 device.
 - cd rknn
 - copy converted ".yaml" and ".rknn" file to ./model. if rename, rename both file with the same name.
