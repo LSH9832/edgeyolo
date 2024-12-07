@@ -39,6 +39,7 @@ cmake -D BUILD_API=ON  \   # 构建模型统一接口（C++）动态库，上述
       ..
 make -j${nproc}
 make install
+cd ..
 ```
 
 **注意：不建议一次编译多个推理动态库**
@@ -47,7 +48,7 @@ make install
 
 ```bash
 # 进入对应文件夹
-cd install/x86_64/yolo
+cd install/Linux/x86_64/yolo
 
 # 如果因部署需要移动了本项目位置，加上下面这句
 export LD_LIBRARY_PATH=./lib:$LD_LIBRARY_PATH   
@@ -97,11 +98,11 @@ kwargs:
 
 ```cmake
 include_directories(
-    ./install/x86_64/yolo/include
+    ./install/Linux/x86_64/yolo/include
 )
 
 link_directories(
-    ./install/x86_64/yolo/lib
+    ./install/Linux/x86_64/yolo/lib
 )
 
 add_executable(YOUR_PROJECT_NAME
