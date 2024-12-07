@@ -25,6 +25,9 @@
 - Our pre-print paper is released on [**arxiv**](https://arxiv.org/abs/2302.07483).
 
 ## Updates
+**[2024/12/7]**
+1. A unified deployment project is uploaded for multiple platforms without the need to modify code for different platforms, see [deployment](./deployment)
+
 **[2024/3/16]**
 1. upload [demo/amct_onnx2om.py](https://github.com/LSH9832/edgeyolo/blob/main/demo/amct_onnx2om.py) that exports onnx to om models for Huawei Ascend devices(such as Ascend310) and [cpp deployment code](https://github.com/LSH9832/edgeyolo/blob/main/cpp/ascend).(Please note that you must have the corresponding libraries and tools provided on the Huawei official website, part of which only clients who purchase the corresponding hardware have download permissions)
 
