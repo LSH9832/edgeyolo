@@ -42,7 +42,7 @@ make install
 cd ..
 ```
 
-**注意：不是一次编译多个推理动态库时，推荐按照下面的命令仅编译一次**
+**注意：仅编译一个推理动态库时，推荐按照下面的命令仅编译一次**
 ```bash
 mkdir build && cd build
 cmake -D TENSORRT=ON   \   # 仅编译tensorrt推理动态库
