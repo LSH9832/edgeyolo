@@ -1,5 +1,7 @@
 # EdgeYOLO 模型端侧部署
 
+https://github.com/user-attachments/assets/0844e806-8bc3-43f7-8629-c1b75cf26897
+
 ## 说明
 本人学艺不精，cmake语句不熟悉，因此交叉编译可能会有一些问题，如遇问题请自行修改，恕不回复！
 
