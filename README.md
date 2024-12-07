@@ -3,9 +3,13 @@
 
 <div align="center">
 
-[English](README.md)
+[English](README_EN.md)
+
+[![arXiv](https://img.shields.io/badge/arXiv-2302.07483-<COLOR>.svg)](https://arxiv.org/abs/2302.07483)
 
 </div>
+
+#### 工具推荐: 使用SAM([Segment Anything Model](https://github.com/facebookresearch/segment-anything)) 辅助的图像标注工具: [SAMLabeler Pro](https://github.com/LSH9832/SAMLabelerPro)，支持多人同时远程标注
 
 ## 简介
 - EdgeYOLO 在嵌入式设备 Nvidia Jetson AGX Xavier 上达到了34FPS，在COCO2017数据集上有**50.6**% AP的准确度，在VisDrone2019-DET数据集上有**25.9**% AP的准确度 **(图像输入大小为640x640, 批大小为16, 包含后处理时间)**。更小的模型EdgeYOLO-S在COCO2017数据集上以**44.1**% AP、**63.3**% AP<sup>0.5</sup>（目前单阶段P5小模型中最好的）准度达到了53FPS的速度。
@@ -14,6 +18,9 @@
 - 我们的论文（预印版）已在[**arxiv**](https://arxiv.org/abs/2302.07483)公布
 
 ## 更新
+**[2024/12/7] 重大更新** <br>
+1. 上传了多平台统一化部署项目，无需针对不同平台修改代码，详见目录[deployment](./deployment)
+
 **[2024/3/16]** <br>
 1. 上传了[demo/amct_onnx2om.py](https://github.com/LSH9832/edgeyolo/blob/main/demo/amct_onnx2om.py) 该脚本用于将onnx模型转换为华为昇腾系列设备上支持的om模型(比如昇腾310)，并且发布[c++部署代码示例](https://github.com/LSH9832/edgeyolo/blob/main/cpp/ascend). （注意，你必须拥有华为官网提供的相应依赖库和工具，部分依赖仅购买相应硬件的用户才有下载权限）
 
@@ -324,7 +331,7 @@ make -j4
   year={2023}
 }
 ```
-
+[![Star History Chart](https://api.star-history.com/svg?repos=LSH9832/edgeyolo&type=Timeline)](https://star-history.com/#LSH9832/edgeyolo&Timeline)
 
 ## 目前发现的bugs
 - 在训练时有时可能会触发以下错误，降低pytorch版本至1.8.0应该可以解决这个问题。
