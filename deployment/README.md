@@ -1,5 +1,8 @@
 # EdgeYOLO 模型端侧部署
 
+## 说明
+本人学艺不精，cmake语句不熟悉，因此交叉编译可能会有一些问题，如遇问题请自行修改，恕不回复！
+
 ## 前言
 
 目前我们支持转换为多种推理框架的模型，如英伟达TensorRT、阿里MNN、瑞芯微RKNN、华为昇腾Ascend、地平线HBDNN(Horizon Bayes Deep Neural Network, 后续仅简称为Horizon)等。
