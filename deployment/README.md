@@ -29,9 +29,9 @@
 ```bash
 mkdir build && cd build
 
-cmake -D TENSORRT=ON   \   # 构建tensorrt推理动态库，按需开启
-      -D MNN=ON        \   # 构建MNN推理动态库，按需开启
-      -D ROCKCHIP=ON   \   # 构建RKNN推理动态库，按需开启
+cmake -D TENSORRT=ON   \   # 构建tensorrt的yolo推理动态库，按需开启
+      -D MNN=ON        \   # 构建MNN的yolo推理动态库，按需开启
+      -D ROCKCHIP=ON   \   # 构建RKNN的yolo推理动态库，按需开启
       ..
 
 make -j${nproc}
@@ -48,7 +48,7 @@ cd ..
 **注意：仅编译一个推理动态库时，推荐按照下面的命令仅编译一次**
 ```bash
 mkdir build && cd build
-cmake -D TENSORRT=ON   \   # 仅编译tensorrt推理动态库
+cmake -D TENSORRT=ON   \   # 仅编译tensorrt的yolo推理动态库
       -D BUILD_API=ON  \   # 构建模型统一接口（C++）动态库，上述动态库构建完成后再开启
       -D BUILD_DEMO=ON \   # 构建示例程序
       ..
