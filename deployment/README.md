@@ -42,7 +42,17 @@ make install
 cd ..
 ```
 
-**注意：不建议一次编译多个推理动态库**
+**注意：不是一次编译多个推理动态库时，推荐按照下面的命令仅编译一次**
+```bash
+mkdir build && cd build
+cmake -D TENSORRT=ON   \   # 仅编译tensorrt推理动态库
+      -D BUILD_API=ON  \   # 构建模型统一接口（C++）动态库，上述动态库构建完成后再开启
+      -D BUILD_DEMO=ON \   # 构建示例程序
+      ..
+make -j${nproc}
+make install
+cd ..
+```
 
 ## 使用
 
