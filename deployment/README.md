@@ -143,7 +143,7 @@ int main()
 {
     // 初始化检测器
     Detector detector;
-    detector.init("path/to/config.yaml")
+    detector.init("path/to/config.yaml");
 
     // 待检测图像
     cv::Mat image = cv::imread("path/to/img.jpg");
@@ -170,7 +170,7 @@ int main()
     cv::imshow("yolo result visualize", detector.draw(image, results));
     cv::waitKey(0);
 
-    return 0
+    return 0;
 }
 
 ```
