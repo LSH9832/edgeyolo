@@ -528,7 +528,7 @@ void Detector::infer(cv::Mat& image, float ratio, std::vector<std::vector<float>
 }
 
 
-void Detector::detect(const cv::Mat& image, std::vector<std::vector<float>>& prediction)
+void Detector::detect(const cv::Mat& image, std::vector<std::vector<float>>& prediction, cv::Size* oriSz)
 {
     if (!impl_->isInit_)
     {
@@ -541,9 +541,14 @@ void Detector::detect(const cv::Mat& image, std::vector<std::vector<float>>& pre
         return;
     }
 
-    float ratio=1.0;
+    float ratio = 1.0;
 
     cv::Mat resizedImage = static_resize(image, impl_->sz_, ratio);
+
+    if (oriSz != nullptr)
+    {
+        ratio = std::min(impl_->sz_.width / (oriSz->width*1.0), impl_->sz_.height / (oriSz->height*1.0));
+    }
 
     if (impl_->transpose)
     {
@@ -573,6 +578,32 @@ void Detector::detect(const cv::Mat& image, std::vector<std::vector<float>>& pre
         }
         prediction.push_back(obj);
     }
+}
+
+
+void Detector::set(std::string key, std::string value)
+{
+    if (!impl_->isInit_)
+    {
+        std::cerr << "[E] detector not init!" << std::endl;
+        return;
+    }
+    if (!impl_->isInit(impl_->yolo_))
+    {
+        std::cerr << "[E] detector not init!" << std::endl;
+        return;
+    }
+    impl_->set(impl_->yolo_, key.c_str(), value.c_str());
+}
+
+
+std::vector<std::string> Detector::getNames()
+{
+    if (impl_ == nullptr)
+    {
+        return {};
+    }
+    return impl_->names;
 }
 
 
