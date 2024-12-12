@@ -259,11 +259,16 @@ static std::vector<std::vector<float>> decodeOutputs(
 
                                 if (regExp)
                                 {
-                                    obj[0] = (obj[0] + j) * stride;   // x
-                                    obj[1] = (obj[1] + i) * stride;   // y
+                                    // obj[0] = (obj[0] + j) * stride;   // x
+                                    // obj[1] = (obj[1] + i) * stride;   // y
+
+                                    // obj[2] = expf(obj[2]) * anchor[iA][0] * stride;   // w
+                                    // obj[3] = expf(obj[3]) * anchor[iA][1] * stride;   // h
 
                                     obj[2] = expf(obj[2]) * anchor[iA][0] * stride;   // w
                                     obj[3] = expf(obj[3]) * anchor[iA][1] * stride;   // h
+                                    obj[0] = (obj[0] + j) * stride - obj[2] * 0.5f;   // x
+                                    obj[1] = (obj[1] + i) * stride - obj[3] * 0.5f;   // y
                                 }
                                 else if (regMul)
                                 {
