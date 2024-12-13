@@ -22,7 +22,7 @@ https://github.com/user-attachments/assets/0844e806-8bc3-43f7-8629-c1b75cf26897
 
 对应框架推理构建完成后，多个框架模型均通过一个可执行文件执行推理，无需重新构建。示例代码见[src/demo.cpp](./src/demo.cpp)，示例模型及配置文件见文件夹[models](./models)
 
-**注：示例中tensorrt的模型是在TensorRT8.6.1.6版本下，使用RTX 3080Ti Laptop转换而来，其他非相同版本非等同算力显卡下很可能无法运行**
+**注：示例中tensorrt的模型是在TensorRT8.6.1.6版本下，使用RTX 3080Ti Laptop转换而来，其他非相同版本非等同算力显卡下很可能无法运行，同理华为昇腾om模型是在1.0.105版本工具包，为华为智能驾驶域控制器MDC300f上的Ascend310芯片转换的模型，如不匹配请自行转换。**
 
 ## 安装
 
