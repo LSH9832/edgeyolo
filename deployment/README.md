@@ -12,9 +12,10 @@ https://github.com/user-attachments/assets/0844e806-8bc3-43f7-8629-c1b75cf26897
 本项目将最终支持上述所有架构模型的推理，方便您一键式部署在相应的设备上。
 
 目前已经支持：
-1. TensorRT
-2. MNN
-3. RKNN
+1. TensorRT（英伟达）
+2. MNN（阿里）
+3. RKNN（瑞芯微）
+4. Ascend（华为）
 
 **注:[cpp](../cpp)文件夹将不再进行更新**
 
