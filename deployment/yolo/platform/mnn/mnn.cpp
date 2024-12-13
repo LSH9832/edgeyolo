@@ -228,7 +228,18 @@ void YOLO::inference(void* data, void* preds, float scale)
     // memcpy: 0.45244 ms
     // memcpy_fast: 0.515268 ms 
     // double t0 = pytime::time();
-    memcpy(impl_->nchwTensor->host<float>(), data, 3 * imgH_ * imgW_ * sizeof(float));
+    if (data != nullptr)
+    {
+        if (impl_->nchwTensor->host<void>() != data)
+        {
+            memcpy(impl_->nchwTensor->host<float>(), data, 3 * imgH_ * imgW_ * sizeof(float));
+        }
+        // else
+        // {
+        //     std::cout << "no need to copy data" << std::endl;
+        // }
+    }
+    
     // double dt = pytime::time() - t0;
     // impl_->t_sum += dt;
     // impl_->count += 1;
@@ -276,6 +287,27 @@ void YOLO::inference(void* data, void* preds, float scale)
     // memcpy(preds, impl_->retTensor->host<float>(), impl_->outputSize * sizeof(float));
     // dt = pytime::time() - t0;
     // std::cout << " copy4: " << dt * 1000 << "ms" << std::endl;
+}
+
+bool YOLO::inputDataReachable()
+{
+    if (impl_ == nullptr)
+    {
+        std::cerr << "[E] yolo not init!" << std::endl;
+        return false;
+    }
+    else if (!impl_->init)
+    {
+        std::cerr << "[E] yolo not init!" << std::endl;
+        return false;
+    }
+    return true;
+}
+
+void* YOLO::getInputData() 
+{
+    if (!inputDataReachable()) return nullptr;
+    return impl_->nchwTensor->host<void>();
 }
 
 

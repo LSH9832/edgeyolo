@@ -677,9 +677,20 @@ void YOLO::inference(void* data, void* preds, float scale)
     // std::cout << "post-process: " << (pytime::time() - t0) * 1000 << "ms, " << std::endl;
 }
 
+bool YOLO::inputDataReachable()
+{
+    return false;
+}
+
+void* YOLO::getInputData() 
+{
+    return nullptr;
+}
+
 YOLO::~YOLO()
 {
-
+    delete impl_;
+    impl_ = nullptr;
 }
 
 #endif

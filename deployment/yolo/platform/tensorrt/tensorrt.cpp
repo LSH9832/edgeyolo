@@ -284,6 +284,16 @@ void YOLO::inference(void* data, void* preds, float scale)
 
 }
 
+bool YOLO::inputDataReachable()
+{
+    return false;
+}
+
+void* YOLO::getInputData() 
+{
+    return nullptr;
+}
+
 
 YOLO::~YOLO()
 {
