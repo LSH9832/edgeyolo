@@ -64,3 +64,7 @@ if(ROCKCHIP)
     )
 
 endif()
+
+if (ASCEND)
+    add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/platform/ascend)
+endif()

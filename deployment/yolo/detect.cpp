@@ -125,6 +125,8 @@ struct Detector::Impl
     typedef int (*getNumClasses_f)(void* yolo);
     typedef int (*getNumArrays_f)(void* yolo);
     typedef void (*inference_f)(void* yolo, void* data, void* preds, float scale);
+    typedef bool (*isInputReachable_f)(void* yolo);
+    typedef void* (*getInputData_f)(void* yolo);
     typedef void (*releaseYOLO_f)(void* yolo);
     typedef void (*platform_f)(char* p);
 
@@ -139,6 +141,8 @@ struct Detector::Impl
     getNumArrays_f getNumArrays;
     inference_f inference;
     releaseYOLO_f releaseYOLO;
+    isInputReachable_f isInputReachable;
+    getInputData_f getInputData;
     platform_f platform;
 
 /* ------------------------------------------------ */
@@ -154,6 +158,8 @@ struct Detector::Impl
     bool transpose=true;  // no transpose must no normalize, please note this
     bool inputFloat=true;
     bool isInit_=false;
+
+    bool inputDataReachable=false;
 
     void* blob=nullptr;
 
@@ -213,7 +219,7 @@ struct Detector::Impl
             return false;
         }
 
-        // std::cout << "loading " << libPath << std::endl;
+        std::cout << "loading " << libPath << std::endl;
         // pytime::sleep(1);
         dllHandle = dlopen(libPath.c_str(), RTLD_LAZY);
         // std::cout << 0 << std::endl;
@@ -222,7 +228,9 @@ struct Detector::Impl
             return false;
         }
 
-        // std::cout << 1 << std::endl;
+
+
+        std::cout << "load lib end." << std::endl;
         setupYOLO = (setupYOLO_f)dlsym(dllHandle, "setupYOLO");
         if (!setupYOLO) {
             fprintf(stderr, "Error finding function: %s\n", dlerror());
@@ -279,6 +287,21 @@ struct Detector::Impl
             dlclose(dllHandle);
             return false;
         }
+
+        isInputReachable = (isInputReachable_f)dlsym(dllHandle, "isInputReachable");
+        if (!isInputReachable) {
+            fprintf(stderr, "Error finding function: %s\n", dlerror());
+            dlclose(dllHandle);
+            return false;
+        }
+        
+        getInputData = (getInputData_f)dlsym(dllHandle, "getInputData");
+        if (!getInputData) {
+            fprintf(stderr, "Error finding function: %s\n", dlerror());
+            dlclose(dllHandle);
+            return false;
+        }
+
         // std::cout << 9 << std::endl;
         platform = (platform_f)dlsym(dllHandle, "platform");
         if (!platform) {
@@ -380,6 +403,19 @@ bool Detector::init(std::string configFile)
             }
             impl_->set(impl_->yolo_, key.c_str(), anchorStr.c_str());
         }
+        else if (key == "rerank")
+        {
+            /* code */
+            std::string rerankStr = "";
+            auto rerank = value.as<std::vector<int>>();
+            for(int i=0;i<rerank.size();i++)
+            {
+                if (i) rerankStr += ",";
+                rerankStr += std::to_string(rerank[i]);
+            }
+            impl_->set(impl_->yolo_, key.c_str(), rerankStr.c_str());
+        }
+        
         else
         {
             // std::cout << key << ", " << value.as<std::string>().c_str() << std::endl;
@@ -394,6 +430,10 @@ bool Detector::init(std::string configFile)
         std::cerr << "failed to init yolo." << std::endl;
         return false;
     }
+
+    impl_->inputDataReachable = impl_->isInputReachable(impl_->yolo_);
+
+    std::cout << "inputdata reachable: " << (impl_->inputDataReachable?"true":"false") << std::endl;
 
     // std::cout << "get num arrays and num classes" << std::endl;
     impl_->numArrays = impl_->getNumArrays(impl_->yolo_);
@@ -416,7 +456,11 @@ bool Detector::init(std::string configFile)
         impl_->transpose = true;
     }
 
-    if (impl_->transpose && impl_->inputFloat)
+    if (impl_->inputDataReachable)
+    {
+        impl_->blob = impl_->getInputData(impl_->yolo_);    // ascend
+    }
+    else if (impl_->transpose && impl_->inputFloat)
     {
         impl_->blob = new float[impl_->sz_.area() * 3];
     }
@@ -667,16 +711,19 @@ Detector::~Detector()
         std::cerr << "[E] failed to close dynamic link lib -> " << dlerror() << std::endl;
     }
 
-    if (impl_->transpose && impl_->inputFloat)
+    if (!impl_->inputDataReachable)
     {
-        delete static_cast<float*>(impl_->blob);
+        if (impl_->transpose && impl_->inputFloat)
+        {
+            delete static_cast<float*>(impl_->blob);
+        }
+        else
+        {
+            delete static_cast<uchar*>(impl_->blob);
+        }
     }
-    else
-    {
-        delete static_cast<uchar*>(impl_->blob);
-    }
+    
     delete impl_->preds;
-
     impl_->blob = nullptr;
     impl_->preds = nullptr;
 }

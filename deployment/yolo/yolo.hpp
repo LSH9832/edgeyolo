@@ -24,6 +24,10 @@ public:
 
     void set(std::string key, std::string value);
 
+    bool inputDataReachable();
+
+    void* getInputData();
+
     int getNumClasses();
 
     int getNumArrays();
@@ -44,8 +48,6 @@ private:
 
 extern "C"
 {
-
-
     YOLO* setupYOLO(
         const char* modelFile, const char* inputName, 
         char** outputNames, int lengthOutputs,
@@ -69,18 +71,6 @@ extern "C"
 
         return new YOLO(modelFile, inputName, _outputNames, imgW, imgH, _strides, device);
     }
-
-    // void setupYOLO2(
-    //     YOLO* yolo, char* modelFile, char* inputName, char** outputNames, int lengthOutputs,
-    //     int imgW, int imgH, float confThreshold, float nmsThreshold, int* strides, int length_strides, int device
-    // )
-    // {
-    //     yolo = setupYOLO(
-    //         modelFile, inputName, outputNames, lengthOutputs, 
-    //         imgH, imgW, confThreshold, nmsThreshold, strides, 
-    //         length_strides, device
-    //     );
-    // }
 
     void set(YOLO* yolo, const char* key, const char* value)
     {
@@ -111,6 +101,16 @@ extern "C"
     void inference(YOLO* yolo, void* data, void* preds, float scale=1.0)
     {
         yolo->inference(data, preds, scale);
+    }
+
+    bool isInputReachable(YOLO* yolo)
+    {
+        return yolo->inputDataReachable();
+    }
+
+    void* getInputData(YOLO* yolo)
+    {
+        return yolo->getInputData();
     }
 
     void releaseYOLO(YOLO* yolo)
