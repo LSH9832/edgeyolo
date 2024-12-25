@@ -125,7 +125,8 @@ def main():
     x = np.ones([args.batch, 3, *args.input_size], dtype=np.float32)
     x = torch.from_numpy(x)  # .cuda()
 
-    model(x)  # warm and init
+    result = model(x)  # warm and init
+    # print(result)
 
     input_names = ["input_0"]
     output_names = ["output_0"]
@@ -365,7 +366,8 @@ def horizon_params(onnx_file, dist_path, file_name, calib_data_path,
             "input_shape": f'1x3x{input_size[0]}x{input_size[1]}',  # 原始浮点模型的输入数据尺寸
             "input_batch": batch,  # 网络实际执行时，输入给网络的batch_size, 默认值为1
             "norm_type": 'no_preprocess',   # 在模型中添加的输入数据预处理方法
-            "input_type_rt": 'nv12',  # 转换后混合异构模型需要适配的输入数据格式（数量/顺序与input_name一致）
+            "input_type_rt": 'bgr',  # 转换后混合异构模型需要适配的输入数据格式（数量/顺序与input_name一致）
+            "input_layout_rt" : 'NHWC',
             "input_space_and_range": 'regular',  # 输入数据格式的特殊制式
         }, 
 
@@ -383,7 +385,7 @@ def horizon_params(onnx_file, dist_path, file_name, calib_data_path,
             "compile_mode": 'latency',  # 编译策略选择
             "debug": True,  # 是否打开编译的debug信息
             "core_num": 1,  # 模型运行核心数
-            "optimize_level": 'O2',  # 模型编译的优化等级选择
+            "optimize_level": 'O3',  # 模型编译的优化等级选择
             "max_time_per_fc": 0,   # 指定模型的每个function call的最大可连续执行时间
             "jobs": os.cpu_count()      # 指定编译模型时的进程数
         }
