@@ -86,12 +86,14 @@ def setup_source(args):
                 self.imgs = []
                 for img_type in ["jpg", "png", "jpeg", "bmp", "webp"]:
                     self.imgs += sorted(glob(os.path.join(dir_name, f"*.{img_type}")))
+            
+                self.currentFile = None
 
             def isOpened(self):
                 return bool(len(self.imgs))
 
             def read(self):
-                print(self.imgs[0])
+                self.currentFile = os.path.basename(self.imgs[0])
                 now_img = cv2.imread(self.imgs[0])
                 self.imgs = self.imgs[1:]
                 return now_img is not None, now_img
