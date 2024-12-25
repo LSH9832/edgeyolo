@@ -76,6 +76,7 @@ class YOLOXDetect(nn.Module):
         self.rego_preds = None
 
         self.rknn_export=False
+        self.int8_export=False
 
     @staticmethod
     def _make_grid(nx=20, ny=20):
@@ -100,7 +101,7 @@ class YOLOXDetect(nn.Module):
             cls_feat = self.cls_convs[i](cls_x)
             reg_feat = self.reg_convs[i](reg_x)
 
-            if self.rknn_export:
+            if self.rknn_export or self.int8_export:
                 x_cls = self.cls_preds[i](cls_feat)
                 x_reg = self.reg_preds[i](reg_feat)
                 x_obj = self.obj_preds[i](reg_feat)
@@ -148,7 +149,7 @@ class YOLOXDetect(nn.Module):
 
                 z.append(y.view(bs, -1, self.num_classes + 5))
 
-        return x if self.training else (regs, objs, confs) if self.rknn_export else torch.cat(z, 1)
+        return x if self.training else (regs, objs, confs) if (self.rknn_export or self.int8_export) else torch.cat(z, 1)
 
     def fuse(self):
         # print("YOLOXDetect.fuse")
