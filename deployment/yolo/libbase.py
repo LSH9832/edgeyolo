@@ -20,7 +20,7 @@ swap_map = {
     "mnn": (2, 0, 1),
     "rknn": None,
     "ascend": (2, 0, 1),
-    "horizon": (2, 0, 1)
+    "horizon": None
 }
 
 dtype_map = {
@@ -28,7 +28,7 @@ dtype_map = {
     "mnn": np.float32,
     "rknn": np.uint8,
     "ascend": np.float32,
-    "horizon": np.float32,
+    "horizon": np.uint8,
 }
 
 def list_strings(strings):
