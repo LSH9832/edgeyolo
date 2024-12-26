@@ -16,6 +16,7 @@ https://github.com/user-attachments/assets/0844e806-8bc3-43f7-8629-c1b75cf26897
 2. MNN（阿里）
 3. RKNN（瑞芯微）
 4. Ascend（华为）
+5. Horizon（地平线）
 
 **注:[cpp](../cpp)文件夹将不再进行更新**
 
