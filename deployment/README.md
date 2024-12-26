@@ -194,10 +194,12 @@ int main()
 
 ## 部署模型精度
 
+ps: 瑞芯微做的量化工具效果貌似不太行啊hhhh
+
 |运行芯片|推理框架| 模型  | 尺寸 |量化精度| mAP<sup>val<br/>0.5:0.95 | mAP<sup>val<br/>0.5 |
 |:-----|:-----|:-----|:----:|:---:|:---:|:---:|
 |NVIDIA RTX3080Ti Laptop|TensorRT|**EdgeYOLO-L**|640x640 |FP16  |49.5 |68.5 |
 |NVIDIA RTX3080Ti Laptop|MNN|**EdgeYOLO-L**|640x640 |FP16  |49.6 |68.5 |
-|Rockchip RK3588|RKNN|**EdgeYOLO-L**|640x640 |INT8  |待检测 |待检测 |
+|Rockchip RK3588|RKNN|**EdgeYOLO-L**|640x640 |INT8  |46.8 |65.0 |
 |Huawei Ascend310|昇腾（DavinciNet）|**EdgeYOLO-L**|640x640 |FP16  |待检测 |待检测 |
 |Horizon Journal5|HBDNN|**EdgeYOLO-L**|640x640 |INT8  |49.0 |68.1 |
