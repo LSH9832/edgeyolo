@@ -68,3 +68,8 @@ endif()
 if (ASCEND)
     add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/platform/ascend)
 endif()
+
+
+if (HORIZON)
+    add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/platform/horizon)
+endif()
