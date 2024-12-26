@@ -56,22 +56,32 @@ set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib")
 # message("CMAKE_INSTALL_PREFIX: ${CMAKE_INSTALL_PREFIX}")
 
 
-if(CROSS_COMPILE)
-  set(CROSS_COMPILE_PACKAGE_PATH /home/lsh/code/CrossCompile/install/aarch64)
-  set(CROSS_COMPILE_INCLUDE_PATH ${CROSS_COMPILE_PACKAGE_PATH}/include)
-  set(CROSS_COMPILE_LIBRARY_PATH ${CROSS_COMPILE_PACKAGE_PATH}/lib)
+if(BUILD_DEMO OR BUILD_API)
 
-  find_package(OpenCV HINTS ${CROSS_COMPILE_PACKAGE_PATH})
-  include_directories(${OpenCV_INCLUDE_DIRS})
-  link_directories(${CROSS_COMPILE_LIBRARY_PATH})
-else()
-  include_directories(/usr/include/opencv4)
-  find_package(OpenCV 4 REQUIRED)
-  include_directories(${OpenCV_INCLUDE_DIRS})
-endif()
-# message("${OpenCV_LIBRARIES}")
+  # opencv
+  if (ASCEND)
+    include_directories(/usr/local/ubuntu_crossbuild_devkit/sysroot/usr/include)
+    link_directories(/usr/local/ubuntu_crossbuild_devkit/sysroot/usr/local/lib)
+    set(OpenCV_LIBRARIES "opencv_calib3d;opencv_core;opencv_dnn;opencv_features2d;opencv_flann;opencv_highgui;opencv_imgcodecs;opencv_imgproc;opencv_ml;opencv_objdetect;opencv_photo;opencv_stitching;opencv_video;opencv_videoio;opencv_shape;opencv_superres;opencv_videostab;opencv_viz;")
 
-if(BUILD_DEMO || BUILD_API)
+  elseif(CROSS_COMPILE)
+    set(CROSS_COMPILE_PACKAGE_PATH /home/lsh/code/CrossCompile/install/aarch64)
+    set(CROSS_COMPILE_INCLUDE_PATH ${CROSS_COMPILE_PACKAGE_PATH}/include)
+    set(CROSS_COMPILE_LIBRARY_PATH ${CROSS_COMPILE_PACKAGE_PATH}/lib)
+
+    find_package(OpenCV HINTS ${CROSS_COMPILE_PACKAGE_PATH})
+    include_directories(${OpenCV_INCLUDE_DIRS})
+    link_directories(${CROSS_COMPILE_LIBRARY_PATH})
+  else()
+    include_directories(/usr/include/opencv4)
+    find_package(OpenCV 4 REQUIRED)
+    include_directories(${OpenCV_INCLUDE_DIRS})
+  endif()
+
+
+  # message("${OpenCV_LIBRARIES}")
+
+
   add_library(YOLODetect SHARED
     yolo/detect.cpp
   )
@@ -98,6 +108,8 @@ if(BUILD_DEMO)
   if (CROSS_COMPILE)
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,--allow-shlib-undefined")
   endif()
+
+
   add_executable(detect
       src/demo.cpp
   )
@@ -107,10 +119,35 @@ if(BUILD_DEMO)
       yaml-cpp
       ${OpenCV_LIBRARIES} 
   )
+
+
+  add_executable(detect_noshow
+      src/demo_no_show.cpp
+  )
+
+  target_link_libraries(detect_noshow
+      YOLODetect
+      yaml-cpp
+      ${OpenCV_LIBRARIES} 
+  )
+
+  add_executable(detect_image
+      src/demo_image.cpp
+  )
+
+  target_link_libraries(detect_image
+      YOLODetect
+      yaml-cpp
+      ${OpenCV_LIBRARIES} 
+  )
+
   install(TARGETS detect DESTINATION bin)
+  install(TARGETS detect_noshow DESTINATION bin)
+  install(TARGETS detect_image DESTINATION bin)
   install(DIRECTORY models DESTINATION .)
-  if (CROSS_COMPILE)
+  if (ASCEND)
+    
+  elseif (CROSS_COMPILE)
     install(DIRECTORY ${CROSS_COMPILE_LIBRARY_PATH} DESTINATION .)
   endif()
 endif()
-  
