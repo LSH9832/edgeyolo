@@ -23,6 +23,8 @@ def get_args():
     parser.add_argument("--onnx", action="store_true", help="save onnx model(if tensorrt and torch2trt are installed)")
     parser.add_argument("--onnx-only", action="store_true", help="(if tensorrt and torch2trt are not installed)")
     parser.add_argument("--no-simplify", action="store_true", help="do not simplify models(not recommend)")
+    parser.add_argument("--force-decode", action="store_true", help="force add decoder to network")
+    
     parser.add_argument("--opset", type=int, default=11, help="onnx opset")
 
     # parser.add_argument("--relu", action="store_true", help="replace silu with relu")
@@ -78,7 +80,7 @@ def main():
     model.eval()
     # model.cuda()
 
-    if args.rknn or args.int8 or args.j5:
+    if (args.rknn or args.int8 or args.j5) and not args.force_decode:
         from edgeyolo.models.yolo import YOLOXDetect
         for _, v in model.named_modules():
             if isinstance(v, YOLOXDetect):
@@ -132,7 +134,7 @@ def main():
     output_names = ["output_0"]
 
     if args.onnx_only or args.rknn or args.mnn or args.j5:
-        if args.rknn or args.int8 or args.j5:
+        if (args.rknn or args.int8 or args.j5) and not args.force_decode:
             output_names = []
             for otype in ["reg", "obj_conf", "cls_conf"]:
                 output_names.extend([f"{otype}{i}" for i in range(3)])
@@ -195,6 +197,7 @@ def main():
         elif args.j5:
             export_yaml_file = file_name + "_export_params.yaml"
             with open(export_yaml_file, "w") as yamlf:
+                
                 yaml.dump(horizon_params(
                     onnx_file=onnx_file,
                     dist_path=export_path,
@@ -222,7 +225,7 @@ def main():
         import tensorrt as trt
         from edgeyolo.export import torch2onnx2trt
 
-        if args.int8:
+        if args.int8 and not args.force_decode:
             output_names = []
             for otype in ["reg", "obj_conf", "cls_conf"]:
                 output_names.extend([f"{otype}{i}" for i in range(3)])
@@ -293,8 +296,7 @@ def gen_calib_data_for_horizon_platform(dist_path, dataset, input_size, num_imgs
     img_files = glob(osp.join(img_path, f"*.{suffix}"))
     shuffle(img_files)
     # img_files = img_files[:num_imgs]
-
-    dist_dir = osp.join(dist_path, "horizon_calib_data")
+    dist_dir = osp.join(dist_path, "horizon_calib_data", f"{input_size[0]}x{input_size[1]}")
     os.makedirs(dist_dir, exist_ok=True)
 
     img_type = np.float32
