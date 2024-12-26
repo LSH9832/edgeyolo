@@ -71,7 +71,10 @@ cd ..
 cd install/Linux/x86_64/yolo
 
 # 如果因部署需要移动了本项目位置，加上下面这句
-export LD_LIBRARY_PATH=./lib:$LD_LIBRARY_PATH   
+export LD_LIBRARY_PATH=./lib:$LD_LIBRARY_PATH
+
+# 如果要部署在地平线，还得再加上一句
+export LD_LIBRARY_PATH=./lib/horizon:$LD_LIBRARY_PATH
 
 # 运行c++示例程序
 bin/detect --config models/xxx.yaml  \  
@@ -81,6 +84,16 @@ bin/detect --config models/xxx.yaml  \
 cd python
 python3 detect.py --config ../models/xxx.yaml \ 
                   --source /path/to/your/video.mp4
+
+# -------------------------------------------------------------
+# 运行验证集获取量化模型在数据集上的精度
+# 在部署端运行如下代码，将得到eval_results.json文件
+python3 detect.py --eval \
+                  --config ../models/xxx.yaml \
+                  --source /path/to/val/images/dir  # 比如 /dataset/coco2017/images/val2017
+
+# 将eval_results.json复制到edgeyolo项目目录下，在上位机运行如下代码，需要保证上一步与这一步图像数据集的验证集相同（图像文件名要相同）
+python3 demo/eval_from_json.py --config eval_results.json --dataset params/dataset/xxxx.yaml
 ```
 
 其中yaml配置文件应至少包含如下信息
