@@ -38,6 +38,8 @@ mkdir build && cd build
 cmake -D TENSORRT=ON   \   # 构建tensorrt的yolo推理动态库，按需开启
       -D MNN=ON        \   # 构建MNN的yolo推理动态库，按需开启
       -D ROCKCHIP=ON   \   # 构建RKNN的yolo推理动态库，按需开启
+      -D ASCEND=ON     \   # 构建华为昇腾的yolo推理动态库，按需开启
+      -D HORIZON=ON    \   # 构建地平线HBDNN的yolo推理动态库，按需开启
       ..
 
 make -j${nproc}
