@@ -1,5 +1,6 @@
 import cv2
 import os
+import os.path as osp
 from glob import glob
 
 
@@ -78,7 +79,71 @@ class ROSCapture(ROSBase):
 
 
 def setup_source(args):
-    if isinstance(args.source, str) and os.path.isdir(args.source):
+    if hasattr(args, "ip") and hasattr(args, "port") and len(args.ip):
+        import requests
+        import json
+        from PIL import Image
+        import io
+        import numpy as np
+        
+        
+        class RemoteCapture:
+            def __init__(self, ip, port, path):
+                self.ip = ip
+                self.port = port
+                self.path = path
+                self.length = 0
+                self.__request_url = f"http://{ip}:{port}/getImage"
+                
+                resp = requests.post(
+                    f"http://{ip}:{port}/getImageList",
+                    json={
+                        "path": path
+                    }
+                )
+                
+                result = json.loads(resp.content)
+                if result.get("success", False):
+                    self.imgs: list = result.get("value")
+                    self.length = len(self.imgs)
+                
+                self.currentFile = None
+            
+            def isOpened(self):
+                return bool(len(self.imgs))
+            
+            
+            def read(self):
+                self.currentFile = self.imgs[0]
+                resp = requests.post(
+                    self.__request_url,
+                    json={
+                        "path": osp.join(self.path, self.currentFile)
+                    }
+                )
+                try:
+                    f = io.BytesIO(resp.content)
+                    image = np.array(Image.open(f))
+                    if len(image.shape) == 2:
+                        # print(image.shape)
+                        image = cv2.cvtColor(image, cv2.COLOR_GRAY2BGR)
+                        # cv2.imshow("debug", image)
+                        # cv2.waitKey(0)
+                    else:
+                        image = np.ascontiguousarray(image[..., ::-1])
+                    self.imgs = self.imgs[1:]
+
+                    return image is not None, image
+                except:
+                    return False, None
+        try:
+            source = RemoteCapture(args.ip, args.port, args.source)
+            delay = 0
+        except:
+            print("failed to connect remote")
+            raise
+            
+    elif isinstance(args.source, str) and os.path.isdir(args.source):
 
         class DirCapture:
 
@@ -86,7 +151,7 @@ def setup_source(args):
                 self.imgs = []
                 for img_type in ["jpg", "png", "jpeg", "bmp", "webp"]:
                     self.imgs += sorted(glob(os.path.join(dir_name, f"*.{img_type}")))
-            
+                self.length = len(self.imgs)
                 self.currentFile = None
 
             def isOpened(self):
