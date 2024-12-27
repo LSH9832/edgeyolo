@@ -131,11 +131,11 @@ if(BUILD_DEMO)
       ${OpenCV_LIBRARIES} 
   )
 
-  add_executable(detect_image
+  add_executable(detect_one_image
       src/demo_image.cpp
   )
 
-  target_link_libraries(detect_image
+  target_link_libraries(detect_one_image
       YOLODetect
       yaml-cpp
       ${OpenCV_LIBRARIES} 
