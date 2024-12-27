@@ -25,6 +25,10 @@ def get_args():
     parser.add_argument("--no-show", action="store_true")
     parser.add_argument("--dist", type=str, default="output.mp4")
     parser.add_argument("--fps", type=int, default=-1)
+    
+    # for remote image
+    parser.add_argument("--ip", type=str, default="")
+    parser.add_argument("--port", type=int, default=12345)
 
     return parser.parse_args()
 
@@ -51,7 +55,8 @@ def main():
         kwargs["conf_threshold"] = 0.001
         kwargs["nms_threshold"] = 0.65
         kwargs["show_info"] = False
-        assert osp.isdir(args.source), "when use eval mode, image source should be a dir with images for some dataset"
+        if not len(args.ip):
+            assert osp.isdir(args.source), "when use eval mode, image source should be a dir with images for some dataset"
     
     model = YOLO(
         model_path,
@@ -66,7 +71,7 @@ def main():
         **kwargs
     )
 
-    print(f"\033[32m\033[1m[INFO] acceleration platform: {model.platform()}\033[0m")
+    print(f"\033[32m\033[1m[INFO] Acceleration platform: {model.platform()}\033[0m")
     
 
     # print(model.length_array, model.num_classes)
@@ -76,14 +81,18 @@ def main():
         print("failed to open capture")
         exit(-1)
     if not show and not eval_mode:
-        fps = args.fps if args.fps > 0 else cap.get(cv2.CAP_PROP_FPS)
-        if fps < 1:
+        try:
+            fps = args.fps if args.fps > 0 else cap.get(cv2.CAP_PROP_FPS)
+            if fps < 1:
+                fps = 30
+            imgw = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+            imgh = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+        except:
             fps = 30
-        imgw = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
-        imgh = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+            imgw = 640
+            imgh = 640
         # writer = cv2.VideoWriter(args.dist, cv2.VideoWriter_fourcc(*'mp4v'), fps, (imgw, imgh), True)
         
-
         imgs_list = []
         
 
@@ -109,7 +118,7 @@ def main():
         writer_thread.start()
             
     elif eval_mode:
-        num_imgs = len(cap.imgs)
+        num_imgs = cap.length
     try:
         count = 0
         while cap.isOpened():
