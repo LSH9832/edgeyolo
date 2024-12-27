@@ -131,6 +131,16 @@ if(BUILD_DEMO)
       ${OpenCV_LIBRARIES} 
   )
 
+  add_executable(detect_image
+      src/demo_image.cpp
+  )
+
+  target_link_libraries(detect_image
+      YOLODetect
+      yaml-cpp
+      ${OpenCV_LIBRARIES} 
+  )
+
   add_executable(detect_one_image
       src/demo_image.cpp
   )
@@ -144,6 +154,7 @@ if(BUILD_DEMO)
   install(TARGETS detect DESTINATION bin)
   install(TARGETS detect_noshow DESTINATION bin)
   install(TARGETS detect_image DESTINATION bin)
+  install(TARGETS detect_one_image DESTINATION bin)
   install(DIRECTORY models DESTINATION .)
   if (ASCEND)
     
