@@ -75,7 +75,7 @@ def main():
 
     exp = EdgeYOLO(weights=args.weights)
     model = exp.model
-
+    # if not args.mnn:
     model.fuse()
     model.eval()
     # model.cuda()
@@ -191,8 +191,22 @@ def main():
             json.dump(data_save, jsonf)
         
         if args.mnn:
-            command = f"MNNConvert -f ONNX --modelFile {onnx_file} --MNNModel {file_name}.mnn --fp16"
+            mnn_fp16_file = file_name + ".mnn"
+            command = f"MNNConvert -f ONNX --modelFile {onnx_file} --MNNModel {mnn_fp16_file} --fp16"
+            
             os.system(command)
+            if args.int8:
+                mnn_int8_file = file_name + "_int8.mnn"
+                calib_image_dir, json_config = gen_calib_data_mnn(
+                    dist_path=export_path,
+                    dataset=args.dataset,
+                    input_size=args.input_size,
+                    num_imgs=args.num_imgs
+                )
+                calib_command = f"~/code/MNN-2.7.1/build/quantized.out {osp.abspath(mnn_fp16_file)} {osp.abspath(mnn_int8_file)} {osp.abspath(json_config)}"
+                logger.info(f"now do calib:\n{calib_command}")
+                os.system(calib_command)
+                
         
         elif args.j5:
             export_yaml_file = file_name + "_export_params.yaml"
@@ -392,6 +406,91 @@ def horizon_params(onnx_file, dist_path, file_name, calib_data_path,
             "jobs": os.cpu_count()      # 指定编译模型时的进程数
         }
     }
+
+
+def gen_calib_data_mnn(dist_path, dataset, input_size, num_imgs=64):
+    from glob import glob
+    from random import shuffle
+    import cv2
+    from edgeyolo.data.data_augment import preproc
+
+    dataset_cfg: dict = yaml.load(open(dataset), yaml.Loader)
+    dataset_path = dataset_cfg.get("dataset_path")
+    img_dir = dataset_cfg.get("val").get("image_dir")
+    img_path = osp.join(dataset_path, img_dir)
+    suffix = dataset_cfg.get('kwargs').get('suffix')
+    img_files = glob(osp.join(img_path, f"*.{suffix}"))
+    shuffle(img_files)
+    # img_files = img_files[:num_imgs]
+    dist_dir = osp.join(dist_path, "mnn_calib_data", f"{input_size[0]}x{input_size[1]}")
+    os.makedirs(dist_dir, exist_ok=True)
+
+    img_type = np.uint8
+
+    current_num = 0
+    bgr_files = []
+    for efile in glob(osp.join(dist_dir, "*")):
+        if osp.isdir(efile):
+            logger.warning(f"please move dir:{efile} to other path.")
+        elif not efile.endswith(".jpg"):
+            logger.warning(f"{efile} is not the file for calibration, please move it to other path.")
+        else:
+            current_num += 1
+            bgr_files.append(efile)
+    
+    if current_num >= num_imgs:
+        shuffle(bgr_files)
+        for file_to_remove in bgr_files[:current_num - num_imgs]:
+            print(f"remove data file {file_to_remove}")
+            os.remove(file_to_remove)
+    else:
+        for img_file in img_files:
+            im_name = osp.basename(img_file)[:-len(suffix)-1]
+            im_dist = osp.join(dist_dir, f"{im_name}.jpg")
+
+            if osp.isfile(im_dist):
+                continue
+
+            im_ori = cv2.imread(img_file)
+            
+            # print(im_name)
+
+            im_, _ = preproc(im_ori, input_size, (0, 1, 2))
+            im_save = im_.astype(img_type)
+            
+            # print(np.shape(im_save))
+
+            # im_save.tofile(im_dist)
+            cv2.imwrite(im_dist, im_save)
+            if osp.isfile(im_dist):
+                print(f"calib data saved to {im_dist}")
+                current_num += 1
+            else:
+                print(f"failed to save data to {im_dist}")
+            if current_num == num_imgs:
+                break
+    
+    mnn_calib_params = {
+        "format": "BGR",
+        "width": input_size[1],
+        "height": input_size[0],
+        "path": dist_dir,
+        "used_sample_num": num_imgs,
+        "feature_quantize_method": "KL",
+        "weight_quantize_method": "MAX_ABS",
+        "batch_size": 1,
+        "debug": True
+    }
+    print(mnn_calib_params)
+    
+    json_file = osp.join(dist_path, "mnn_calib_data", f"{input_size[0]}x{input_size[1]}.json")
+    with open(json_file, "w") as f:
+        json.dump(mnn_calib_params, f)
+    
+    assert osp.isfile(json_file), "can not save json file " + json_file
+    
+    print("CALIB DATA GENERATION DONE")
+    return osp.abspath(dist_dir), osp.abspath(json_file)
 
 
 if __name__ == "__main__":
