@@ -604,6 +604,10 @@ void YOLO::inference(void* data, void* preds, float scale)
                     impl_->regExp, impl_->regMul, 0, impl_->confThres
                 );
 
+                delete impl_->outputs[i + numStrides * 0].buf;
+                delete impl_->outputs[i + numStrides * 1].buf;
+                delete impl_->outputs[i + numStrides * 2].buf;
+
                 // std::cout << "result len: " << result.size() << std::endl;
 
                 results.insert(results.end(), result.begin(), result.end());
