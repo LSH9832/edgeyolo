@@ -649,6 +649,8 @@ void YOLO::inference(void* data, void* preds, float scale)
                     impl_->regExp, impl_->regMul, 0, impl_->confThres
                 );
 
+                delete impl_->outputs[i].buf;
+
                 results.insert(results.end(), result.begin(), result.end());
             }
         }
@@ -656,6 +658,7 @@ void YOLO::inference(void* data, void* preds, float scale)
     else
     {
         generate_yolo_proposals(impl_->numArrays, (float*)impl_->outputs[0].buf, impl_->confThres, results, impl_->numClasses);
+        delete impl_->outputs[0].buf;
         // memcpy(preds, impl_->outputs[0].buf, impl_->outputSize * sizeof(float));
     }
 
