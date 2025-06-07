@@ -18,6 +18,7 @@ seaborn
 scipy
 onnx
 onnxsim
+mahotas
 ###### tensorrt export #####
 # pycuda
 # tensorrt
