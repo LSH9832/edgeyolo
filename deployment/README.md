@@ -12,11 +12,16 @@ https://github.com/user-attachments/assets/0844e806-8bc3-43f7-8629-c1b75cf26897
 本项目将最终支持上述所有架构模型的推理，方便您一键式部署在相应的设备上。
 
 目前已经支持：
-1. TensorRT（英伟达）
-2. MNN（阿里）
-3. RKNN（瑞芯微）
-4. Ascend（华为）
-5. Horizon（地平线）
+|序号|名称|公司|相关链接|
+|--:|:-:|:--|:-:|
+|1|TensorRT|英伟达|[下载](https://developer.nvidia.com/tensorrt/download)<br>[文档](https://docs.nvidia.com/deeplearning/tensorrt/latest/index.html)|
+|2|MNN|阿里巴巴|[下载](https://github.com/alibaba/MNN)<br>[文档](https://www.yuque.com/mnn/cn)|
+|3|RKNN|瑞芯微|[下载](https://github.com/airockchip/rknn-toolkit2)<br>[文档](https://github.com/airockchip/rknn-toolkit2/tree/master/doc)|
+|4|Ascend（昇腾）|华为|暂未整理|
+|5|Horizon|地平线|[J5工具包下载](https://developer.horizon.auto/docs/J5/toolchain/1.1.77/download)<br>[J6工具包下载](https://developer.horizon.auto/docs/J6/toolchain-motorshow/3.0.10/download)<br>[文档](https://developer.horizon.auto/docs)|
+
+即将支持：
+1. OpenVINO（因特尔）
 
 **注:[cpp](../cpp)文件夹将不再进行更新**
 
