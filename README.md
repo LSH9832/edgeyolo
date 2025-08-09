@@ -48,10 +48,8 @@
 1. 发布带有校准训练过程的TensorRT int8模型导出代码 <br>
 
 ## 即将到来
-- 用于训练和一键式导出边缘设备支持的模型（RKNN/地平线J5/Jetson等）
-- 重构TensorRT部署代码，使其更方便使用
+- 重构多平台统一部署c++代码，将在分支[deployment](https://github.com/LSH9832/edgeyolo/tree/deployment)中发布。
 - 更多不同的模型
-- 用于TensorRT推理的、带有界面的C++代码
 - 用于实例分割任务EdgeYOLO-mask模型
 - 简单有效的预训练方法
 
@@ -344,3 +342,4 @@ For debugging consider passing CUDA_LAUNCH_BLOCKING=1.
 ```
 - 对于DOTA数据集，目前我们仅支持单GPU进行训练，请不要使用分布式训练方式对DOTA数据集进行训练，否则无法进行正确的训练，也无法得到正确的结果
 - 如果使用TensorRT 8.4.X.X及以上的版本进行半精度模型的转换可能存在丢失大量精度甚至完全没有检出目标的情况，为保证使用请使用TensorRT 7.X.X.X 或 8.2.X.X 的版本
+
