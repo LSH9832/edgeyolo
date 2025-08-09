@@ -1,1 +1,0 @@
-from .capture import setup_source
