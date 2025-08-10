@@ -1,0 +1,1 @@
+put models here downloaded from https://github.com/LSH9832/edgeyolo/releases/tag/deploy 
