@@ -85,7 +85,7 @@ python docker_export.py --mnn \
 
 ### 6. Ascend
 
-昇腾系列请自行查询，在主分支的demo/amct_onnx2om.py文件里给出了适配MDC310f自动驾驶域控制器的导出.om模型文件的流程，如不匹配您的设备请自行修改代码或另寻它法。
+昇腾系列请自行查询，在主分支的[demo/amct_onnx2om.py](https://github.com/LSH9832/edgeyolo/blob/main/demo/amct_onnx2om.py)文件里给出了适配MDC310f自动驾驶域控制器的导出.om模型文件的流程，如不匹配您的设备请自行修改代码或另寻它法。
 
 ### 7. OpenVINO
 
