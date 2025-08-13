@@ -18,8 +18,11 @@
 - 我们的论文（预印版）已在[**arxiv**](https://arxiv.org/abs/2302.07483)公布
 
 ## 更新
-**[2024/12/7] 重大更新** <br>
-1. 上传了多平台统一化部署项目，无需针对不同平台修改代码，详见目录[deployment](./deployment)
+[2025/8/13]<br>
+1. 将多平台统一化部署项目移至[deloyment](https://github.com/LSH9832/edgeyolo/tree/deployment)分支并进行了一定的重构，同时增加对OpenVINO的支持。
+
+**[2024/12/7] 重大更新**<br>
+~1. 上传了多平台统一化部署项目，无需针对不同平台修改代码，详见目录[deployment](./deployment)~
 
 **[2024/3/16]** <br>
 1. 上传了[demo/amct_onnx2om.py](https://github.com/LSH9832/edgeyolo/blob/main/demo/amct_onnx2om.py) 该脚本用于将onnx模型转换为华为昇腾系列设备上支持的om模型(比如昇腾310)，并且发布[c++部署代码示例](https://github.com/LSH9832/edgeyolo/blob/main/cpp/ascend). （注意，你必须拥有华为官网提供的相应依赖库和工具，部分依赖仅购买相应硬件的用户才有下载权限）
@@ -48,7 +51,6 @@
 1. 发布带有校准训练过程的TensorRT int8模型导出代码 <br>
 
 ## 即将到来
-- 重构多平台统一部署c++代码，将在分支[deployment](https://github.com/LSH9832/edgeyolo/tree/deployment)中发布。
 - 更多不同的模型
 - 用于实例分割任务EdgeYOLO-mask模型
 - 简单有效的预训练方法
@@ -342,4 +344,5 @@ For debugging consider passing CUDA_LAUNCH_BLOCKING=1.
 ```
 - 对于DOTA数据集，目前我们仅支持单GPU进行训练，请不要使用分布式训练方式对DOTA数据集进行训练，否则无法进行正确的训练，也无法得到正确的结果
 - 如果使用TensorRT 8.4.X.X及以上的版本进行半精度模型的转换可能存在丢失大量精度甚至完全没有检出目标的情况，为保证使用请使用TensorRT 7.X.X.X 或 8.2.X.X 的版本
+
 
