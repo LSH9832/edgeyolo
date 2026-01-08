@@ -479,7 +479,7 @@ bool YOLO::init()
                 int n_dims = output_attrs[i].n_dims; // batch, numArray, h, w
                 if(i == strides_.size() * 2)
                 {
-                    impl_->numClasses = output_attrs[i].dims[n_dims-3] / impl_->numAnchors - (impl_->obj_conf_enabled?5:4);
+                    impl_->numClasses = output_attrs[i].dims[n_dims-3] / impl_->numAnchors; // - (impl_->obj_conf_enabled?5:4);
                 }
                 int thisNumDets = impl_->batch * impl_->numAnchors * output_attrs[i].dims[n_dims-2] * output_attrs[i].dims[n_dims-1];
                 impl_->numArrays += thisNumDets;
