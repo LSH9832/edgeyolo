@@ -17,7 +17,9 @@ option(HBDNN "hbDNN for Horizon BPU platform(Journal5)" OFF)
 option(ARM64 "use arm64, valid when cross-compile" OFF)
 option(DEFAULT "force to use default compiler" OFF)
 option(BUILD_API "build platform" OFF)
-
+if(RKNN)
+    add_definitions(-DROCKCHIP)
+endif()
 if (NOT WIN32)
   if(DEFAULT)
     set(CMAKE_C_COMPILER "gcc")
@@ -98,7 +100,7 @@ if(BUILD_DEMO OR BUILD_API)
 
   # message("${OpenCV_LIBRARIES}")
 
-
+  
   add_library(YOLODetect SHARED
     src/yolo/detect.cpp
   )
@@ -109,6 +111,12 @@ if(BUILD_DEMO OR BUILD_API)
       yaml-cpp
       dl
   )
+
+  if(RKNN)
+      target_link_libraries(YOLODetect PUBLIC
+          ${CMAKE_CURRENT_SOURCE_DIR}/python/yolo/lib/librga.so
+      )
+  endif()
 
   if(WIN32)
     install(TARGETS YOLODetect DESTINATION bin)
