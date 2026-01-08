@@ -11,6 +11,78 @@
 #include <string.h>
 #endif
 
+#ifdef ROCKCHIP
+#include "rga/RgaUtils.h"
+#include "rga/im2d.hpp"
+#endif
+
+#ifdef ROCKCHIP
+class RkRgaResize
+{
+public:
+    RkRgaResize() {}
+
+    void set(cv::Size input_sz, cv::Size output_sz)
+    {
+        bool change = false;
+        if (iptsz != input_sz)
+        {
+            iptsz = input_sz;
+            src.create(iptsz, CV_8UC3);
+            if (src_handle) releasebuffer_handle(src_handle);
+            src_handle = importbuffer_virtualaddr(src.data, iptsz.area() * get_bpp_from_format(RK_FORMAT_RGB_888));
+            src_img = wrapbuffer_handle(src_handle, iptsz.width, iptsz.height, RK_FORMAT_RGB_888);
+            change = true;
+        }
+
+        if (optsz != output_sz)
+        {
+            optsz = output_sz;
+            dist.create(optsz, CV_8UC3);
+            if (dst_handle) releasebuffer_handle(dst_handle);
+            dst_handle = importbuffer_virtualaddr(dist.data, optsz.area() * get_bpp_from_format(RK_FORMAT_RGB_888));
+            dst_img = wrapbuffer_handle(dst_handle, optsz.width, optsz.height, RK_FORMAT_RGB_888);
+            change = true;
+        }
+        if (change)
+            if (IM_STATUS_NOERROR != imcheck(src_img, dst_img, {}, {})) {
+                printf("check error!\n");
+                release_buffer();
+            }
+    }
+
+    bool convert(const cv::Mat& image, cv::Mat& resized)
+    {
+        set(image.size(), resized.size());
+        image.copyTo(src);
+        auto ret = imresize(src_img, dst_img);
+        if (ret != IM_STATUS_SUCCESS) {
+            printf("imresize running failed! %s\n", imStrError((IM_STATUS)ret));
+        }
+        dist.copyTo(resized);
+        return ret == IM_STATUS_SUCCESS;
+    }
+
+    void release_buffer()
+    {
+        if (src_handle) releasebuffer_handle(src_handle);
+        if (dst_handle) releasebuffer_handle(dst_handle);
+    }
+
+    ~RkRgaResize()
+    {
+        release_buffer();
+    }
+
+
+private:
+    cv::Size iptsz, optsz;
+    rga_buffer_t src_img, dst_img;
+    rga_buffer_handle_t src_handle, dst_handle;
+    cv::Mat src, dist;
+};
+#endif
+
 static bool checkDefined(YAML::Node node, std::vector<std::string> names) {
     bool ret = true;
     for (auto name: names) {
@@ -108,7 +180,11 @@ static cv::Mat static_resize(const cv::Mat& img, cv::Size input_size, float& r) 
     int unpad_h = r * img.rows;
 
     cv::Mat re(unpad_h, unpad_w, CV_8UC3);
-    cv::resize(img, re, re.size(), 0, 0, cv::INTER_LINEAR);
+#ifdef ROCKCHIP
+    static RkRgaResize resizer;
+    if (!resizer.convert(img, re))
+#endif
+        cv::resize(img, re, re.size(), 0, 0, cv::INTER_LINEAR);
     cv::Mat out(input_size.height, input_size.width, CV_8UC3, cv::Scalar(114, 114, 114));
     re.copyTo(out(cv::Rect(0, 0, re.cols, re.rows)));
     return out;
