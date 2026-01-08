@@ -12,8 +12,8 @@
 #endif
 
 #ifdef ROCKCHIP
-#include "rga/RgaUtils.h"
-#include "rga/im2d.hpp"
+#include "./platform/rknn/rga/RgaUtils.h"
+#include "./platform/rknn/rga/im2d.hpp"
 #endif
 
 #ifdef ROCKCHIP
