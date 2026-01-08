@@ -733,10 +733,10 @@ cv::Mat Detector::draw(
         int label_ = (int)prediction.at(k)[4];
         color = get_color(label_);
 
-        x1 = prediction.at(k)[0];
-        y1 = prediction.at(k)[1];
-        x2 = prediction.at(k)[2];
-        y2 = prediction.at(k)[3];
+        x1 = std::round(prediction.at(k)[0]);
+        y1 = std::round(prediction.at(k)[1]);
+        x2 = std::round(prediction.at(k)[2]);
+        y2 = std::round(prediction.at(k)[3]);
 
         cv::rectangle(
             dist,
