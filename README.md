@@ -334,4 +334,4 @@ ps: 华为的量化效果好是好，但是量化过程太慢了，接近5个小
 |Rockchip RK3588|RKNN|**EdgeYOLO-L**|640x640 |INT8  |49.2 |68.4 |
 |Huawei Ascend310|昇腾（DavinciNet）|**EdgeYOLO-L**|640x640 |INT8  |49.4 |68.3 |
 |Horizon Journal5|HBDNN|**EdgeYOLO-L**|640x640 |INT8  |49.0 |68.1 |
-|Intel Core Ultra7 258V|OpenVINO|**EdgeYOLO-L**|640x640 |FP16  |待测试 |待测试 |
+|Intel Core Ultra7 258V|OpenVINO|**EdgeYOLO-L**|640x640 |FP16  |49.5 |68.5 |
