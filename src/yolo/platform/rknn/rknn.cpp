@@ -8,9 +8,9 @@
 #include <math.h>
 
 #include "../../yolo.hpp"
-#include "../../str.h"
-#include "../../datetime.h"
-#include "../common.hpp"
+#include "../../../pylike/str.h"
+#include "../../../pylike/datetime.h"
+#include "../common.h"
 #include "./rknn_api.h"
 
 
