@@ -172,9 +172,9 @@ static cv::Mat static_resize(const cv::Mat& img, cv::Size input_size, float& r) 
     }
     r = 
 #ifdef _WIN32
-    min(input_size.width / (img.cols*1.0), input_size.height / (img.rows*1.0));
+    MIN(input_size.width / (img.cols*1.0), input_size.height / (img.rows*1.0));
 #else
-    min(input_size.width / (img.cols*1.0), input_size.height / (img.rows*1.0));
+    MIN(input_size.width / (img.cols*1.0), input_size.height / (img.rows*1.0));
 #endif
     int unpad_w = r * img.cols;
     int unpad_h = r * img.rows;
@@ -722,9 +722,9 @@ void Detector::detect(const cv::Mat& image, std::vector<std::vector<float>>& pre
     {
         ratio = 
 #ifdef _WIN32
-        min(impl_->sz_.width / (oriSz->width*1.0), impl_->sz_.height / (oriSz->height*1.0));
+        MIN(impl_->sz_.width / (oriSz->width*1.0), impl_->sz_.height / (oriSz->height*1.0));
 #else
-        min(impl_->sz_.width / (oriSz->width*1.0), impl_->sz_.height / (oriSz->height*1.0));
+        MIN(impl_->sz_.width / (oriSz->width*1.0), impl_->sz_.height / (oriSz->height*1.0));
 #endif
     }
     std::cout << "ratio: " << ratio << std::endl;
