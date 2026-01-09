@@ -14,7 +14,7 @@
 #endif
 
 #ifndef _WIN32
-#define min std::min
+// #define min std::min
 #else
 #include <Windows.h>
 #endif
@@ -261,7 +261,7 @@ public:
 
         for (size_t i=0; i<str_.length();i++) {
             if (i < prev_pos) continue;
-            if ((pos = min(str_.find("\n", i), min(str_.find(" ", i), str_.find("\t", i)))) != std::string::npos) {
+            if ((pos = MIN(str_.find("\n", i), MIN(str_.find(" ", i), str_.find("\t", i)))) != std::string::npos) {
                 if (i == pos) {
                     prev_pos = i;
                     continue;
