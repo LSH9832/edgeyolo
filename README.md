@@ -9,8 +9,6 @@
 
 </div>
 
-<img width="971" height="594" alt="image" src="https://github.com/user-attachments/assets/335b310d-afdb-497b-ba37-dbf5e80c512a" />
-
 
 #### 工具推荐: 使用SAM([Segment Anything Model](https://github.com/facebookresearch/segment-anything)) 辅助的图像标注工具: [SAMLabeler Pro](https://github.com/LSH9832/SAMLabelerPro)，支持多人同时远程标注
 
