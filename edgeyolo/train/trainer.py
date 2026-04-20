@@ -480,7 +480,8 @@ class Trainer(EdgeYOLO):
                         except Exception as e:
                             logger.error(f"error: {e}")
                             torch.cuda.empty_cache()
-
+                            raise
+                            
             before_epoch()
             for self.now_iter in range(self.max_iter):
                 train_one_iter()
@@ -589,3 +590,4 @@ class Trainer(EdgeYOLO):
         kwargs["model"] = model_save.state_dict()
 
         self.save(save_path, kwargs)
+
